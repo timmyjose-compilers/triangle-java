@@ -67,6 +67,13 @@ public class Scanner {
         }
         break;
 
+      case ',':
+        {
+          eatIt();
+          kind = TokenType.COMMA;
+        }
+        break;
+
       case ';':
         {
           eatIt();

@@ -229,40 +229,552 @@ public class ScannerTest extends TestCase {
 
 
   public void testEcho() {
+    String filename = "samples/echo.t";
+    ScannerTestCase testCases[] = new ScannerTestCase[] {
+      new ScannerTestCase(TokenType.LET, "let"),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "ch"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Char"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.PROCEDURE, "proc"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "echo"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.IS, "~"),
+      new ScannerTestCase(TokenType.BEGIN, "begin"),
+      new ScannerTestCase(TokenType.WHILE, "while"),
+      new ScannerTestCase(TokenType.OPERATOR, "\\"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "eol"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.DO, "do"),
+      new ScannerTestCase(TokenType.BEGIN, "begin"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "get"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "ch"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "put"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.IDENTIFIER, "ch"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.END, "end"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.END, "end"),
+      new ScannerTestCase(TokenType.IN, "in"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "echo"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.EOT, "")
+    };
 
+    Scanner scanner = new Scanner(filename);
+    for (int i = 0; i < testCases.length; i++) {
+      Token token = scanner.scan();
+      assertEquals(testCases[i].kind, token.kind);
+      assertEquals(testCases[i].spelling, token.spelling);
+    }
   }
 
   public void testEchoDegenerate() {
+    String filename = "samples/echo_degenerate.t";
+    ScannerTestCase testCases[] = new ScannerTestCase[] {
+      new ScannerTestCase(TokenType.LET, "let"),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "ch"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Char"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.PROCEDURE, "proc"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "echo"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.IS, "~"),
+      new ScannerTestCase(TokenType.BEGIN, "begin"),
+      new ScannerTestCase(TokenType.WHILE, "while"),
+      new ScannerTestCase(TokenType.OPERATOR, "\\"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "eol"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.DO, "do"),
+      new ScannerTestCase(TokenType.BEGIN, "begin"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "get"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "ch"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "put"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.IDENTIFIER, "ch"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.END, "end"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.END, "end"),
+      new ScannerTestCase(TokenType.IN, "in"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "echo"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.EOT, "")
+    };
 
+    Scanner scanner = new Scanner(filename);
+    for (int i = 0; i < testCases.length; i++) {
+      Token token = scanner.scan();
+      assertEquals(testCases[i].kind, token.kind);
+      assertEquals(testCases[i].spelling, token.spelling);
+    }
   }
 
-
   public void testOdd() {
+    String filename = "samples/odd.t";
+    ScannerTestCase testCases[] = new ScannerTestCase[] {
+      new ScannerTestCase(TokenType.LET, "let"),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "n"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Integer"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.FUNCTION, "func"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "odd"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.IDENTIFIER, "n"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Integer"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Boolean"),
+      new ScannerTestCase(TokenType.IS, "~"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.IDENTIFIER, "n"),
+      new ScannerTestCase(TokenType.OPERATOR, "/"),
+      new ScannerTestCase(TokenType.OPERATOR, "/"),
+      new ScannerTestCase(TokenType.NUMBER, "2"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.OPERATOR, "\\"),
+      new ScannerTestCase(TokenType.OPERATOR, "="),
+      new ScannerTestCase(TokenType.NUMBER, "0"),
+      new ScannerTestCase(TokenType.IN, "in"),
+      new ScannerTestCase(TokenType.BEGIN, "begin"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "getint"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "n"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.IF, "if"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "odd"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.IDENTIFIER, "n"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.THEN, "then"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "putint"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.NUMBER, "1"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.ELSE, "else"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "putint"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.NUMBER, "2"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.END, "end"),
+      new ScannerTestCase(TokenType.EOT, "")
+    };
 
+    Scanner scanner = new Scanner(filename);
+    for (int i = 0; i < testCases.length; i++) {
+      Token token = scanner.scan();
+      assertEquals(testCases[i].kind, token.kind);
+      assertEquals(testCases[i].spelling, token.spelling);
+    }
   }
 
   public void testOddDegenerate() {
+    String filename = "samples/odd_degenerate.t";
+    ScannerTestCase testCases[] = new ScannerTestCase[] {
+      new ScannerTestCase(TokenType.LET, "let"),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "n"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Integer"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.FUNCTION, "func"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "odd"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.IDENTIFIER, "n"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Integer"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Boolean"),
+      new ScannerTestCase(TokenType.IS, "~"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.IDENTIFIER, "n"),
+      new ScannerTestCase(TokenType.OPERATOR, "/"),
+      new ScannerTestCase(TokenType.OPERATOR, "/"),
+      new ScannerTestCase(TokenType.NUMBER, "2"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.OPERATOR, "\\"),
+      new ScannerTestCase(TokenType.OPERATOR, "="),
+      new ScannerTestCase(TokenType.NUMBER, "0"),
+      new ScannerTestCase(TokenType.IN, "in"),
+      new ScannerTestCase(TokenType.BEGIN, "begin"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "getint"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "n"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.IF, "if"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "odd"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.IDENTIFIER, "n"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.THEN, "then"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "putint"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.NUMBER, "1"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.ELSE, "else"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "putint"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.NUMBER, "2"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.END, "end"),
+      new ScannerTestCase(TokenType.EOT, "")
+    };
 
+    Scanner scanner = new Scanner(filename);
+    for (int i = 0; i < testCases.length; i++) {
+      Token token = scanner.scan();
+      assertEquals(testCases[i].kind, token.kind);
+      assertEquals(testCases[i].spelling, token.spelling);
+    }
   }
 
-
   public void testSumProc() {
+    String filename = "samples/sum_proc.t";
+    ScannerTestCase testCases[] = new ScannerTestCase[] {
+      new ScannerTestCase(TokenType.LET, "let"),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "x"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Integer"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "y"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Integer"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "s"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Integer"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.PROCEDURE, "proc"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "add"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.IDENTIFIER, "a"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Integer"),
+      new ScannerTestCase(TokenType.COMMA, ","),
+      new ScannerTestCase(TokenType.IDENTIFIER, "b"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Integer"),
+      new ScannerTestCase(TokenType.COMMA, ","),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "r"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Integer"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.IS, "~"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "r"),
+      new ScannerTestCase(TokenType.BECOMES, ":="),
+      new ScannerTestCase(TokenType.IDENTIFIER, "a"),
+      new ScannerTestCase(TokenType.OPERATOR, "+"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "b"),
+      new ScannerTestCase(TokenType.IN, "in"),
+      new ScannerTestCase(TokenType.BEGIN, "begin"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "getint"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "x"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "getint"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "y"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "add"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.IDENTIFIER, "x"),
+      new ScannerTestCase(TokenType.COMMA, ","),
+      new ScannerTestCase(TokenType.IDENTIFIER, "y"),
+      new ScannerTestCase(TokenType.COMMA, ","),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "s"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "putint"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.IDENTIFIER, "s"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.END, "end"),
+      new ScannerTestCase(TokenType.EOT, "")
+    };
 
+    Scanner scanner = new Scanner(filename);
+    for (int i = 0; i < testCases.length; i++) {
+      Token token = scanner.scan();
+      assertEquals(testCases[i].kind, token.kind);
+      assertEquals(testCases[i].spelling, token.spelling);
+    }
   }
 
   public void testSumProcDegenerate() {
+    String filename = "samples/sum_proc_degenerate.t";
+    ScannerTestCase testCases[] = new ScannerTestCase[] {
+      new ScannerTestCase(TokenType.LET, "let"),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "x"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Integer"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "y"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Integer"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "s"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Integer"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.PROCEDURE, "proc"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "add"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.IDENTIFIER, "a"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Integer"),
+      new ScannerTestCase(TokenType.COMMA, ","),
+      new ScannerTestCase(TokenType.IDENTIFIER, "b"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Integer"),
+      new ScannerTestCase(TokenType.COMMA, ","),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "r"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Integer"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.IS, "~"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "r"),
+      new ScannerTestCase(TokenType.BECOMES, ":="),
+      new ScannerTestCase(TokenType.IDENTIFIER, "a"),
+      new ScannerTestCase(TokenType.OPERATOR, "+"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "b"),
+      new ScannerTestCase(TokenType.IN, "in"),
+      new ScannerTestCase(TokenType.BEGIN, "begin"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "getint"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "x"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "getint"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "y"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "add"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.IDENTIFIER, "x"),
+      new ScannerTestCase(TokenType.COMMA, ","),
+      new ScannerTestCase(TokenType.IDENTIFIER, "y"),
+      new ScannerTestCase(TokenType.COMMA, ","),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "s"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "putint"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.IDENTIFIER, "s"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.END, "end"),
+      new ScannerTestCase(TokenType.EOT, "")
+    };
 
+    Scanner scanner = new Scanner(filename);
+    for (int i = 0; i < testCases.length; i++) {
+      Token token = scanner.scan();
+      assertEquals(testCases[i].kind, token.kind);
+      assertEquals(testCases[i].spelling, token.spelling);
+    }
   }
 
-
   public void testPower() {
+    String filename = "samples/power.t";
+    ScannerTestCase testCases[] = new ScannerTestCase[] {
+      new ScannerTestCase(TokenType.LET, "let"),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "m"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Integer"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "n"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Integer"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.FUNCTION, "func"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "power"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.IDENTIFIER, "a"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Integer"),
+      new ScannerTestCase(TokenType.COMMA, ","),
+      new ScannerTestCase(TokenType.IDENTIFIER, "b"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Integer"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Integer"),
+      new ScannerTestCase(TokenType.IS, "~"),
+      new ScannerTestCase(TokenType.IF, "if"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "b"),
+      new ScannerTestCase(TokenType.OPERATOR, "="),
+      new ScannerTestCase(TokenType.NUMBER, "0"),
+      new ScannerTestCase(TokenType.THEN, "then"),
+      new ScannerTestCase(TokenType.NUMBER, "1"),
+      new ScannerTestCase(TokenType.ELSE, "else"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "a"),
+      new ScannerTestCase(TokenType.OPERATOR, "*"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "power"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.IDENTIFIER, "a"),
+      new ScannerTestCase(TokenType.COMMA, ","),
+      new ScannerTestCase(TokenType.IDENTIFIER, "b"),
+      new ScannerTestCase(TokenType.OPERATOR, "-"),
+      new ScannerTestCase(TokenType.NUMBER, "1"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.IN, "in"),
+      new ScannerTestCase(TokenType.BEGIN, "begin"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "getint"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "m"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "getint"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "n"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "putint"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.IDENTIFIER, "power"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.IDENTIFIER, "m"),
+      new ScannerTestCase(TokenType.COMMA, ","),
+      new ScannerTestCase(TokenType.IDENTIFIER, "n"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.END, "end"),
+      new ScannerTestCase(TokenType.EOT, "")
+    };
 
+    Scanner scanner = new Scanner(filename);
+    for (int i = 0; i < testCases.length; i++) {
+      Token token = scanner.scan();
+      assertEquals(testCases[i].kind, token.kind);
+      assertEquals(testCases[i].spelling, token.spelling);
+    }
   }
 
   public void testPowerDegenerate() {
+    String filename = "samples/power_degenerate.t";
+    ScannerTestCase testCases[] = new ScannerTestCase[] {
+      new ScannerTestCase(TokenType.LET, "let"),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "m"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Integer"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "n"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Integer"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.FUNCTION, "func"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "power"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.IDENTIFIER, "a"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Integer"),
+      new ScannerTestCase(TokenType.COMMA, ","),
+      new ScannerTestCase(TokenType.IDENTIFIER, "b"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Integer"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.COLON, ":"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "Integer"),
+      new ScannerTestCase(TokenType.IS, "~"),
+      new ScannerTestCase(TokenType.IF, "if"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "b"),
+      new ScannerTestCase(TokenType.OPERATOR, "="),
+      new ScannerTestCase(TokenType.NUMBER, "0"),
+      new ScannerTestCase(TokenType.THEN, "then"),
+      new ScannerTestCase(TokenType.NUMBER, "1"),
+      new ScannerTestCase(TokenType.ELSE, "else"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "a"),
+      new ScannerTestCase(TokenType.OPERATOR, "*"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "power"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.IDENTIFIER, "a"),
+      new ScannerTestCase(TokenType.COMMA, ","),
+      new ScannerTestCase(TokenType.IDENTIFIER, "b"),
+      new ScannerTestCase(TokenType.OPERATOR, "-"),
+      new ScannerTestCase(TokenType.NUMBER, "1"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.IN, "in"),
+      new ScannerTestCase(TokenType.BEGIN, "begin"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "getint"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "m"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "getint"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.VAR, "var"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "n"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.SEMICOLON, ";"),
+      new ScannerTestCase(TokenType.IDENTIFIER, "putint"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.IDENTIFIER, "power"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.IDENTIFIER, "m"),
+      new ScannerTestCase(TokenType.COMMA, ","),
+      new ScannerTestCase(TokenType.IDENTIFIER, "n"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.END, "end"),
+      new ScannerTestCase(TokenType.EOT, "")
+    };
 
+    Scanner scanner = new Scanner(filename);
+    for (int i = 0; i < testCases.length; i++) {
+      Token token = scanner.scan();
+      assertEquals(testCases[i].kind, token.kind);
+      assertEquals(testCases[i].spelling, token.spelling);
+    }
   }
-
 
   public void testFactorial() {
 

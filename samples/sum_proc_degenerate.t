@@ -14,6 +14,6 @@ in
   begin
                 getint(var x);
     getint(var y);
-    addi   (x, y, var s);
+    add   (x, y, var s);
     putint(s)
   end
