@@ -16,7 +16,7 @@
     </dependency>
   </dependencies>
   <properties>
-    <project.source.Encoding>UTF-8</project.source.Encoding>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>9</maven.compiler.source>
     <maven.compiler.target>9</maven.compiler.target>
   </properties>

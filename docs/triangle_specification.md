@@ -530,7 +530,7 @@ A record-type-denoter denotes the structure of a record type.
   Program ::= (Token | Comment | Blank)*
 
   Token ::= Integer-Literal | Character-Literal | Identifier | Operator | array | begin | end | const | var | let | in | if | then | else | while | do | proc | record | 
-            function | type | . | , | : | ; | ( | ) | ~ | [ | ] | { | } | :=
+            func | type | . | , | : | ; | ( | ) | ~ | [ | ] | { | } | :=
 
   Integer-Literal ::= Digit Digit*
 

@@ -10,11 +10,11 @@ import com.z0ltan.compilers.triangle.error.SyntaxError;
 
 public class SourceFile implements Iterable<Char> {
   private List<Char> chars;
-  private static final char EOL = '\n';
-  private static final char EOT = '\u0000';
+  public static final char EOL = '\n';
+  public static final char EOT = '\u0000';
 
   public SourceFile(String filename) {
-    this.chars = new ArrayList();
+    this.chars = new ArrayList<>();
     this.loadFromFile(filename);
   }
 
@@ -43,18 +43,3 @@ public class SourceFile implements Iterable<Char> {
   }
 }
 
-class Char {
-  char c;
-  int line, column;
-
-  public Char(char c, int line, int column) {
-    this.c = c;
-    this.line = line;
-    this.column = column;
-  }
-
-  @Override
-  public String toString() {
-    return "Char { c = " + this.c + ", line = " + this.line + ", column = " + this.column + " }";
-  }
-}

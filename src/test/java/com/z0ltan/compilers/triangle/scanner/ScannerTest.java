@@ -17,16 +17,23 @@ public class ScannerTest extends TestCase {
     return new TestSuite(ScannerTest.class);
   }
 
-  public void testEmptyCommandEot() {
+  static class ScannerTestCase {
+    TokenType kind;
+    String spelling;
 
+    public ScannerTestCase(final TokenType kind, final String spelling) {
+      this.kind = kind;
+      this.spelling = spelling;
+    }
+  }
+
+  public void testEmptyCommandEot() {
   }
 
   public void testEmptyCommandEotDegenerate() {
-
   }
 
   public void testEmptyCommandSemicolon() {
-
   }
 
   public void testEmptyCommandSemicolonDegenerate() {
@@ -34,9 +41,19 @@ public class ScannerTest extends TestCase {
 
   public void testHello() {
     String filename = "samples/hello.t";
-    Iterator<Char> file = new SourceFile(filename).iterator();
-    while (file.hasNext()) {
-      System.out.println(file.next());
+    ScannerTestCase testCases[] = new ScannerTestCase[] {
+      new ScannerTestCase(TokenType.IDENTIFIER, "putint"),
+      new ScannerTestCase(TokenType.LEFT_PAREN, "("),
+      new ScannerTestCase(TokenType.NUMBER, "42"),
+      new ScannerTestCase(TokenType.RIGHT_PAREN, ")"),
+      new ScannerTestCase(TokenType.EOT, "")
+    };
+
+    Scanner scanner = new Scanner(filename);
+    for (int i = 0; i < testCases.length; i++) {
+      Token token = scanner.scan();
+      assertEquals(testCases[i].kind, token.kind);
+      assertEquals(testCases[i].spelling, token.spelling);
     }
   }
 

@@ -4,4 +4,4 @@ Implementation of the Triangle Programming Language, in Java.
 
 ## LICENCE
 
-See [LICENCE(LICENSE.md).
+See [LICENCE](LICENSE.md).
