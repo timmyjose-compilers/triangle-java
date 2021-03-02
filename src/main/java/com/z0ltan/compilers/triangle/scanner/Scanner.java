@@ -194,6 +194,8 @@ public class Scanner {
       case '*':
       case '/':
       case '=':
+      case '<':
+      case '>':
       case '\\':
         {
           eatIt();
