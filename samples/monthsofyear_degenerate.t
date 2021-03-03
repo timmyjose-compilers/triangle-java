@@ -21,7 +21,7 @@ let
             i := i + 1
           end
       end;
-  proc readdate(var d: Date) ~Q
+ proc readdate(var d: Date) ~
 
 
 
