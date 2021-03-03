@@ -6,6 +6,7 @@ import com.z0ltan.compilers.triangle.scanner.TokenType;
 import com.z0ltan.compilers.triangle.scanner.SourcePosition;
 import com.z0ltan.compilers.triangle.ast.Program;
 import com.z0ltan.compilers.triangle.ast.Command;
+import com.z0ltan.compilers.triangle.ast.EmptyCommand;
 import com.z0ltan.compilers.triangle.ast.SequentialCommand;
 import com.z0ltan.compilers.triangle.error.SyntaxError;
 
@@ -43,7 +44,23 @@ public class Parser {
 
   // single-Command ::= EmptyCommand | AssignCommand | CallCommand | BracketedCommand | LetCommand | IfCommand | WhileCommand
   Command parseSingleCommand() {
-    return null;
+    SourcePosition cmdPos = new SourcePosition();
+    start(cmdPos);
+    Command cmd = null;
+
+    switch (currentToken.kind) {
+      case SEMICOLON:
+      case EOT:
+        {
+          finish(cmdPos);
+          cmd = new EmptyCommand(cmdPos);
+        }
+        break;
+      default:
+        throw new SyntaxError(currentToken.kind + " cannot start a command");
+    }
+
+    return cmd;
   }
 
   // Command ::= single-Command | Command ; single-Command
@@ -63,12 +80,12 @@ public class Parser {
 
   // Program ::= Command <EOT>
   Program parseProgram() {
-   SourcePosition programPos = new SourcePosition();
-   start(programPos);
-   Command cmd = parseCommand();
-   finish(programPos);
-   accept(TokenType.EOT);
+    SourcePosition programPos = new SourcePosition();
+    start(programPos);
+    Command cmd = parseCommand();
+    finish(programPos);
+    accept(TokenType.EOT);
 
-   return new Program(cmd, programPos);
+    return new Program(cmd, programPos);
   }
 }

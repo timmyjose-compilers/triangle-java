@@ -22,9 +22,6 @@ public class ParserTest extends TestCase {
     return new TestSuite(ParserTest.class);
   }
 
-  public void testFoo() {
-    assertEquals(true, true);
-  }
   public void testEmptyCommandEot() {
     String filename = "samples/emptycommandeot.t";
     Scanner scanner = new Scanner(filename);
