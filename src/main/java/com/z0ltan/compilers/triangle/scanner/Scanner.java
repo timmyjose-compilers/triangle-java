@@ -106,7 +106,7 @@ public class Scanner {
           eatIt();
           skip('\'');
 
-          kind = TokenType.CHARACTER;
+          kind = TokenType.CHARACTER_LITERAL;
         }
         break;
 
@@ -125,7 +125,7 @@ public class Scanner {
           while (Character.isDigit(currentChar.c)) {
             eatIt();
           }
-          kind = TokenType.NUMBER;
+          kind = TokenType.INTEGER_LITERAL;
         }
         break;
 

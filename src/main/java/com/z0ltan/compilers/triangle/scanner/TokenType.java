@@ -7,7 +7,7 @@ public enum TokenType {
   ARRAY("array"),
   BECOMES(":="),
   BEGIN("begin"),
-  CHARACTER("character"),
+  CHARACTER_LITERAL("character"),
   COLON(":"),
   COMMA(","),
   CONST("const"),
@@ -26,7 +26,7 @@ public enum TokenType {
   LEFT_CURLY("{"),
   LEFT_PAREN("("),
   LET("let"),
-  NUMBER("number"),
+  INTEGER_LITERAL("number"),
   OF("of"),
   OPERATOR("operator"),
   PROCEDURE("procedure"),
@@ -83,6 +83,7 @@ public enum TokenType {
     keywords.put("if", TokenType.IF);
     keywords.put("in", TokenType.IN);
     keywords.put("let", TokenType.LET);
+    keywords.put("of", TokenType.OF);
     keywords.put("proc", TokenType.PROCEDURE);
     keywords.put("record", TokenType.RECORD);
     keywords.put("then", TokenType.THEN);

@@ -2,8 +2,8 @@
 ! and then displays the reversed line on standard output.
 let
 type Line ~ 
-ecord
-ength: Integer,
+record
+length: Integer,
 content: array 80 of Char
 end;
 proc getline(var l: Line) ~
