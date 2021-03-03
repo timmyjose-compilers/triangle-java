@@ -52,6 +52,7 @@ public class Parser {
       case SEMICOLON:
       case EOT:
         {
+          acceptIt();
           finish(cmdPos);
           cmd = new EmptyCommand(cmdPos);
         }

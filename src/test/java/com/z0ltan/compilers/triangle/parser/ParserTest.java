@@ -33,17 +33,29 @@ public class ParserTest extends TestCase {
 
   public void testEmptyCommandEotDegenerate() {
     String filename = "samples/emptycommandeot_degenerate.t";
-
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = new Program(new EmptyCommand(SourcePosition.dummyPosition()), SourcePosition.dummyPosition());
+    Program actualProgram = parser.parseProgram();
+    assertEquals(expectedProgram, actualProgram);
   }
 
   public void testEmptyCommandSemicolon() {
     String filename = "samples/emptycommandsemicolon.t";
-
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = new Program(new EmptyCommand(SourcePosition.dummyPosition()), SourcePosition.dummyPosition());
+    Program actualProgram = parser.parseProgram();
+    assertEquals(expectedProgram, actualProgram);
   }
 
   public void testEmptyCommandSemicolonDegenerate() {
     String filename = "samples/emptycommandsemicolon_degenerate.t";
-
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = new Program(new EmptyCommand(SourcePosition.dummyPosition()), SourcePosition.dummyPosition());
+    Program actualProgram = parser.parseProgram();
+    assertEquals(expectedProgram, actualProgram);
   }
 
   public void testHello() {
