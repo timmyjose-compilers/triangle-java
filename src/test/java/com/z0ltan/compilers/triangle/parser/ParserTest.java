@@ -12,6 +12,23 @@ import com.z0ltan.compilers.triangle.parser.Parser;
 import com.z0ltan.compilers.triangle.ast.Program;
 import com.z0ltan.compilers.triangle.ast.Command;
 import com.z0ltan.compilers.triangle.ast.EmptyCommand;
+import com.z0ltan.compilers.triangle.ast.CallCommand;
+import com.z0ltan.compilers.triangle.ast.Expression;
+import com.z0ltan.compilers.triangle.ast.IntegerExpression;
+import com.z0ltan.compilers.triangle.ast.ActualParameterSequence;
+import com.z0ltan.compilers.triangle.ast.SingleActualParameterSequence;
+import com.z0ltan.compilers.triangle.ast.MultipleActualParameterSequence;
+import com.z0ltan.compilers.triangle.ast.ActualParameter;
+import com.z0ltan.compilers.triangle.ast.ConstActualParameter;
+import com.z0ltan.compilers.triangle.ast.VarActualParameter;
+import com.z0ltan.compilers.triangle.ast.ProcActualParameter;
+import com.z0ltan.compilers.triangle.ast.FuncActualParameter;
+import com.z0ltan.compilers.triangle.ast.Identifier;
+import com.z0ltan.compilers.triangle.ast.Operator;
+import com.z0ltan.compilers.triangle.ast.IntegerLiteral;
+import com.z0ltan.compilers.triangle.ast.CharacterLiteral;
+
+import static com.z0ltan.compilers.triangle.scanner.SourcePosition.dummyPosition;
 
 public class ParserTest extends TestCase {
   public ParserTest(String testName) {
@@ -26,7 +43,7 @@ public class ParserTest extends TestCase {
     String filename = "samples/emptycommandeot.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
-    Program expectedProgram = new Program(new EmptyCommand(SourcePosition.dummyPosition()), SourcePosition.dummyPosition());
+    Program expectedProgram = new Program(new EmptyCommand(dummyPosition()), dummyPosition());
     Program actualProgram = parser.parseProgram();
     assertEquals(expectedProgram, actualProgram);
   }
@@ -35,7 +52,7 @@ public class ParserTest extends TestCase {
     String filename = "samples/emptycommandeot_degenerate.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
-    Program expectedProgram = new Program(new EmptyCommand(SourcePosition.dummyPosition()), SourcePosition.dummyPosition());
+    Program expectedProgram = new Program(new EmptyCommand(dummyPosition()), dummyPosition());
     Program actualProgram = parser.parseProgram();
     assertEquals(expectedProgram, actualProgram);
   }
@@ -44,7 +61,7 @@ public class ParserTest extends TestCase {
     String filename = "samples/emptycommandsemicolon.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
-    Program expectedProgram = new Program(new EmptyCommand(SourcePosition.dummyPosition()), SourcePosition.dummyPosition());
+    Program expectedProgram = new Program(new EmptyCommand(dummyPosition()), dummyPosition());
     Program actualProgram = parser.parseProgram();
     assertEquals(expectedProgram, actualProgram);
   }
@@ -53,19 +70,33 @@ public class ParserTest extends TestCase {
     String filename = "samples/emptycommandsemicolon_degenerate.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
-    Program expectedProgram = new Program(new EmptyCommand(SourcePosition.dummyPosition()), SourcePosition.dummyPosition());
+    Program expectedProgram = new Program(new EmptyCommand(dummyPosition()), dummyPosition());
     Program actualProgram = parser.parseProgram();
     assertEquals(expectedProgram, actualProgram);
   }
 
   public void testHello() {
     String filename = "samples/hello.t";
-
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = 
+      new Program(new CallCommand(new Identifier("putint", dummyPosition()), 
+                                  new SingleActualParameterSequence(new ConstActualParameter(new IntegerExpression(new IntegerLiteral("42", dummyPosition()), dummyPosition()), 
+                                                                                             dummyPosition()), dummyPosition()), 
+                                  dummyPosition()),
+                  dummyPosition());
+    Program actualProgram = parser.parseProgram();
+    assertEquals(expectedProgram, actualProgram);
   }
 
-  public void testHelloDegenerate() {
+  public void xtestHelloDegenerate() {
     String filename = "samples/hello_degenerate.t";
-
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = 
+      new Program(new CallCommand(new Identifier("putint", dummyPosition()), new ActualParameterSequence(dummyPosition()), dummyPosition()), dummyPosition());
+    Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
   }
 
   public void testInc() {

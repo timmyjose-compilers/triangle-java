@@ -22,7 +22,7 @@ A command is executed in order to update variables. Commands also include side-e
   Command ::= single-Command 
             | Command ; single-Command
 
-  single-Command ::=  epsilon
+  single-Command ::=  epsilon (EmptyCommand)
                   | V-name := Expression (AssignCommand)
                   | Identifier ( Actual-Parameter-Sequence ) (CallCommand)
                   | begin Command end (BracketedCommand)
@@ -361,16 +361,16 @@ associated with the actual-parameter-sequence (the argument list), which may be 
                       | proc Identifier ( Formal-Parameter-Sequence )
                       | func Identifier ( Formal-Parameter-Sequence ) : Type-Denoter
 
-  Actual-Parameter-Sequence ::= epsilon
-                              | proper-Actual-Parameter-Sequence
+  Actual-Parameter-Sequence ::= epsilon (EmptyParameterSequence)
+                              | proper-Actual-Parameter-Sequence (MultipleParameterSequence)
 
-  proper-Actual-Parameter-Sequence ::= Actual-Parameter
-                                    | Actual-Parameter , proper-Actual-Parameter-Sequence
+  proper-Actual-Parameter-Sequence ::= Actual-Parameter 
+                                    | Actual-Parameter , proper-Actual-Parameter-Sequence 
 
-  Actual-Parameter ::= Expression
-                    | var V-name
-                    | proc Identifier
-                    | func Identifier
+  Actual-Parameter ::= Expression (ConstActualParameter)
+                    | var V-name (VarActualParameter)
+                    | proc Identifier (ProcActualParameter)
+                    | func Identifier (FuncActualParameter)
 ```
 
 ### Semantics
