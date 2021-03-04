@@ -18,9 +18,15 @@ import com.z0ltan.compilers.triangle.ast.ConstActualParameter;
 import com.z0ltan.compilers.triangle.ast.VarActualParameter;
 import com.z0ltan.compilers.triangle.ast.ProcActualParameter;
 import com.z0ltan.compilers.triangle.ast.FuncActualParameter;
+import com.z0ltan.compilers.triangle.ast.Declaration;
 import com.z0ltan.compilers.triangle.ast.Vname;
 import com.z0ltan.compilers.triangle.ast.Expression;
 import com.z0ltan.compilers.triangle.ast.IntegerExpression;
+import com.z0ltan.compilers.triangle.ast.CharacterExpression;
+import com.z0ltan.compilers.triangle.ast.LetExpression;
+import com.z0ltan.compilers.triangle.ast.IfExpression;
+import com.z0ltan.compilers.triangle.ast.UnaryExpression;
+import com.z0ltan.compilers.triangle.ast.BinaryExpression;
 import com.z0ltan.compilers.triangle.ast.TypeDenoter;
 import com.z0ltan.compilers.triangle.ast.Identifier;
 import com.z0ltan.compilers.triangle.ast.Operator;
@@ -61,47 +67,175 @@ public class Parser {
   }
 
   Identifier parseIdentifier() {
-    acceptIt();
     SourcePosition idPos = new SourcePosition();
     start(idPos);
     finish(idPos);
     Identifier id = new Identifier(currentToken.spelling, idPos);
+    acceptIt();
 
     return id;
   }
 
   Operator parseOperator() {
-    acceptIt();
     SourcePosition opPos = new SourcePosition();
     start(opPos);
     finish(opPos);
     Operator op = new Operator(currentToken.spelling, opPos);
+    acceptIt();
 
     return op;
   }
 
   IntegerLiteral parseIntegerLiteral() {
-    acceptIt();
     SourcePosition ilPos = new SourcePosition();
     start(ilPos);
     finish(ilPos);
     IntegerLiteral il = new IntegerLiteral(currentToken.spelling, ilPos);
+    acceptIt();
 
     return il;
   }
 
   CharacterLiteral parseCharacterLiteral() {
-    acceptIt();
     SourcePosition chPos = new SourcePosition();
     start(chPos);
     finish(chPos);
     CharacterLiteral ch = new CharacterLiteral(currentToken.spelling, chPos);
+    acceptIt();
 
     return ch;
   }
 
-  Expression parseExpression() {
+  Declaration parseDeclaration() {
     return null;
+  }
+
+  /**
+   * Expression ::= secondaryExpression
+   *             | LetExpression
+   *             | IfExpression
+   */
+  Expression parseExpression() {
+    if (currentToken.kind == TokenType.LET) {
+      return parseLetExpression();
+    } else if (currentToken.kind == TokenType.IF) {
+      return parseIfExpression();
+    } else {
+      return parseSecondaryExpression();
+    }
+  }
+
+  /**
+   * secondaryExpression ::= primaryExpression
+   *                       | primaryExpression Operator secondaryExpression (BinaryExpression)
+   */
+  Expression parseSecondaryExpression() {
+    SourcePosition exprPos = new SourcePosition();
+    start(exprPos);
+    Expression expr = parsePrimaryExpression();
+
+    while (currentToken.kind == TokenType.OPERATOR) {
+      final Operator op = parseOperator();
+      finish(exprPos);
+      final Expression expr1 = parseSecondaryExpression(); 
+      expr = new BinaryExpression(expr, op, expr1, exprPos);
+    }
+
+    return expr;
+  }
+
+  /**
+   * primaryExpression ::= IntegerExpression
+   *                   | CharacterExpression
+   *                   | VnameExpression
+   *                   | CallExpression
+   *                   | UnaryExpression
+   *                   | ParenthesisedExpression
+   *                   | RecordExpression
+   *                   | ArrayExpression
+   *
+   * IntegerExpression ::= IntegerLiteral
+   * CharacterExpression ::= CharacterLiteral
+   * VnameExpression ::= Vname
+   * CallExpression ::= Identifier (ActualParameterSequence)
+   * UnaryExpression ::= Operator Expression
+   */
+  Expression parsePrimaryExpression() {
+    SourcePosition exprPos = new SourcePosition();
+    start(exprPos);
+
+    switch (currentToken.kind) {
+      case INTEGER_LITERAL:
+        {
+          final IntegerLiteral il = parseIntegerLiteral();
+          finish(exprPos);
+
+          return new IntegerExpression(il, exprPos);
+        }
+
+      case CHARACTER_LITERAL:
+        {
+          final CharacterLiteral cl = parseCharacterLiteral();
+          finish(exprPos);
+
+          return new CharacterExpression(cl, exprPos);
+          }
+
+      case OPERATOR:
+        {
+
+        }
+
+      case LEFT_PAREN:
+        {
+
+        }
+
+      case LEFT_BRACKET:
+        {
+
+        }
+
+      case LEFT_CURLY:
+        {
+
+        }
+
+      default:
+        {
+
+        }
+    }
+
+    return null;
+  }
+
+  // LetExpression ::= let Declaration in Expression
+  LetExpression parseLetExpression() {
+    SourcePosition lexprPos = new SourcePosition();
+    start(lexprPos);
+    acceptIt();
+    final Declaration decl = parseDeclaration();
+    accept(TokenType.IN);
+    final Expression expr = parseExpression();
+    finish(lexprPos);
+
+    return new LetExpression(decl, expr, lexprPos);
+  }
+
+  // IfExpression ::= if Expression then Expression else Expression
+  IfExpression parseIfExpression() {
+    SourcePosition iexprPos = new SourcePosition();
+    start(iexprPos);
+    acceptIt();
+    final Expression expr1 = parseExpression();
+    accept(TokenType.THEN);
+    final Expression expr2 = parseExpression();
+    accept(TokenType.ELSE);
+    final Expression expr3 = parseExpression();
+    finish(iexprPos);
+
+    return new IfExpression(expr1, expr2, expr3, iexprPos);
   }
 
   Vname parseVname() {

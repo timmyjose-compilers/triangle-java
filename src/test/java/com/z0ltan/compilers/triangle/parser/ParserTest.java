@@ -89,14 +89,18 @@ public class ParserTest extends TestCase {
     assertEquals(expectedProgram, actualProgram);
   }
 
-  public void xtestHelloDegenerate() {
+  public void testHelloDegenerate() {
     String filename = "samples/hello_degenerate.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
     Program expectedProgram = 
-      new Program(new CallCommand(new Identifier("putint", dummyPosition()), new ActualParameterSequence(dummyPosition()), dummyPosition()), dummyPosition());
+      new Program(new CallCommand(new Identifier("putint", dummyPosition()), 
+                                  new SingleActualParameterSequence(new ConstActualParameter(new IntegerExpression(new IntegerLiteral("42", dummyPosition()), dummyPosition()), 
+                                                                                             dummyPosition()), dummyPosition()), 
+                                  dummyPosition()),
+                  dummyPosition());
     Program actualProgram = parser.parseProgram();
-    //assertEquals(expectedProgram, actualProgram);
+    assertEquals(expectedProgram, actualProgram);
   }
 
   public void testInc() {
