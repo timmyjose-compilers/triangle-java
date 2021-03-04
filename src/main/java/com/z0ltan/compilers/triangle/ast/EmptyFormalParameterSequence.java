@@ -3,14 +3,14 @@ package com.z0ltan.compilers.triangle.ast;
 import java.util.Objects;
 import com.z0ltan.compilers.triangle.scanner.SourcePosition;
 
-public class EmptyActualParameterSequence extends ActualParameterSequence {
-  public EmptyActualParameterSequence(final SourcePosition position) {
+public class EmptyFormalParameterSequence extends FormalParameterSequence {
+  public EmptyFormalParameterSequence(final SourcePosition position) {
     super(position);
   }
 
   @Override
   public boolean equals(Object o) {
-    if (!(o instanceof ActualParameterSequence)) {
+    if (!(o instanceof EmptyFormalParameterSequence)) {
       return false;
     }
 
@@ -24,6 +24,6 @@ public class EmptyActualParameterSequence extends ActualParameterSequence {
 
   @Override
   public String toString() {
-    return "EmptyActualParameterSequence { position = " + this.position + " }";
+    return "EmptyFormalParameterSequence { position = " + this.position + " }";
   }
 }

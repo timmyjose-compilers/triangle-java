@@ -7,8 +7,19 @@ import com.z0ltan.compilers.triangle.scanner.SourcePosition;
 import com.z0ltan.compilers.triangle.ast.Program;
 import com.z0ltan.compilers.triangle.ast.Command;
 import com.z0ltan.compilers.triangle.ast.EmptyCommand;
-import com.z0ltan.compilers.triangle.ast.SequentialCommand;
+import com.z0ltan.compilers.triangle.ast.LetCommand;
+import com.z0ltan.compilers.triangle.ast.WhileCommand;
 import com.z0ltan.compilers.triangle.ast.CallCommand;
+import com.z0ltan.compilers.triangle.ast.SequentialCommand;
+import com.z0ltan.compilers.triangle.ast.FormalParameterSequence;
+import com.z0ltan.compilers.triangle.ast.EmptyFormalParameterSequence;
+import com.z0ltan.compilers.triangle.ast.SingleFormalParameterSequence;
+import com.z0ltan.compilers.triangle.ast.MultipleFormalParameterSequence;
+import com.z0ltan.compilers.triangle.ast.FormalParameter;
+import com.z0ltan.compilers.triangle.ast.ConstFormalParameter;
+import com.z0ltan.compilers.triangle.ast.VarFormalParameter;
+import com.z0ltan.compilers.triangle.ast.ProcFormalParameter;
+import com.z0ltan.compilers.triangle.ast.FuncFormalParameter;
 import com.z0ltan.compilers.triangle.ast.ActualParameterSequence;
 import com.z0ltan.compilers.triangle.ast.EmptyActualParameterSequence;
 import com.z0ltan.compilers.triangle.ast.SingleActualParameterSequence;
@@ -19,15 +30,24 @@ import com.z0ltan.compilers.triangle.ast.VarActualParameter;
 import com.z0ltan.compilers.triangle.ast.ProcActualParameter;
 import com.z0ltan.compilers.triangle.ast.FuncActualParameter;
 import com.z0ltan.compilers.triangle.ast.Declaration;
+import com.z0ltan.compilers.triangle.ast.VarDeclaration;
+import com.z0ltan.compilers.triangle.ast.ConstDeclaration;
+import com.z0ltan.compilers.triangle.ast.ProcDeclaration;
+import com.z0ltan.compilers.triangle.ast.FuncDeclaration;
+import com.z0ltan.compilers.triangle.ast.SequentialDeclaration;
 import com.z0ltan.compilers.triangle.ast.Vname;
+import com.z0ltan.compilers.triangle.ast.SimpleVname;
 import com.z0ltan.compilers.triangle.ast.Expression;
 import com.z0ltan.compilers.triangle.ast.IntegerExpression;
 import com.z0ltan.compilers.triangle.ast.CharacterExpression;
 import com.z0ltan.compilers.triangle.ast.LetExpression;
 import com.z0ltan.compilers.triangle.ast.IfExpression;
+import com.z0ltan.compilers.triangle.ast.CallExpression;
+import com.z0ltan.compilers.triangle.ast.VnameExpression;
 import com.z0ltan.compilers.triangle.ast.UnaryExpression;
 import com.z0ltan.compilers.triangle.ast.BinaryExpression;
 import com.z0ltan.compilers.triangle.ast.TypeDenoter;
+import com.z0ltan.compilers.triangle.ast.SimpleTypeDenoter;
 import com.z0ltan.compilers.triangle.ast.Identifier;
 import com.z0ltan.compilers.triangle.ast.Operator;
 import com.z0ltan.compilers.triangle.ast.CharacterLiteral;
@@ -106,8 +126,92 @@ public class Parser {
     return ch;
   }
 
+  /**
+   * Declaration ::= singleDeclaration
+   *              | Declaration ; singleDeclaration
+   */
   Declaration parseDeclaration() {
-    return null;
+    SourcePosition declPos = new SourcePosition();
+    start(declPos);
+    Declaration decl = parseSingleDeclaration();
+
+    while (currentToken.kind == TokenType.SEMICOLON) {
+      acceptIt();
+      final Declaration decl1 = parseSingleDeclaration();
+      finish(declPos);
+      decl = new SequentialDeclaration(decl, decl1, declPos);
+    }
+
+    return decl;
+  }
+
+  /**
+   * singleDeclaration ::= ConstDeclaration
+   *                    | VarDeclaration
+   *                    | ProcDeclaration
+   *                    | FuncDeclaration
+   *                    | TypeDeclaration
+   */
+  Declaration parseSingleDeclaration() {
+    SourcePosition declPos = new SourcePosition();
+    start(declPos);
+
+    switch (currentToken.kind) {
+      case CONST:
+        {
+          acceptIt();
+          final Identifier id = parseIdentifier();
+          accept(TokenType.IS);
+          final Expression expr = parseExpression();
+          finish(declPos);
+
+          return new ConstDeclaration(id, expr, declPos);
+        }
+
+      case VAR:
+        {
+          acceptIt();
+          final Identifier id = parseIdentifier();
+          accept(TokenType.COLON);
+          final TypeDenoter td = parseTypeDenoter();
+          finish(declPos);
+
+          return new VarDeclaration(id, td, declPos);
+        }
+
+      case PROCEDURE:
+        {
+          acceptIt();
+          final Identifier id = parseIdentifier();
+          accept(TokenType.LEFT_PAREN);
+          final FormalParameterSequence fps = parseFormalParameterSequence();
+          accept(TokenType.RIGHT_PAREN);
+          accept(TokenType.IS);
+          final Command cmd = parseSingleCommand();
+          finish(declPos);
+
+          return new ProcDeclaration(id, fps, cmd, declPos);
+        }
+
+      case FUNCTION:
+        {
+          acceptIt();
+          final Identifier id = parseIdentifier();
+          accept(TokenType.LEFT_PAREN);
+          final FormalParameterSequence fps = parseFormalParameterSequence();
+          accept(TokenType.RIGHT_PAREN);
+          accept(TokenType.COLON);
+          final TypeDenoter td = parseTypeDenoter();
+          accept(TokenType.IS);
+          final Command cmd = parseSingleCommand();
+          finish(declPos);
+
+          return new FuncDeclaration(id, fps, td, cmd, declPos);
+        }
+
+      default:
+        throw new SyntaxError(currentToken.kind + " cannot start a declaration");
+    }
   }
 
   /**
@@ -136,8 +240,8 @@ public class Parser {
 
     while (currentToken.kind == TokenType.OPERATOR) {
       final Operator op = parseOperator();
-      finish(exprPos);
       final Expression expr1 = parseSecondaryExpression(); 
+      finish(exprPos);
       expr = new BinaryExpression(expr, op, expr1, exprPos);
     }
 
@@ -179,7 +283,17 @@ public class Parser {
           finish(exprPos);
 
           return new CharacterExpression(cl, exprPos);
-          }
+        }
+
+      case IDENTIFIER:
+        {
+          final Identifier id = parseIdentifier();
+          accept(TokenType.LEFT_PAREN);
+          final ActualParameterSequence aps = parseActualParameterSequence();
+          accept(TokenType.RIGHT_PAREN);
+          finish(exprPos);
+          return new CallExpression(id, aps, exprPos);
+        }
 
       case OPERATOR:
         {
@@ -238,53 +352,194 @@ public class Parser {
     return new IfExpression(expr1, expr2, expr3, iexprPos);
   }
 
+  /**
+   * Vname ::= SimpleVname
+   *          | DotVname
+   *          | SubscriptVname
+   *
+   * SimpleVname ::= Identifier
+   * DotVname ::= Vname . Identifier
+   * SubscriptVname ::= Vname [Expression]
+   */
   Vname parseVname() {
-    return null;
-  }
+    SourcePosition vnPos = new SourcePosition();
+    start(vnPos);
 
-  TypeDenoter parseTypeDenoter() {
+    final Identifier id = parseIdentifier();
+    // TODO: need to parse the rest of the vname, which may be arbitrarily compelex
+
     return null;
   }
 
   /**
-   * ActualParameterSequence ::= EmptyActualParameterSequence 
-   *                          | MultipleActualParameterSequence
+   * TypeDenoter ::= SimpleTypeDenoter
+   *              | ArrayTypeDenoter
+   *              | RecordTypeDenoter
    */
-  ActualParameterSequence parseActualParameterSequence() {
-    if (currentToken.kind == TokenType.RIGHT_PAREN) {
-      return parseEmptyActualParameterSequence();
-    } else {
-      return parseMultipleActualParameterSequence();
+  TypeDenoter parseTypeDenoter() {
+    SourcePosition tdPos = new SourcePosition();
+    start(tdPos);
+
+    switch (currentToken.kind) {
+      case IDENTIFIER:
+        {
+          final Identifier id = parseIdentifier();
+          finish(tdPos);
+          return new SimpleTypeDenoter(id, tdPos);
+        }
+
+      case ARRAY:
+        {
+
+        }
+
+      case RECORD:
+        {
+
+        }
+
+      default:
+        throw new SyntaxError(currentToken.kind + " cannot start a type denoter");
     }
   }
 
-  // EmptyActualParameterSequence ::= epsilon
-  ActualParameterSequence parseEmptyActualParameterSequence() {
-    SourcePosition eapsPos = new SourcePosition();
-    start(eapsPos);
-    finish(eapsPos);
+  /**
+   * FormalParameterSequence ::= EmptyFormalParameterSequence
+   *                          | properFormalParameterSequence
+   */
+  FormalParameterSequence parseFormalParameterSequence() {
+    if (currentToken.kind == TokenType.RIGHT_PAREN) {
+      SourcePosition fpPos = new SourcePosition();
+      start(fpPos);
+      finish(fpPos);
+      return new EmptyFormalParameterSequence(fpPos);
+    } else {
+      return parseProperFormalParameterSequence();
+    }
+  }
 
-    return new EmptyActualParameterSequence(eapsPos);
+  /**
+   * properFormalParameterSequence ::= SingleFormalParameterSequence
+   *                                | MultipleFormalParameterSequence
+   */
+  FormalParameterSequence parseProperFormalParameterSequence() {
+    SourcePosition fpsPos = new SourcePosition();
+    start(fpsPos);
+
+    FormalParameter fp = parseFormalParameter();
+    if (currentToken.kind == TokenType.COMMA) {
+      acceptIt();
+      FormalParameterSequence fps = parseProperFormalParameterSequence();
+      finish(fpsPos);
+      return new MultipleFormalParameterSequence(fp, fps, fpsPos);
+    } else {
+      finish(fpsPos);
+      return new SingleFormalParameterSequence(fp, fpsPos);
+    }
+  }
+
+  /**
+   * FormalParameter ::= ConstFormalParameter
+   *                  | VarFormalParameter
+   *                  | ProcFormalParameter
+   *                  | FuncFormalParameter
+   *
+   * ConstFormalParameter ::= Identifier : TypeDenoter
+   * VarFormalParameter ::= var Identifier : TypeDenoter
+   * ProcFormalParameter ::= proc Identifier (FPS)
+   * FuncFormalParameter ::= func Identifier (FPS): TypeDenoter
+   */
+   FormalParameter parseFormalParameter() {
+     SourcePosition fpPos = new SourcePosition();
+     start(fpPos);
+
+     switch (currentToken.kind) {
+       case IDENTIFIER:
+         {
+           final Identifier id = parseIdentifier();
+           accept(TokenType.COLON);
+           final TypeDenoter td = parseTypeDenoter();
+           finish(fpPos);
+
+           return new ConstFormalParameter(id, td, fpPos);
+         }
+
+       case VAR:
+         {
+           acceptIt();
+           final Identifier id = parseIdentifier();
+           accept(TokenType.COLON);
+           final TypeDenoter td = parseTypeDenoter();
+           finish(fpPos);
+
+           return new VarFormalParameter(id, td, fpPos);
+         }
+
+       case PROCEDURE:
+         {
+           acceptIt();
+           final Identifier id = parseIdentifier();
+           accept(TokenType.LEFT_PAREN);
+           final FormalParameterSequence fps = parseFormalParameterSequence();
+           accept(TokenType.RIGHT_PAREN);
+           finish(fpPos);
+
+           return new ProcFormalParameter(id, fps, fpPos);
+         }
+
+       case FUNCTION:
+         {
+           acceptIt();
+           final Identifier id = parseIdentifier();
+           accept(TokenType.LEFT_PAREN);
+           final FormalParameterSequence fps = parseFormalParameterSequence();
+           accept(TokenType.RIGHT_PAREN);
+           accept(TokenType.COLON);
+           final TypeDenoter td = parseTypeDenoter();
+           finish(fpPos);
+
+           return new FuncFormalParameter(id, fps, td, fpPos);
+         }
+
+       default:
+         throw new SyntaxError(currentToken.kind + " cannot start a formal parameter");
+     }
+   }
+
+  /**
+   * ActualParameterSequence ::= EmptyActualParameterSequence 
+   *                          | properActualParameterSequence
+   */
+  ActualParameterSequence parseActualParameterSequence() {
+    if (currentToken.kind == TokenType.RIGHT_PAREN) {
+      SourcePosition eapsPos = new SourcePosition();
+      start(eapsPos);
+      finish(eapsPos);
+      return new EmptyActualParameterSequence(eapsPos);
+    } else {
+      return parseProperActualParameterSequence();
+    }
   }
 
   /** 
-   * MultipleActualParameterSequence ::= SingleActualParameterSequence
+   * properActualParameterSequence ::= SingleActualParameterSequence
    *                                | MultipleActualParameterSequence
    *
    * SingleActualParameterSequence ::= ActualParameter
-   * MultipleActualParamaterSequence :: = ActualParameter , ActualParameterSequence
+   * MultipleActualParameterSequence :: = ActualParameter , ActualParameterSequence
    */
-  ActualParameterSequence parseMultipleActualParameterSequence() {
+  ActualParameterSequence parseProperActualParameterSequence() {
     SourcePosition apsPos = new SourcePosition();
     start(apsPos);
 
     ActualParameter ap = parseActualParameter();
     if (currentToken.kind == TokenType.COMMA) {
       acceptIt();
-      ActualParameterSequence aps = parseActualParameterSequence();
+      ActualParameterSequence aps = parseProperActualParameterSequence();
       finish(apsPos);
       return new MultipleActualParameterSequence(ap, aps, apsPos);
     } else {
+      finish(apsPos);
       return new SingleActualParameterSequence(ap, apsPos);
     }
   }
@@ -362,7 +617,6 @@ public class Parser {
   Command parseSingleCommand() {
     SourcePosition cmdPos = new SourcePosition();
     start(cmdPos);
-    Command cmd = null;
 
     switch (currentToken.kind) {
       case IDENTIFIER:
@@ -373,27 +627,53 @@ public class Parser {
             ActualParameterSequence seq = parseActualParameterSequence();
             accept(TokenType.RIGHT_PAREN);
             finish(cmdPos);
-            cmd = new CallCommand(id, seq, cmdPos);
+
+            return new CallCommand(id, seq, cmdPos);
           } else {
             // assigncommand
           }
         }
-        break;
+
+      case LET:
+        {
+          acceptIt();
+          final Declaration decl = parseDeclaration();
+          accept(TokenType.IN);
+          final Command cmd = parseSingleCommand();
+          finish(cmdPos);
+
+          return new LetCommand(decl, cmd, cmdPos);
+        }
+
+      case WHILE:
+        {
+          acceptIt();
+          final Expression expr = parseExpression();
+          accept(TokenType.DO);
+          final Command cmd = parseSingleCommand();
+          finish(cmdPos);
+          return new WhileCommand(expr, cmd, cmdPos);
+        }
+
+      case BEGIN:
+        {
+          acceptIt();
+          final Command cmd = parseSingleCommand();
+          accept(TokenType.END);
+          return cmd;
+        }
 
       case SEMICOLON:
       case EOT:
         {
           acceptIt();
           finish(cmdPos);
-          cmd = new EmptyCommand(cmdPos);
+          return new EmptyCommand(cmdPos);
         }
-        break;
 
       default:
         throw new SyntaxError(currentToken.kind + " cannot start a command");
     }
-
-    return cmd;
   }
 
   // Command ::= single-Command | Command ; single-Command

@@ -215,9 +215,9 @@ A value-or-variable-name identifies a value or a variable.
 ### Syntax
 
 ```
-  V-name ::= Identifier
-          | V-name . Identifier
-          | V-name [Expression]
+  V-name ::= Identifier (SimpleVname)
+          | V-name . Identifier (DotVname)
+          | V-name [Expression] (SubscriptVname)
 ```
 
 ### Semantics
@@ -276,12 +276,12 @@ A declaration is elaborated to produce bindings. The side-effect of elaborating 
 
 ```
   Declaration ::= single-Declaration
-                | single-Declaration ; Declaration
+                | Declaration ; single-Declaration
 
   single-Declaration ::= const Identifier ~ Expression (ConstDeclaration)
                         | var Identifier : Type-Denoter (VarDeclaration)
-                        | proc Identifier (Formal-Parameter-Sequence) ~ single-Command
-                        | func Identifier (Formal-Parameter-Sequence): Type-Denoter ~ Expression
+                        | proc Identifier (Formal-Parameter-Sequence) ~ single-Command (ProcDeclaration)
+                        | func Identifier (Formal-Parameter-Sequence): Type-Denoter ~ Expression (FuncDeclaration)
                         | type Identifier ~ Type-Denoter (TypeDeclaration)
 ```
 
@@ -356,10 +356,10 @@ associated with the actual-parameter-sequence (the argument list), which may be 
   proper-Formal-Parameter-Sequence ::= Formal-Parameter
                                     | Formal-Parameter , proper-Formal-Parameter-Sequence
 
-  Formal-Parameter ::= Identifier : Type-Denoter
-                      | var Identifier : Type-Denoter
-                      | proc Identifier ( Formal-Parameter-Sequence )
-                      | func Identifier ( Formal-Parameter-Sequence ) : Type-Denoter
+  Formal-Parameter ::= Identifier : Type-Denoter (ConstFormalParameter)
+                      | var Identifier : Type-Denoter (VarFormalParameter)
+                      | proc Identifier ( Formal-Parameter-Sequence ) (ProcFormalParameter)
+                      | func Identifier ( Formal-Parameter-Sequence ) : Type-Denoter (FuncFormalParameter)
 
   Actual-Parameter-Sequence ::= epsilon (EmptyParameterSequence)
                               | proper-Actual-Parameter-Sequence (MultipleParameterSequence)

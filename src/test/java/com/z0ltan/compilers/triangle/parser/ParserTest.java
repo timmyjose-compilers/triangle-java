@@ -10,19 +10,32 @@ import com.z0ltan.compilers.triangle.scanner.Scanner;
 import com.z0ltan.compilers.triangle.scanner.SourcePosition;
 import com.z0ltan.compilers.triangle.parser.Parser;
 import com.z0ltan.compilers.triangle.ast.Program;
-import com.z0ltan.compilers.triangle.ast.Command;
 import com.z0ltan.compilers.triangle.ast.EmptyCommand;
+import com.z0ltan.compilers.triangle.ast.LetCommand;
 import com.z0ltan.compilers.triangle.ast.CallCommand;
-import com.z0ltan.compilers.triangle.ast.Expression;
+import com.z0ltan.compilers.triangle.ast.WhileCommand;
+import com.z0ltan.compilers.triangle.ast.SequentialCommand;
 import com.z0ltan.compilers.triangle.ast.IntegerExpression;
-import com.z0ltan.compilers.triangle.ast.ActualParameterSequence;
+import com.z0ltan.compilers.triangle.ast.CharacterExpression;
+import com.z0ltan.compilers.triangle.ast.LetExpression;
+import com.z0ltan.compilers.triangle.ast.IfExpression;
+import com.z0ltan.compilers.triangle.ast.CallExpression;
+import com.z0ltan.compilers.triangle.ast.VnameExpression;
+import com.z0ltan.compilers.triangle.ast.UnaryExpression;
+import com.z0ltan.compilers.triangle.ast.BinaryExpression;
+import com.z0ltan.compilers.triangle.ast.EmptyFormalParameterSequence;
+import com.z0ltan.compilers.triangle.ast.EmptyActualParameterSequence;
 import com.z0ltan.compilers.triangle.ast.SingleActualParameterSequence;
 import com.z0ltan.compilers.triangle.ast.MultipleActualParameterSequence;
-import com.z0ltan.compilers.triangle.ast.ActualParameter;
 import com.z0ltan.compilers.triangle.ast.ConstActualParameter;
 import com.z0ltan.compilers.triangle.ast.VarActualParameter;
 import com.z0ltan.compilers.triangle.ast.ProcActualParameter;
 import com.z0ltan.compilers.triangle.ast.FuncActualParameter;
+import com.z0ltan.compilers.triangle.ast.VarDeclaration;
+import com.z0ltan.compilers.triangle.ast.ProcDeclaration;
+import com.z0ltan.compilers.triangle.ast.SequentialDeclaration;
+import com.z0ltan.compilers.triangle.ast.SimpleTypeDenoter;
+import com.z0ltan.compilers.triangle.ast.SimpleVname;
 import com.z0ltan.compilers.triangle.ast.Identifier;
 import com.z0ltan.compilers.triangle.ast.Operator;
 import com.z0ltan.compilers.triangle.ast.IntegerLiteral;
@@ -81,10 +94,10 @@ public class ParserTest extends TestCase {
     Parser parser = new Parser(scanner);
     Program expectedProgram = 
       new Program(new CallCommand(new Identifier("putint", dummyPosition()), 
-                                  new SingleActualParameterSequence(new ConstActualParameter(new IntegerExpression(new IntegerLiteral("42", dummyPosition()), dummyPosition()), 
-                                                                                             dummyPosition()), dummyPosition()), 
-                                  dummyPosition()),
-                  dummyPosition());
+            new SingleActualParameterSequence(new ConstActualParameter(new IntegerExpression(new IntegerLiteral("42", dummyPosition()), dummyPosition()), 
+                dummyPosition()), dummyPosition()), 
+            dummyPosition()),
+          dummyPosition());
     Program actualProgram = parser.parseProgram();
     assertEquals(expectedProgram, actualProgram);
   }
@@ -95,10 +108,10 @@ public class ParserTest extends TestCase {
     Parser parser = new Parser(scanner);
     Program expectedProgram = 
       new Program(new CallCommand(new Identifier("putint", dummyPosition()), 
-                                  new SingleActualParameterSequence(new ConstActualParameter(new IntegerExpression(new IntegerLiteral("42", dummyPosition()), dummyPosition()), 
-                                                                                             dummyPosition()), dummyPosition()), 
-                                  dummyPosition()),
-                  dummyPosition());
+            new SingleActualParameterSequence(new ConstActualParameter(new IntegerExpression(new IntegerLiteral("42", dummyPosition()), dummyPosition()), 
+                dummyPosition()), dummyPosition()), 
+            dummyPosition()),
+          dummyPosition());
     Program actualProgram = parser.parseProgram();
     assertEquals(expectedProgram, actualProgram);
   }
@@ -113,10 +126,37 @@ public class ParserTest extends TestCase {
 
   }
 
-
   public void testEcho() {
     String filename = "samples/echo.t";
-
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = 
+      new Program(
+          new LetCommand(
+            new SequentialDeclaration(
+              new VarDeclaration(new Identifier("ch", dummyPosition()), new SimpleTypeDenoter(new Identifier("Char", dummyPosition()), dummyPosition()), dummyPosition()),
+              new ProcDeclaration(new Identifier("echo", dummyPosition()), new EmptyFormalParameterSequence(dummyPosition()),
+                new WhileCommand(new UnaryExpression(new Operator("\\", dummyPosition()), 
+                    new CallExpression(new Identifier("eol", dummyPosition()), new EmptyActualParameterSequence(dummyPosition()), dummyPosition()),
+                    dummyPosition()),
+                  new SequentialCommand(
+                    new CallCommand(new Identifier("get", dummyPosition()), new SingleActualParameterSequence(
+                        new VarActualParameter(new SimpleVname(new Identifier("ch", dummyPosition()), dummyPosition()), dummyPosition()),
+                        dummyPosition()), dummyPosition()),
+                    new CallCommand(
+                      new Identifier("put", dummyPosition()),
+                      new SingleActualParameterSequence(
+                        new ConstActualParameter(
+                          new VnameExpression(
+                            new SimpleVname(new Identifier("ch", dummyPosition()), dummyPosition()), dummyPosition()), dummyPosition())
+                        ,dummyPosition())
+                      ,dummyPosition()) 
+                    ,dummyPosition()), dummyPosition()), 
+                dummyPosition()), dummyPosition()), 
+                new CallCommand(new Identifier("echo", dummyPosition()), new EmptyActualParameterSequence(dummyPosition()), dummyPosition()), dummyPosition()),
+           dummyPosition());
+    Program actualProgram = parser.parseProgram();
+    assertEquals(expectedProgram, actualProgram);
   }
 
   public void testEchoDegenerate() {
