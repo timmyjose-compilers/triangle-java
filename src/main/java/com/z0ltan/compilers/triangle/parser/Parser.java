@@ -7,6 +7,7 @@ import com.z0ltan.compilers.triangle.scanner.SourcePosition;
 import com.z0ltan.compilers.triangle.ast.Program;
 import com.z0ltan.compilers.triangle.ast.Command;
 import com.z0ltan.compilers.triangle.ast.EmptyCommand;
+import com.z0ltan.compilers.triangle.ast.AssignCommand;
 import com.z0ltan.compilers.triangle.ast.LetCommand;
 import com.z0ltan.compilers.triangle.ast.IfCommand;
 import com.z0ltan.compilers.triangle.ast.WhileCommand;
@@ -369,14 +370,17 @@ public class Parser {
    * DotVname ::= Vname . Identifier
    * SubscriptVname ::= Vname [Expression]
    */
-  Vname parseVname() {
+  Vname parseVname(Identifier id) {
     SourcePosition vnPos = new SourcePosition();
     start(vnPos);
 
     SourcePosition idPos = new SourcePosition();
-    start(idPos);
-    final Identifier id = parseIdentifier();
-    finish(idPos);
+    if (id == null) {
+      start(idPos);
+      id = parseIdentifier();
+      finish(idPos);
+    }
+
     Vname vname = new SimpleVname(id, idPos);
 
     while (currentToken.kind == TokenType.DOT || currentToken.kind == TokenType.LEFT_BRACKET) {
@@ -588,7 +592,7 @@ public class Parser {
       case VAR:
         {
           acceptIt();
-          final Vname vname = parseVname();
+          final Vname vname = parseVname(null);
           finish(apPos);
 
           return new VarActualParameter(vname, apPos);
@@ -653,7 +657,11 @@ public class Parser {
             finish(cmdPos);
             return new CallCommand(id, seq, cmdPos);
           } else {
-            // assigncommand
+            final Vname vname = parseVname(id);
+            accept(TokenType.BECOMES);
+            final Expression expr = parseExpression();
+            finish(cmdPos);
+            return new AssignCommand(vname, expr, cmdPos);
           }
         }
 
