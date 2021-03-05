@@ -161,7 +161,35 @@ public class ParserTest extends TestCase {
 
   public void testEchoDegenerate() {
     String filename = "samples/echo_degenerate.t";
-
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = 
+      new Program(
+          new LetCommand(
+            new SequentialDeclaration(
+              new VarDeclaration(new Identifier("ch", dummyPosition()), new SimpleTypeDenoter(new Identifier("Char", dummyPosition()), dummyPosition()), dummyPosition()),
+              new ProcDeclaration(new Identifier("echo", dummyPosition()), new EmptyFormalParameterSequence(dummyPosition()),
+                new WhileCommand(new UnaryExpression(new Operator("\\", dummyPosition()), 
+                    new CallExpression(new Identifier("eol", dummyPosition()), new EmptyActualParameterSequence(dummyPosition()), dummyPosition()),
+                    dummyPosition()),
+                  new SequentialCommand(
+                    new CallCommand(new Identifier("get", dummyPosition()), new SingleActualParameterSequence(
+                        new VarActualParameter(new SimpleVname(new Identifier("ch", dummyPosition()), dummyPosition()), dummyPosition()),
+                        dummyPosition()), dummyPosition()),
+                    new CallCommand(
+                      new Identifier("put", dummyPosition()),
+                      new SingleActualParameterSequence(
+                        new ConstActualParameter(
+                          new VnameExpression(
+                            new SimpleVname(new Identifier("ch", dummyPosition()), dummyPosition()), dummyPosition()), dummyPosition())
+                        ,dummyPosition())
+                      ,dummyPosition()) 
+                    ,dummyPosition()), dummyPosition()), 
+                dummyPosition()), dummyPosition()), 
+                new CallCommand(new Identifier("echo", dummyPosition()), new EmptyActualParameterSequence(dummyPosition()), dummyPosition()), dummyPosition()),
+           dummyPosition());
+    Program actualProgram = parser.parseProgram();
+    assertEquals(expectedProgram, actualProgram);
   }
 
   public void testOdd() {

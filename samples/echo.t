@@ -7,7 +7,7 @@ let
         begin
           get(var ch);
           put(ch)
-        end;
+        end
     end
 in
   echo()

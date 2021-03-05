@@ -12,7 +12,7 @@ let
         begin
           get(var ch); ! read character
           put(ch) ! display character
-        end;
+        end
     end
 ! the let block
 ! needs an in clause

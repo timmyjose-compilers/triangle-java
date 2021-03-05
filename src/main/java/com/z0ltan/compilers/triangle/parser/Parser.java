@@ -37,6 +37,8 @@ import com.z0ltan.compilers.triangle.ast.FuncDeclaration;
 import com.z0ltan.compilers.triangle.ast.SequentialDeclaration;
 import com.z0ltan.compilers.triangle.ast.Vname;
 import com.z0ltan.compilers.triangle.ast.SimpleVname;
+import com.z0ltan.compilers.triangle.ast.DotVname;
+import com.z0ltan.compilers.triangle.ast.SubscriptVname;
 import com.z0ltan.compilers.triangle.ast.Expression;
 import com.z0ltan.compilers.triangle.ast.IntegerExpression;
 import com.z0ltan.compilers.triangle.ast.CharacterExpression;
@@ -273,7 +275,6 @@ public class Parser {
         {
           final IntegerLiteral il = parseIntegerLiteral();
           finish(exprPos);
-
           return new IntegerExpression(il, exprPos);
         }
 
@@ -281,23 +282,31 @@ public class Parser {
         {
           final CharacterLiteral cl = parseCharacterLiteral();
           finish(exprPos);
-
           return new CharacterExpression(cl, exprPos);
         }
 
       case IDENTIFIER:
         {
           final Identifier id = parseIdentifier();
-          accept(TokenType.LEFT_PAREN);
-          final ActualParameterSequence aps = parseActualParameterSequence();
-          accept(TokenType.RIGHT_PAREN);
-          finish(exprPos);
-          return new CallExpression(id, aps, exprPos);
+          if (currentToken.kind == TokenType.LEFT_PAREN) {
+            accept(TokenType.LEFT_PAREN);
+            final ActualParameterSequence aps = parseActualParameterSequence();
+            accept(TokenType.RIGHT_PAREN);
+            finish(exprPos);
+            return new CallExpression(id, aps, exprPos);
+          } else {
+            finish(exprPos);
+            final Vname vname = new SimpleVname(id, exprPos);
+            return new VnameExpression(vname, exprPos);
+          }
         }
 
       case OPERATOR:
         {
-
+          final Operator op = parseOperator();
+          final Expression expr1 = parsePrimaryExpression();
+          finish(exprPos);
+          return new UnaryExpression(op, expr1, exprPos);
         }
 
       case LEFT_PAREN:
@@ -316,12 +325,8 @@ public class Parser {
         }
 
       default:
-        {
-
-        }
+        throw new SyntaxError(currentToken.kind + " cannot form an expression");
     }
-
-    return null;
   }
 
   // LetExpression ::= let Declaration in Expression
@@ -365,10 +370,27 @@ public class Parser {
     SourcePosition vnPos = new SourcePosition();
     start(vnPos);
 
+    SourcePosition idPos = new SourcePosition();
+    start(idPos);
     final Identifier id = parseIdentifier();
-    // TODO: need to parse the rest of the vname, which may be arbitrarily compelex
+    finish(idPos);
+    Vname vname = new SimpleVname(id, idPos);
 
-    return null;
+    while (currentToken.kind == TokenType.DOT || currentToken.kind == TokenType.LEFT_BRACKET) {
+      if (currentToken.kind == TokenType.DOT) {
+        acceptIt();
+        final Identifier id1 = parseIdentifier();
+        finish(vnPos);
+        vname = new DotVname(vname, id1, vnPos);
+      } else {
+        acceptIt();
+        final Expression expr = parseExpression();
+        finish(vnPos);
+        vname = new SubscriptVname(vname, expr, vnPos);
+      }
+    }
+
+    return vname;
   }
 
   /**
@@ -599,7 +621,6 @@ public class Parser {
         {
           final Expression expr = parseExpression();
           finish(apPos);
-
           return new ConstActualParameter(expr, apPos);
         }
     }
@@ -627,7 +648,6 @@ public class Parser {
             ActualParameterSequence seq = parseActualParameterSequence();
             accept(TokenType.RIGHT_PAREN);
             finish(cmdPos);
-
             return new CallCommand(id, seq, cmdPos);
           } else {
             // assigncommand
@@ -658,7 +678,7 @@ public class Parser {
       case BEGIN:
         {
           acceptIt();
-          final Command cmd = parseSingleCommand();
+          final Command cmd = parseCommand();
           accept(TokenType.END);
           return cmd;
         }
@@ -681,7 +701,7 @@ public class Parser {
     SourcePosition cmdPos = new SourcePosition();
     start(cmdPos);
     Command cmd1 = parseSingleCommand();
-    while (currentToken.kind == TokenType.COMMA) {
+    while (currentToken.kind == TokenType.SEMICOLON) {
       acceptIt();
       final Command cmd2 = parseSingleCommand();
       finish(cmdPos);
