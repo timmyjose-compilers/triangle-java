@@ -36,6 +36,7 @@ import com.z0ltan.compilers.triangle.ast.VarDeclaration;
 import com.z0ltan.compilers.triangle.ast.ConstDeclaration;
 import com.z0ltan.compilers.triangle.ast.ProcDeclaration;
 import com.z0ltan.compilers.triangle.ast.FuncDeclaration;
+import com.z0ltan.compilers.triangle.ast.TypeDeclaration;
 import com.z0ltan.compilers.triangle.ast.SequentialDeclaration;
 import com.z0ltan.compilers.triangle.ast.Vname;
 import com.z0ltan.compilers.triangle.ast.SimpleVname;
@@ -52,6 +53,11 @@ import com.z0ltan.compilers.triangle.ast.UnaryExpression;
 import com.z0ltan.compilers.triangle.ast.BinaryExpression;
 import com.z0ltan.compilers.triangle.ast.TypeDenoter;
 import com.z0ltan.compilers.triangle.ast.SimpleTypeDenoter;
+import com.z0ltan.compilers.triangle.ast.ArrayTypeDenoter;
+import com.z0ltan.compilers.triangle.ast.RecordTypeDenoter;
+import com.z0ltan.compilers.triangle.ast.FieldTypeDenoter;
+import com.z0ltan.compilers.triangle.ast.SingleFieldTypeDenoter;
+import com.z0ltan.compilers.triangle.ast.MultipleFieldTypeDenoter;
 import com.z0ltan.compilers.triangle.ast.Identifier;
 import com.z0ltan.compilers.triangle.ast.Operator;
 import com.z0ltan.compilers.triangle.ast.CharacterLiteral;
@@ -212,6 +218,16 @@ public class Parser {
           return new FuncDeclaration(id, fps, td, expr, declPos);
         }
 
+      case TYPE:
+        {
+          acceptIt();
+          final Identifier id = parseIdentifier();
+          accept(TokenType.IS);
+          final TypeDenoter td = parseTypeDenoter();
+          finish(declPos);
+          return new TypeDeclaration(id, td, declPos);
+        }
+
       default:
         throw new SyntaxError(currentToken.kind + " cannot start a declaration");
     }
@@ -326,6 +342,7 @@ public class Parser {
       case LEFT_CURLY:
         {
 
+
         }
 
       default:
@@ -404,6 +421,11 @@ public class Parser {
    * TypeDenoter ::= SimpleTypeDenoter
    *              | ArrayTypeDenoter
    *              | RecordTypeDenoter
+   *
+   * SimpleTypeDenoter ::=  Identifier
+   * ArrayTypeDenoter ::= array IntegerLiteral of TypeDenoter
+   * RecordTypeDenoter ::= Identifier : TypeDenoter
+   *                    | Identifier : TypeDenoter , RecordTypeDenoter
    */
   TypeDenoter parseTypeDenoter() {
     SourcePosition tdPos = new SourcePosition();
@@ -419,16 +441,48 @@ public class Parser {
 
       case ARRAY:
         {
-
+          acceptIt();
+          final IntegerLiteral il = parseIntegerLiteral();
+          accept(TokenType.OF);
+          final TypeDenoter td = parseTypeDenoter();
+          finish(tdPos);
+          return new ArrayTypeDenoter(il, td, tdPos);
         }
 
       case RECORD:
         {
-
+          acceptIt();
+          final FieldTypeDenoter ftd = parseFieldTypeDenoter();
+          accept(TokenType.END);
+          finish(tdPos);
+          return new RecordTypeDenoter(ftd, tdPos);
         }
 
       default:
         throw new SyntaxError(currentToken.kind + " cannot start a type denoter");
+    }
+  }
+
+  /**
+   * FieldTypeDenoter ::= SingleFieldTypeDenoter | MultipleFieldTypeDenoter
+   * SingleFieldTypeDenoter ::= Identifier : TypeDenoter
+   * MultipleFieldTypeDenoter ::= Identifier : TypeDenoter , RecordTypeDenoter
+   */
+  FieldTypeDenoter parseFieldTypeDenoter() {
+    SourcePosition ftdPos = new SourcePosition();
+    start(ftdPos);
+    final Identifier id = parseIdentifier();
+    accept(TokenType.COLON);
+    final TypeDenoter td = parseTypeDenoter();
+
+    if (currentToken.kind == TokenType.COMMA) {
+      acceptIt();
+      final FieldTypeDenoter ftd1 = parseFieldTypeDenoter();
+      finish(ftdPos);
+      return new MultipleFieldTypeDenoter(id, td, ftd1, ftdPos);
+    } else {
+      finish(ftdPos);
+      return new SingleFieldTypeDenoter(id, td, ftdPos);
     }
   }
 

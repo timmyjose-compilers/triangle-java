@@ -2171,9 +2171,9 @@ public class ParserTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
     Program expectedProgram = null;
-    //Program actualProgram = parser.parseProgram();
-    //assertEquals(expectedProgram, actualProgram);
-
+    Program actualProgram = parser.parseProgram();
+    //System.out.println();
+    assertEquals(expectedProgram, actualProgram);
   }
 
   public void testRecordDegenerate() {

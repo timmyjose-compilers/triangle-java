@@ -464,7 +464,7 @@ A record-type-denoter denotes the structure of a record type.
 ```
   Type-Denoter ::= Identifier (SimpleTypeDenoter)      
                 | array Integer_Literal of Type-Denoter (ArrayTypeDenoter)
-                | record Record-Type-Denoter end
+                | record Record-Type-Denoter end (RecordTypeDenoter)
 
   Record-Type-Denoter ::= Identifier : Type-Denoter
                         | Identifier : Type-Denoter , Record-Type-Denoter
