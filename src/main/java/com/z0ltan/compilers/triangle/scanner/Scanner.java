@@ -192,13 +192,49 @@ public class Scanner {
       case '+' :
       case '-':
       case '*':
-      case '/':
       case '=':
+        {
+          eatIt();
+          kind = TokenType.OPERATOR;
+        }
+        break;
+
       case '<':
+        {
+          eatIt();
+          if (currentChar.c == '=') {
+            eatIt();
+          }
+          kind = TokenType.OPERATOR;
+        }
+        break;
+
       case '>':
+        {
+          eatIt();
+          if (currentChar.c == '=') {
+            eatIt();
+          }
+          kind = TokenType.OPERATOR;
+        }
+        break;
+
+      case '/':
+        {
+          eatIt();
+          if (currentChar.c == '/' || currentChar.c == '\\') {
+            eatIt();
+          }
+          kind = TokenType.OPERATOR;
+        }
+        break;
+
       case '\\':
         {
           eatIt();
+          if (currentChar.c == '=' || currentChar.c == '/') {
+            eatIt();
+          }
           kind = TokenType.OPERATOR;
         }
         break;
