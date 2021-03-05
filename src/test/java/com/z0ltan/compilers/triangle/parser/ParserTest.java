@@ -1599,154 +1599,852 @@ public class ParserTest extends TestCase {
 
   public void testFactorial() {
     String filename = "samples/factorial.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram =
+      new Program(
+          new LetCommand(
+            new SequentialDeclaration(
+              new SequentialDeclaration(
+                new VarDeclaration(
+                  new Identifier(
+                    "n",
+                    dummyPosition()
+                    ),
+                  new SimpleTypeDenoter(
+                    new Identifier(
+                      "Integer",
+                      dummyPosition()
+                      ),
+                    dummyPosition()
+                    ),
+                  dummyPosition()
+                  ),
+                new FuncDeclaration(
+                  new Identifier(
+                    "factorial",
+                    dummyPosition()
+                    ),
+                  new SingleFormalParameterSequence(
+                    new ConstFormalParameter(
+                      new Identifier(
+                        "n",
+                        dummyPosition()
+                        ),
+                      new SimpleTypeDenoter(
+                        new Identifier(
+                          "Integer",
+                          dummyPosition()
+                          ),
+                        dummyPosition()
+                        ),
+                      dummyPosition()
+                      ),
+                    dummyPosition()
+                    ),
+                  new SimpleTypeDenoter(
+                      new Identifier(
+                        "Integer",
+                        dummyPosition()
+                        ),
+                      dummyPosition()
+                      ),
+                  new IfExpression(
+                      new BinaryExpression(
+                        new VnameExpression(
+                          new SimpleVname(
+                            new Identifier(
+                              "n",
+                              dummyPosition()
+                              ),
+                            dummyPosition()
+                            ),
+                          dummyPosition()
+                          ),
+                        new Operator(
+                          "<=",
+                          dummyPosition()
+                          ),
+                        new IntegerExpression(
+                          new IntegerLiteral(
+                            "0",
+                            dummyPosition()
+                            ),
+                          dummyPosition()
+                          ),
+                        dummyPosition()
+                          ),
+                        new IntegerExpression(
+                            new IntegerLiteral(
+                              "1",
+                              dummyPosition()
+                              ),
+                            dummyPosition()
+                            ),
+                        new BinaryExpression(
+                            new VnameExpression(
+                              new SimpleVname(
+                                new Identifier(
+                                  "n",
+                                  dummyPosition()
+                                  ),
+                                dummyPosition()
+                                ),
+                              dummyPosition()
+                              ),
+                            new Operator(
+                              "*",
+                              dummyPosition()
+                              ),
+                            new CallExpression(
+                              new Identifier(
+                                "factorial",
+                                dummyPosition()
+                                ),
+                              new SingleActualParameterSequence(
+                                new ConstActualParameter(
+                                  new BinaryExpression(
+                                    new VnameExpression(
+                                      new SimpleVname(
+                                        new Identifier(
+                                          "n",
+                                          dummyPosition()
+                                          ),
+                                        dummyPosition()
+                                        ),
+                                      dummyPosition()
+                                      ),
+                                    new Operator(
+                                      "-",
+                                      dummyPosition()
+                                      ),
+                                    new IntegerExpression(
+                                      new IntegerLiteral(
+                                        "1",
+                                        dummyPosition()
+                                        ),
+                                      dummyPosition()
+                                      ),
+                                    dummyPosition()
+                                      ),
+                                    dummyPosition()
+                                      ),
+                                    dummyPosition()
+                                      ),
+                                    dummyPosition()
+                                      ),
+                                    dummyPosition()
+                                      ),
+                                    dummyPosition()
+                                      ),
+                                    dummyPosition()
+                                      ),
+                                    dummyPosition()
+                                      ),
+                                    new ProcDeclaration(
+                                        new Identifier(
+                                          "readnumber",
+                                          dummyPosition()
+                                          ),
+                                        new SingleFormalParameterSequence(
+                                          new VarFormalParameter(
+                                            new Identifier(
+                                              "n",
+                                              dummyPosition()
+                                              ),
+                                            new SimpleTypeDenoter(
+                                              new Identifier(
+                                                "Integer",
+                                                dummyPosition()
+                                                ),
+                                              dummyPosition()
+                                              ),
+                                            dummyPosition()
+                                            ),
+                                          dummyPosition()
+                                          ),
+                                        new CallCommand(
+                                            new Identifier(
+                                              "getint",
+                                              dummyPosition()
+                                              ),
+                                            new SingleActualParameterSequence(
+                                              new VarActualParameter(
+                                                new SimpleVname(
+                                                  new Identifier(
+                                                    "n",
+                                                    dummyPosition()
+                                                    ),
+                                                  dummyPosition()
+                                                  ),
+                                                dummyPosition()
+                                                ),
+                                              dummyPosition()
+                                              ),
+                                            dummyPosition()
+                                            ),
+                                        dummyPosition()
+                                          ),
+                                        dummyPosition()
+                                          ),
+                                        new SequentialCommand(
+                                            new SequentialCommand(
+                                              new SequentialCommand(
+                                                new CallCommand(
+                                                  new Identifier(
+                                                    "readnumber",
+                                                    dummyPosition()
+                                                    ),
+                                                  new SingleActualParameterSequence(
+                                                    new VarActualParameter(
+                                                      new SimpleVname(
+                                                        new Identifier(
+                                                          "n",
+                                                          dummyPosition()
+                                                          ),
+                                                        dummyPosition()
+                                                        ),
+                                                      dummyPosition()
+                                                      ),
+                                                    dummyPosition()
+                                                    ),
+                                                  dummyPosition()
+                                                  ),
+                                        new CallCommand(
+                                            new Identifier(
+                                              "puteol",
+                                              dummyPosition()
+                                              ),
+                                            new EmptyActualParameterSequence(
+                                              dummyPosition()
+                                              ),
+                                            dummyPosition()
+                                            ),
+                                        dummyPosition()
+                                          ),
+                                        new CallCommand(
+                                            new Identifier(
+                                              "puteol",
+                                              dummyPosition()
+                                              ),
+                                            new EmptyActualParameterSequence(
+                                              dummyPosition()
+                                              ),
+                                            dummyPosition()
+                                            ),
+                                        dummyPosition()
+                                          ),
+                                        new CallCommand(
+                                            new Identifier(
+                                              "putint",
+                                              dummyPosition()
+                                              ),
+                                            new SingleActualParameterSequence(
+                                              new ConstActualParameter(
+                                                new CallExpression(
+                                                  new Identifier(
+                                                    "factorial",
+                                                    dummyPosition()
+                                                    ),
+                                                  new SingleActualParameterSequence(
+                                                    new ConstActualParameter(
+                                                      new VnameExpression(
+                                                        new SimpleVname(
+                                                          new Identifier(
+                                                            "n",
+                                                            dummyPosition()
+                                                            ),
+                                                          dummyPosition()
+                                                          ),
+                                                        dummyPosition()
+                                                        ),
+                                                      dummyPosition()
+                                                      ),
+                                                    dummyPosition()
+                                                    ),
+                                                  dummyPosition()
+                                                    ),
+                                                  dummyPosition()
+                                                    ),
+                                                  dummyPosition()
+                                                    ),
+                                                  dummyPosition()
+                                                    ),
+                                                  dummyPosition()
+                                                    ),
+                                                  dummyPosition()
+                                                    ),
+                                                  dummyPosition()
+                                                    );
 
+    Program actualProgram = parser.parseProgram();
+    assertEquals(expectedProgram, actualProgram);
   }
 
   public void testFactorialDegenerate() {
     String filename = "samples/factorial_degenerate.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram =
+      new Program(
+          new LetCommand(
+            new SequentialDeclaration(
+              new SequentialDeclaration(
+                new VarDeclaration(
+                  new Identifier(
+                    "n",
+                    dummyPosition()
+                    ),
+                  new SimpleTypeDenoter(
+                    new Identifier(
+                      "Integer",
+                      dummyPosition()
+                      ),
+                    dummyPosition()
+                    ),
+                  dummyPosition()
+                  ),
+                new FuncDeclaration(
+                  new Identifier(
+                    "factorial",
+                    dummyPosition()
+                    ),
+                  new SingleFormalParameterSequence(
+                    new ConstFormalParameter(
+                      new Identifier(
+                        "n",
+                        dummyPosition()
+                        ),
+                      new SimpleTypeDenoter(
+                        new Identifier(
+                          "Integer",
+                          dummyPosition()
+                          ),
+                        dummyPosition()
+                        ),
+                      dummyPosition()
+                      ),
+                    dummyPosition()
+                    ),
+                  new SimpleTypeDenoter(
+                      new Identifier(
+                        "Integer",
+                        dummyPosition()
+                        ),
+                      dummyPosition()
+                      ),
+                  new IfExpression(
+                      new BinaryExpression(
+                        new VnameExpression(
+                          new SimpleVname(
+                            new Identifier(
+                              "n",
+                              dummyPosition()
+                              ),
+                            dummyPosition()
+                            ),
+                          dummyPosition()
+                          ),
+                        new Operator(
+                          "<=",
+                          dummyPosition()
+                          ),
+                        new IntegerExpression(
+                          new IntegerLiteral(
+                            "0",
+                            dummyPosition()
+                            ),
+                          dummyPosition()
+                          ),
+                        dummyPosition()
+                          ),
+                        new IntegerExpression(
+                            new IntegerLiteral(
+                              "1",
+                              dummyPosition()
+                              ),
+                            dummyPosition()
+                            ),
+                        new BinaryExpression(
+                            new VnameExpression(
+                              new SimpleVname(
+                                new Identifier(
+                                  "n",
+                                  dummyPosition()
+                                  ),
+                                dummyPosition()
+                                ),
+                              dummyPosition()
+                              ),
+                            new Operator(
+                              "*",
+                              dummyPosition()
+                              ),
+                            new CallExpression(
+                              new Identifier(
+                                "factorial",
+                                dummyPosition()
+                                ),
+                              new SingleActualParameterSequence(
+                                new ConstActualParameter(
+                                  new BinaryExpression(
+                                    new VnameExpression(
+                                      new SimpleVname(
+                                        new Identifier(
+                                          "n",
+                                          dummyPosition()
+                                          ),
+                                        dummyPosition()
+                                        ),
+                                      dummyPosition()
+                                      ),
+                                    new Operator(
+                                      "-",
+                                      dummyPosition()
+                                      ),
+                                    new IntegerExpression(
+                                      new IntegerLiteral(
+                                        "1",
+                                        dummyPosition()
+                                        ),
+                                      dummyPosition()
+                                      ),
+                                    dummyPosition()
+                                      ),
+                                    dummyPosition()
+                                      ),
+                                    dummyPosition()
+                                      ),
+                                    dummyPosition()
+                                      ),
+                                    dummyPosition()
+                                      ),
+                                    dummyPosition()
+                                      ),
+                                    dummyPosition()
+                                      ),
+                                    dummyPosition()
+                                      ),
+                                    new ProcDeclaration(
+                                        new Identifier(
+                                          "readnumber",
+                                          dummyPosition()
+                                          ),
+                                        new SingleFormalParameterSequence(
+                                          new VarFormalParameter(
+                                            new Identifier(
+                                              "n",
+                                              dummyPosition()
+                                              ),
+                                            new SimpleTypeDenoter(
+                                              new Identifier(
+                                                "Integer",
+                                                dummyPosition()
+                                                ),
+                                              dummyPosition()
+                                              ),
+                                            dummyPosition()
+                                            ),
+                                          dummyPosition()
+                                          ),
+                                        new CallCommand(
+                                            new Identifier(
+                                              "getint",
+                                              dummyPosition()
+                                              ),
+                                            new SingleActualParameterSequence(
+                                              new VarActualParameter(
+                                                new SimpleVname(
+                                                  new Identifier(
+                                                    "n",
+                                                    dummyPosition()
+                                                    ),
+                                                  dummyPosition()
+                                                  ),
+                                                dummyPosition()
+                                                ),
+                                              dummyPosition()
+                                              ),
+                                            dummyPosition()
+                                            ),
+                                        dummyPosition()
+                                          ),
+                                        dummyPosition()
+                                          ),
+                                        new SequentialCommand(
+                                            new SequentialCommand(
+                                              new SequentialCommand(
+                                                new CallCommand(
+                                                  new Identifier(
+                                                    "readnumber",
+                                                    dummyPosition()
+                                                    ),
+                                                  new SingleActualParameterSequence(
+                                                    new VarActualParameter(
+                                                      new SimpleVname(
+                                                        new Identifier(
+                                                          "n",
+                                                          dummyPosition()
+                                                          ),
+                                                        dummyPosition()
+                                                        ),
+                                                      dummyPosition()
+                                                      ),
+                                                    dummyPosition()
+                                                    ),
+                                                  dummyPosition()
+                                                  ),
+                                        new CallCommand(
+                                            new Identifier(
+                                              "puteol",
+                                              dummyPosition()
+                                              ),
+                                            new EmptyActualParameterSequence(
+                                              dummyPosition()
+                                              ),
+                                            dummyPosition()
+                                            ),
+                                        dummyPosition()
+                                          ),
+                                        new CallCommand(
+                                            new Identifier(
+                                              "puteol",
+                                              dummyPosition()
+                                              ),
+                                            new EmptyActualParameterSequence(
+                                              dummyPosition()
+                                              ),
+                                            dummyPosition()
+                                            ),
+                                        dummyPosition()
+                                          ),
+                                        new CallCommand(
+                                            new Identifier(
+                                              "putint",
+                                              dummyPosition()
+                                              ),
+                                            new SingleActualParameterSequence(
+                                              new ConstActualParameter(
+                                                new CallExpression(
+                                                  new Identifier(
+                                                    "factorial",
+                                                    dummyPosition()
+                                                    ),
+                                                  new SingleActualParameterSequence(
+                                                    new ConstActualParameter(
+                                                      new VnameExpression(
+                                                        new SimpleVname(
+                                                          new Identifier(
+                                                            "n",
+                                                            dummyPosition()
+                                                            ),
+                                                          dummyPosition()
+                                                          ),
+                                                        dummyPosition()
+                                                        ),
+                                                      dummyPosition()
+                                                      ),
+                                                    dummyPosition()
+                                                    ),
+                                                  dummyPosition()
+                                                    ),
+                                                  dummyPosition()
+                                                    ),
+                                                  dummyPosition()
+                                                    ),
+                                                  dummyPosition()
+                                                    ),
+                                                  dummyPosition()
+                                                    ),
+                                                  dummyPosition()
+                                                    ),
+                                                  dummyPosition()
+                                                    );
 
+
+    Program actualProgram = parser.parseProgram();
+    assertEquals(expectedProgram, actualProgram);
   }
 
   public void testRecord() {
     String filename = "samples/record.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
   public void testRecordDegenerate() {
     String filename = "samples/record_degenerate.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
   public void testLeapYear() {
     String filename = "samples/leapyear.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
   public void testLeapYearDegenerate() {
     String filename = "samples/leapyear_degenerate.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
   public void testPrintArray() {
     String filename = "samples/print_array.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
   public void testPrintArrayDegenerate() {
     String filename = "samples/print_array_degenerate.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
   public void testDate() {
     String filename = "samples/date.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
   public void testDateDegenerate() {
     String filename = "samples/date_degenerate.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
   public void testString() {
     String filename = "samples/string.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
   public void testStringDegenerate() {
     String filename = "samples/string_degenerate.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
   public void testIteratively() {
     String filename = "samples/iteratively.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
   public void testIterativelyDegenerate() {
     String filename = "samples/iteratively_degenerate.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
   public void testReverseLine() {
     String filename = "samples/reverse_line.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
   public void testReverseLineDegenerate() {
     String filename = "samples/reverse_line_degenerate.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
   public void testLine() {
     String filename = "samples/line.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
   public void testLineDegenerate() {
     String filename = "samples/line_degenerate.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
   public void testDates() {
     String filename = "samples/dates.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
   public void testDatesDegenerate() {
     String filename = "samples/dates_degenerate.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
   public void testMonthsOfYear() {
     String filename = "samples/monthsofyear.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
   public void testMonthsOfYearDegenerate() {
     String filename = "samples/monthsofyear_degenerate.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
 
   public void testCapitalise() {
     String filename = "samples/capitalise.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
   public void testCapitaliseDegenerate() {
     String filename = "samples/capitalise_degenerate.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
 
   public void testFreq() {
     String filename = "samples/capitalise.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
   public void testFreqDegenerate() {
     String filename = "samples/capitalise_degenerate.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
   public void testInsertionSort() {
     String filename = "samples/capitalise.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
   public void testInsertionSortDegenerate() {
     String filename = "samples/capitalise_degenerate.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
   public void testRationals() {
     String filename = "samples/capitalise.t";
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
 
   }
 
   public void testRationalsDegenerate() {
     String filename = "samples/capitalise_degenerate.t";
-
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = null;
+    //Program actualProgram = parser.parseProgram();
+    //assertEquals(expectedProgram, actualProgram);
   }
 }
 
