@@ -32,6 +32,6 @@ public class IfCommand extends Command {
 
   @Override
   public String toString() {
-    return "IfCommand { E = " + this.E + ", C1 = " + this.C1 + ", C2 = " + this.C2 + " }";
+    return "IfCommand { E = " + this.E + ", C1 = " + this.C1 + ", C2 = " + this.C2 + ", position = " + this.position + " }";
   }
 }

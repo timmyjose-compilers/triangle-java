@@ -30,6 +30,6 @@ public class WhileCommand extends Command {
 
   @Override
   public String toString() {
-    return "WhileCommand { E = " + this.E + ", C = " + this.C + " }";
+    return "WhileCommand { E = " + this.E + ", C = " + this.C + ", position = " + this.position + " }";
   }
 }

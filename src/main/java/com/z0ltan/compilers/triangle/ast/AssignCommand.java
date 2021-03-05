@@ -30,6 +30,6 @@ public class AssignCommand extends Command {
 
   @Override
   public String toString() {
-    return "AssignCommand { V = " + this.V + ", E = " + this.E + " }";
+    return "AssignCommand { V = " + this.V + ", E = " + this.E + ", position = " + this.position + " }";
   }
 }

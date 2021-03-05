@@ -30,6 +30,6 @@ public class CallExpression extends Expression {
 
   @Override
   public String toString() {
-    return "CallExpression { I = " + this.I + ", APS = " + this.APS + " }";
+    return "CallExpression { I = " + this.I + ", APS = " + this.APS + ", position = " + this.position + " }";
   }
 }

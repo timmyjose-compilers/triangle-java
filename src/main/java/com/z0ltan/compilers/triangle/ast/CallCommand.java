@@ -30,6 +30,6 @@ public class CallCommand extends Command {
 
   @Override
   public String toString() {
-    return "CallCommand { I = " + this.I + ", APS = " + this.APS + " }";
+    return "CallCommand { I = " + this.I + ", APS = " + this.APS + ", position = " + this.position + " }";
   }
 }
