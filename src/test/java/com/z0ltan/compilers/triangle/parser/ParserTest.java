@@ -13,6 +13,7 @@ import com.z0ltan.compilers.triangle.ast.Program;
 import com.z0ltan.compilers.triangle.ast.EmptyCommand;
 import com.z0ltan.compilers.triangle.ast.LetCommand;
 import com.z0ltan.compilers.triangle.ast.CallCommand;
+import com.z0ltan.compilers.triangle.ast.IfCommand;
 import com.z0ltan.compilers.triangle.ast.WhileCommand;
 import com.z0ltan.compilers.triangle.ast.SequentialCommand;
 import com.z0ltan.compilers.triangle.ast.IntegerExpression;
@@ -24,15 +25,18 @@ import com.z0ltan.compilers.triangle.ast.VnameExpression;
 import com.z0ltan.compilers.triangle.ast.UnaryExpression;
 import com.z0ltan.compilers.triangle.ast.BinaryExpression;
 import com.z0ltan.compilers.triangle.ast.EmptyFormalParameterSequence;
+import com.z0ltan.compilers.triangle.ast.SingleFormalParameterSequence;
 import com.z0ltan.compilers.triangle.ast.EmptyActualParameterSequence;
 import com.z0ltan.compilers.triangle.ast.SingleActualParameterSequence;
 import com.z0ltan.compilers.triangle.ast.MultipleActualParameterSequence;
+import com.z0ltan.compilers.triangle.ast.ConstFormalParameter;
 import com.z0ltan.compilers.triangle.ast.ConstActualParameter;
 import com.z0ltan.compilers.triangle.ast.VarActualParameter;
 import com.z0ltan.compilers.triangle.ast.ProcActualParameter;
 import com.z0ltan.compilers.triangle.ast.FuncActualParameter;
 import com.z0ltan.compilers.triangle.ast.VarDeclaration;
 import com.z0ltan.compilers.triangle.ast.ProcDeclaration;
+import com.z0ltan.compilers.triangle.ast.FuncDeclaration;
 import com.z0ltan.compilers.triangle.ast.SequentialDeclaration;
 import com.z0ltan.compilers.triangle.ast.SimpleTypeDenoter;
 import com.z0ltan.compilers.triangle.ast.SimpleVname;
@@ -194,7 +198,62 @@ public class ParserTest extends TestCase {
 
   public void testOdd() {
     String filename = "samples/odd.t";
-
+    Scanner scanner = new Scanner(filename);
+    Parser parser = new Parser(scanner);
+    Program expectedProgram = 
+      new Program(new LetCommand(new SequentialDeclaration(
+              new VarDeclaration(
+                new Identifier("n", dummyPosition()),
+                new SimpleTypeDenoter(new Identifier("Integer", dummyPosition()), dummyPosition()),
+                dummyPosition()),
+              new FuncDeclaration(
+                new Identifier("odd", dummyPosition()),
+                new SingleFormalParameterSequence(new ConstFormalParameter(new Identifier("n", dummyPosition()), 
+                new SimpleTypeDenoter(new Identifier("Integer", dummyPosition()), dummyPosition()), dummyPosition()), dummyPosition()),
+                new SimpleTypeDenoter(new Identifier("Boolean", dummyPosition()), dummyPosition()),
+                new BinaryExpression(
+                  new BinaryExpression(
+                    new VnameExpression(new SimpleVname(new Identifier("n", dummyPosition()), dummyPosition()), dummyPosition()),
+                    new Operator("//", dummyPosition()),
+                    new IntegerExpression(new IntegerLiteral("2", dummyPosition()), dummyPosition()),
+                    dummyPosition()),
+                  new Operator("\\=", dummyPosition()),
+                  new IntegerExpression(new IntegerLiteral("0", dummyPosition()), dummyPosition()),
+                  dummyPosition()),
+                dummyPosition()),
+              dummyPosition()),
+            new SequentialCommand(
+              new CallCommand(
+                new Identifier("getint", dummyPosition()),
+                new SingleActualParameterSequence(
+                  new VarActualParameter(
+                      new SimpleVname(
+                      new Identifier("n", dummyPosition()), dummyPosition()), dummyPosition()), dummyPosition()),
+                dummyPosition()),
+              new IfCommand(
+                new CallExpression(
+                  new Identifier("odd", dummyPosition()),
+                  new SingleActualParameterSequence(
+                    new ConstActualParameter(
+                      new VnameExpression(
+                        new SimpleVname(
+                        new Identifier("n", dummyPosition()), dummyPosition()), dummyPosition()), dummyPosition()), dummyPosition()),
+                  dummyPosition()),
+                new CallCommand(
+                  new Identifier("putint", dummyPosition()),
+                  new SingleActualParameterSequence(
+                    new ConstActualParameter(new IntegerExpression(new IntegerLiteral("1", dummyPosition()), dummyPosition()), dummyPosition()), dummyPosition()),
+                  dummyPosition()),
+                new CallCommand(
+                  new Identifier("putint", dummyPosition()),
+                  new SingleActualParameterSequence(new ConstActualParameter(new IntegerExpression(new IntegerLiteral("2", dummyPosition()), dummyPosition()), dummyPosition()), dummyPosition()),
+                  dummyPosition()),
+                dummyPosition()),
+              dummyPosition()),
+            dummyPosition()),
+          dummyPosition());
+    Program actualProgram = parser.parseProgram();
+    assertEquals(expectedProgram, actualProgram);
   }
 
   public void testOddDegenerate() {
@@ -371,7 +430,7 @@ public class ParserTest extends TestCase {
 
   public void testRationalsDegenerate() {
     String filename = "samples/capitalise_degenerate.t";
-
-  }
+    
+}
 }
 

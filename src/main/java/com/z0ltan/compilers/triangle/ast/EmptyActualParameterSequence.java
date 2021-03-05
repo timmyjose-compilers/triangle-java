@@ -10,7 +10,7 @@ public class EmptyActualParameterSequence extends ActualParameterSequence {
 
   @Override
   public boolean equals(Object o) {
-    if (!(o instanceof ActualParameterSequence)) {
+    if (!(o instanceof EmptyActualParameterSequence)) {
       return false;
     }
 

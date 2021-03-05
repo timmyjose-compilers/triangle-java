@@ -8,6 +8,7 @@ import com.z0ltan.compilers.triangle.ast.Program;
 import com.z0ltan.compilers.triangle.ast.Command;
 import com.z0ltan.compilers.triangle.ast.EmptyCommand;
 import com.z0ltan.compilers.triangle.ast.LetCommand;
+import com.z0ltan.compilers.triangle.ast.IfCommand;
 import com.z0ltan.compilers.triangle.ast.WhileCommand;
 import com.z0ltan.compilers.triangle.ast.CallCommand;
 import com.z0ltan.compilers.triangle.ast.SequentialCommand;
@@ -205,10 +206,9 @@ public class Parser {
           accept(TokenType.COLON);
           final TypeDenoter td = parseTypeDenoter();
           accept(TokenType.IS);
-          final Command cmd = parseSingleCommand();
+          final Expression expr = parseExpression();
           finish(declPos);
-
-          return new FuncDeclaration(id, fps, td, cmd, declPos);
+          return new FuncDeclaration(id, fps, td, expr, declPos);
         }
 
       default:
@@ -311,7 +311,10 @@ public class Parser {
 
       case LEFT_PAREN:
         {
-
+          acceptIt();
+          final Expression expr = parseExpression();
+          accept(TokenType.RIGHT_PAREN);
+          return expr;
         }
 
       case LEFT_BRACKET:
@@ -661,8 +664,19 @@ public class Parser {
           accept(TokenType.IN);
           final Command cmd = parseSingleCommand();
           finish(cmdPos);
-
           return new LetCommand(decl, cmd, cmdPos);
+        }
+
+      case IF:
+        {
+          acceptIt();
+          final Expression expr = parseExpression();
+          accept(TokenType.THEN);
+          final Command cmd1 = parseSingleCommand();
+          accept(TokenType.ELSE);
+          final Command cmd2 = parseSingleCommand();
+          finish(cmdPos);
+          return new IfCommand(expr, cmd1, cmd2, cmdPos);
         }
 
       case WHILE:
