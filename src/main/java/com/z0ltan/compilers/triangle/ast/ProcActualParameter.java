@@ -5,12 +5,10 @@ import com.z0ltan.compilers.triangle.scanner.SourcePosition;
 
 public class ProcActualParameter extends ActualParameter {
   public Identifier I;
-  public ActualParameterSequence APS;
 
-  public ProcActualParameter(final Identifier I, final ActualParameterSequence APS, final SourcePosition position) {
+  public ProcActualParameter(final Identifier I, final SourcePosition position) {
     super(position);
     this.I = I;
-    this.APS = APS;
   }
 
   @Override
@@ -20,7 +18,7 @@ public class ProcActualParameter extends ActualParameter {
     }
 
     ProcActualParameter other = (ProcActualParameter)o;
-    return this.I.equals(other.I) && this.APS.equals(other.APS);
+    return this.I.equals(other.I);
   }
 
   @Override
@@ -30,6 +28,6 @@ public class ProcActualParameter extends ActualParameter {
 
   @Override
   public String toString() {
-    return "ProcActualParameter { I = " + this.I + ", APS = " + this.APS + ", position = " + this.position + " }";
+    return "ProcActualParameter { I = " + this.I + ", position = " + this.position + " }";
   }
 }

@@ -5,14 +5,10 @@ import com.z0ltan.compilers.triangle.scanner.SourcePosition;
 
 public class FuncActualParameter extends ActualParameter {
   public Identifier I;
-  public ActualParameterSequence APS;
-  public TypeDenoter T;
 
-  public FuncActualParameter(final Identifier I, final ActualParameterSequence APS, final TypeDenoter T, final SourcePosition position) {
+  public FuncActualParameter(final Identifier I, final SourcePosition position) {
     super(position);
     this.I = I;
-    this.APS = APS;
-    this.T = T;
   }
 
   @Override
@@ -22,7 +18,7 @@ public class FuncActualParameter extends ActualParameter {
     }
 
     FuncActualParameter other = (FuncActualParameter)o;
-    return this.I.equals(other.I) && this.APS.equals(other.APS) && this.T.equals(other.T);
+    return this.I.equals(other.I);
   }
 
   @Override
@@ -32,6 +28,6 @@ public class FuncActualParameter extends ActualParameter {
 
   @Override
   public String toString() {
-    return "FuncActualParameter { I = " + this.I + ", APS = " + this.APS + ", T = " + this.T + ", position = " + this.position + " }";
+    return "FuncActualParameter { I = " + this.I + ", position = " + this.position + " }";
   }
 }

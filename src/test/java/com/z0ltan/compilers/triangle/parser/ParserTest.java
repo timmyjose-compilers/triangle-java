@@ -39,6 +39,7 @@ import com.z0ltan.compilers.triangle.ast.SingleActualParameterSequence;
 import com.z0ltan.compilers.triangle.ast.MultipleActualParameterSequence;
 import com.z0ltan.compilers.triangle.ast.ConstFormalParameter;
 import com.z0ltan.compilers.triangle.ast.VarFormalParameter;
+import com.z0ltan.compilers.triangle.ast.ProcFormalParameter;
 import com.z0ltan.compilers.triangle.ast.ConstActualParameter;
 import com.z0ltan.compilers.triangle.ast.VarActualParameter;
 import com.z0ltan.compilers.triangle.ast.ProcActualParameter;
@@ -4077,28 +4078,998 @@ public class ParserTest extends TestCase {
 
     Program actualProgram = parser.parseProgram();
     assertEquals(expectedProgram, actualProgram);
-
   }
 
   public void testPrintArray() {
     String filename = "samples/print_array.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
-    Program expectedProgram = null;
-    Program actualProgram = parser.parseProgram();
-    System.out.println(actualProgram);
-    //assertEquals(expectedProgram, actualProgram);
+    Program expectedProgram =
+      new Program(
+          new LetCommand(
+            new SequentialDeclaration(
+              new SequentialDeclaration(
+                new VarDeclaration(
+                  new Identifier(
+                    "arr",
+                    dummyPosition()
+                    ),
+                  new ArrayTypeDenoter(
+                    new IntegerLiteral(
+                      "5",
+                      dummyPosition()
+                      ),
+                    new SimpleTypeDenoter(
+                      new Identifier(
+                        "Integer",
+                        dummyPosition()
+                        ),
+                      dummyPosition()
+                      ),
+                    dummyPosition()
+                    ),
+                  dummyPosition()
+                  ),
+                  new ProcDeclaration(
+                      new Identifier(
+                        "println",
+                        dummyPosition()
+                        ),
+                      new SingleFormalParameterSequence(
+                        new ConstFormalParameter(
+                          new Identifier(
+                            "x",
+                            dummyPosition()
+                            ),
+                          new SimpleTypeDenoter(
+                            new Identifier(
+                              "Integer",
+                              dummyPosition()
+                              ),
+                            dummyPosition()
+                            ),
+                          dummyPosition()
+                          ),
+                        dummyPosition()
+                        ),
+                      new SequentialCommand(
+                          new CallCommand(
+                            new Identifier(
+                              "putint",
+                              dummyPosition()
+                              ),
+                            new SingleActualParameterSequence(
+                              new ConstActualParameter(
+                                new VnameExpression(
+                                  new SimpleVname(
+                                    new Identifier(
+                                      "x",
+                                      dummyPosition()
+                                      ),
+                                    dummyPosition()
+                                    ),
+                                  dummyPosition()
+                                  ),
+                                dummyPosition()
+                                ),
+                              dummyPosition()
+                              ),
+                            dummyPosition()
+                              ),
+                            new CallCommand(
+                                new Identifier(
+                                  "puteol",
+                                  dummyPosition()
+                                  ),
+                                new EmptyActualParameterSequence(
+                                  dummyPosition()
+                                  ),
+                                dummyPosition()
+                                ),
+                            dummyPosition()
+                              ),
+                            dummyPosition()
+                              ),
+                            dummyPosition()
+                              ),
+                            new ProcDeclaration(
+                                new Identifier(
+                                  "iterate",
+                                  dummyPosition()
+                                  ),
+                                new MultipleFormalParameterSequence(
+                                  new ProcFormalParameter(
+                                    new Identifier(
+                                      "f",
+                                      dummyPosition()
+                                      ),
+                                    new SingleFormalParameterSequence(
+                                      new ConstFormalParameter(
+                                        new Identifier(
+                                          "n",
+                                          dummyPosition()
+                                          ),
+                                        new SimpleTypeDenoter(
+                                          new Identifier(
+                                            "Integer",
+                                            dummyPosition()
+                                            ),
+                                          dummyPosition()
+                                          ),
+                                        dummyPosition()
+                                        ),
+                                      dummyPosition()
+                                      ),
+                                    dummyPosition()
+                                      ),
+                                    new SingleFormalParameterSequence(
+                                        new ConstFormalParameter(
+                                          new Identifier(
+                                            "arr",
+                                            dummyPosition()
+                                            ),
+                                          new ArrayTypeDenoter(
+                                            new IntegerLiteral(
+                                              "5",
+                                              dummyPosition()
+                                              ),
+                                            new SimpleTypeDenoter(
+                                              new Identifier(
+                                                "Integer",
+                                                dummyPosition()
+                                                ),
+                                              dummyPosition()
+                                              ),
+                                            dummyPosition()
+                                            ),
+                                          dummyPosition()
+                                          ),
+                                          dummyPosition()
+                                            ),
+                                          dummyPosition()
+                                            ),
+                                          new LetCommand(
+                                              new VarDeclaration(
+                                                new Identifier(
+                                                  "i",
+                                                  dummyPosition()
+                                                  ),
+                                                new SimpleTypeDenoter(
+                                                  new Identifier(
+                                                    "Integer",
+                                                    dummyPosition()
+                                                    ),
+                                                  dummyPosition()
+                                                  ),
+                                                dummyPosition()
+                                                ),
+                                              new SequentialCommand(
+                                                new AssignCommand(
+                                                  new SimpleVname(
+                                                    new Identifier(
+                                                      "i",
+                                                      dummyPosition()
+                                                      ),
+                                                    dummyPosition()
+                                                    ),
+                                                  new IntegerExpression(
+                                                    new IntegerLiteral(
+                                                      "0",
+                                                      dummyPosition()
+                                                      ),
+                                                    dummyPosition()
+                                                    ),
+                                                  dummyPosition()
+                                                  ),
+                                                new WhileCommand(
+                                                  new BinaryExpression(
+                                                    new VnameExpression(
+                                                      new SimpleVname(
+                                                        new Identifier(
+                                                          "i",
+                                                          dummyPosition()
+                                                          ),
+                                                        dummyPosition()
+                                                        ),
+                                                      dummyPosition()
+                                                      ),
+                                                    new Operator(
+                                                      "<",
+                                                      dummyPosition()
+                                                      ),
+                                                    new IntegerExpression(
+                                                      new IntegerLiteral(
+                                                        "5",
+                                                        dummyPosition()
+                                                        ),
+                                                      dummyPosition()
+                                                      ),
+                                                    dummyPosition()
+                                                      ),
+                                                    new SequentialCommand(
+                                                        new CallCommand(
+                                                          new Identifier(
+                                                            "f",
+                                                            dummyPosition()
+                                                            ),
+                                                          new SingleActualParameterSequence(
+                                                            new ConstActualParameter(
+                                                              new VnameExpression(
+                                                                new SubscriptVname(
+                                                                  new SimpleVname(
+                                                                    new Identifier(
+                                                                      "arr",
+                                                                      dummyPosition()
+                                                                      ),
+                                                                    dummyPosition()
+                                                                    ),
+                                                                  new VnameExpression(
+                                                                    new SimpleVname(
+                                                                      new Identifier(
+                                                                        "i",
+                                                                        dummyPosition()
+                                                                        ),
+                                                                      dummyPosition()
+                                                                      ),
+                                                                    dummyPosition()
+                                                                    ),
+                                                                  dummyPosition()
+                                                                  ),
+                                                    dummyPosition()
+                                                      ),
+                                                    dummyPosition()
+                                                      ),
+                                                    dummyPosition()
+                                                      ),
+                                                    dummyPosition()
+                                                      ),
+                                                    new AssignCommand(
+                                                        new SimpleVname(
+                                                          new Identifier(
+                                                            "i",
+                                                            dummyPosition()
+                                                            ),
+                                                          dummyPosition()
+                                                          ),
+                                                        new BinaryExpression(
+                                                          new VnameExpression(
+                                                            new SimpleVname(
+                                                              new Identifier(
+                                                                "i",
+                                                                dummyPosition()
+                                                                ),
+                                                              dummyPosition()
+                                                              ),
+                                                            dummyPosition()
+                                                            ),
+                                                          new Operator(
+                                                            "+",
+                                                            dummyPosition()
+                                                            ),
+                                                          new IntegerExpression(
+                                                            new IntegerLiteral(
+                                                              "1",
+                                                              dummyPosition()
+                                                              ),
+                                                            dummyPosition()
+                                                            ),
+                                                          dummyPosition()
+                                                            ),
+                                                          dummyPosition()
+                                                            ),
+                                                          dummyPosition()
+                                                            ),
+                                                          dummyPosition()
+                                                            ),
+                                                          dummyPosition()
+                                                            ),
+                                                          dummyPosition()
+                                                            ),
+                                                          dummyPosition()
+                                                            ),
+                                                          dummyPosition()
+                                                            ),
+                                                          new LetCommand(
+                                                              new VarDeclaration(
+                                                                new Identifier(
+                                                                  "i",
+                                                                  dummyPosition()
+                                                                  ),
+                                                                new SimpleTypeDenoter(
+                                                                  new Identifier(
+                                                                    "Integer",
+                                                                    dummyPosition()
+                                                                    ),
+                                                                  dummyPosition()
+                                                                  ),
+                                                                dummyPosition()
+                                                                ),
+                                                              new SequentialCommand(
+                                                                new SequentialCommand(
+                                                                  new AssignCommand(
+                                                                    new SimpleVname(
+                                                                      new Identifier(
+                                                                        "i",
+                                                                        dummyPosition()
+                                                                        ),
+                                                                      dummyPosition()
+                                                                      ),
+                                                                    new IntegerExpression(
+                                                                      new IntegerLiteral(
+                                                                        "0",
+                                                                        dummyPosition()
+                                                                        ),
+                                                                      dummyPosition()
+                                                                      ),
+                                                                    dummyPosition()
+                                                                    ),
+                                                                  new WhileCommand(
+                                                                    new BinaryExpression(
+                                                                      new VnameExpression(
+                                                                        new SimpleVname(
+                                                                          new Identifier(
+                                                                            "i",
+                                                                            dummyPosition()
+                                                                            ),
+                                                                          dummyPosition()
+                                                                          ),
+                                                                        dummyPosition()
+                                                                        ),
+                                                                      new Operator(
+                                                                        "<",
+                                                                        dummyPosition()
+                                                                        ),
+                                                                      new IntegerExpression(
+                                                                        new IntegerLiteral(
+                                                                          "5",
+                                                                          dummyPosition()
+                                                                          ),
+                                                                        dummyPosition()
+                                                                        ),
+                                                                      dummyPosition()
+                                                                        ),
+                                                                      new SequentialCommand(
+                                                                          new AssignCommand(
+                                                                            new SubscriptVname(
+                                                                              new SimpleVname(
+                                                                                new Identifier(
+                                                                                  "arr",
+                                                                                  dummyPosition()
+                                                                                  ),
+                                                                                dummyPosition()
+                                                                                ),
+                                                                              new VnameExpression(
+                                                                                new SimpleVname(
+                                                                                  new Identifier(
+                                                                                    "i",
+                                                                                    dummyPosition()
+                                                                                    ),
+                                                                                  dummyPosition()
+                                                                                  ),
+                                                                                dummyPosition()
+                                                                                ),
+                                                                              dummyPosition()
+                                                                              ),
+                                                                      new BinaryExpression(
+                                                                          new BinaryExpression(
+                                                                            new VnameExpression(
+                                                                              new SimpleVname(
+                                                                                new Identifier(
+                                                                                  "i",
+                                                                                  dummyPosition()
+                                                                                  ),
+                                                                                dummyPosition()
+                                                                                ),
+                                                                              dummyPosition()
+                                                                              ),
+                                                                            new Operator(
+                                                                              "+",
+                                                                              dummyPosition()
+                                                                              ),
+                                                                            new IntegerExpression(
+                                                                              new IntegerLiteral(
+                                                                                "1",
+                                                                                dummyPosition()
+                                                                                ),
+                                                                              dummyPosition()
+                                                                              ),
+                                                                            dummyPosition()
+                                                                              ),
+                                                                            new Operator(
+                                                                                "*",
+                                                                                dummyPosition()
+                                                                                ),
+                                                                            new IntegerExpression(
+                                                                                new IntegerLiteral(
+                                                                                  "100",
+                                                                                  dummyPosition()
+                                                                                  ),
+                                                                                dummyPosition()
+                                                                                ),
+                                                                            dummyPosition()
+                                                                              ),
+                                                                            dummyPosition()
+                                                                              ),
+                                                                            new AssignCommand(
+                                                                                new SimpleVname(
+                                                                                  new Identifier(
+                                                                                    "i",
+                                                                                    dummyPosition()
+                                                                                    ),
+                                                                                  dummyPosition()
+                                                                                  ),
+                                                                                new BinaryExpression(
+                                                                                  new VnameExpression(
+                                                                                    new SimpleVname(
+                                                                                      new Identifier(
+                                                                                        "i",
+                                                                                        dummyPosition()
+                                                                                        ),
+                                                                                      dummyPosition()
+                                                                                      ),
+                                                                                    dummyPosition()
+                                                                                    ),
+                                                                                  new Operator(
+                                                                                    "+",
+                                                                                    dummyPosition()
+                                                                                    ),
+                                                                                  new IntegerExpression(
+                                                                                    new IntegerLiteral(
+                                                                                      "1",
+                                                                                      dummyPosition()
+                                                                                      ),
+                                                                                    dummyPosition()
+                                                                                    ),
+                                                                                  dummyPosition()
+                                                                                    ),
+                                                                                  dummyPosition()
+                                                                                    ),
+                                                                                  dummyPosition()
+                                                                                    ),
+                                                                                  dummyPosition()
+                                                                                    ),
+                                                                                  dummyPosition()
+                                                                                    ),
+                                                                                  new CallCommand(
+                                                                                      new Identifier(
+                                                                                        "iterate",
+                                                                                        dummyPosition()
+                                                                                        ),
+                                                                                      new MultipleActualParameterSequence(
+                                                                                        new ProcActualParameter(
+                                                                                          new Identifier(
+                                                                                            "println",
+                                                                                            dummyPosition()
+                                                                                            ),
+                                                                                          dummyPosition()
+                                                                                          ),
+                                                                                        new SingleActualParameterSequence(
+                                                                                          new ConstActualParameter(
+                                                                                            new VnameExpression(
+                                                                                              new SimpleVname(
+                                                                                                new Identifier(
+                                                                                                  "arr",
+                                                                                                  dummyPosition()
+                                                                                                  ),
+                                                                                                dummyPosition()
+                                                                                                ),
+                                                                                              dummyPosition()
+                                                                                              ),
+                                                                                            dummyPosition()
+                                                                                            ),
+                                                                                          dummyPosition()
+                                                                                          ),
+                                                                                        dummyPosition()
+                                                                                          ),
+                                                                                        dummyPosition()
+                                                                                          ),
+                                                                                        dummyPosition()
+                                                                                          ),
+                                                                                        dummyPosition()
+                                                                                          ),
+                                                                                        dummyPosition()
+                                                                                          ),
+                                                                                        dummyPosition()
+                                                                                          );
 
+    Program actualProgram = parser.parseProgram();
+    assertEquals(expectedProgram, actualProgram);
   }
 
   public void testPrintArrayDegenerate() {
     String filename = "samples/print_array_degenerate.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
-    Program expectedProgram = null;
-    //Program actualProgram = parser.parseProgram();
-    //assertEquals(expectedProgram, actualProgram);
+    Program expectedProgram =
+      new Program(
+          new LetCommand(
+            new SequentialDeclaration(
+              new SequentialDeclaration(
+                new VarDeclaration(
+                  new Identifier(
+                    "arr",
+                    dummyPosition()
+                    ),
+                  new ArrayTypeDenoter(
+                    new IntegerLiteral(
+                      "5",
+                      dummyPosition()
+                      ),
+                    new SimpleTypeDenoter(
+                      new Identifier(
+                        "Integer",
+                        dummyPosition()
+                        ),
+                      dummyPosition()
+                      ),
+                    dummyPosition()
+                    ),
+                  dummyPosition()
+                  ),
+                  new ProcDeclaration(
+                      new Identifier(
+                        "println",
+                        dummyPosition()
+                        ),
+                      new SingleFormalParameterSequence(
+                        new ConstFormalParameter(
+                          new Identifier(
+                            "x",
+                            dummyPosition()
+                            ),
+                          new SimpleTypeDenoter(
+                            new Identifier(
+                              "Integer",
+                              dummyPosition()
+                              ),
+                            dummyPosition()
+                            ),
+                          dummyPosition()
+                          ),
+                        dummyPosition()
+                        ),
+                      new SequentialCommand(
+                          new CallCommand(
+                            new Identifier(
+                              "putint",
+                              dummyPosition()
+                              ),
+                            new SingleActualParameterSequence(
+                              new ConstActualParameter(
+                                new VnameExpression(
+                                  new SimpleVname(
+                                    new Identifier(
+                                      "x",
+                                      dummyPosition()
+                                      ),
+                                    dummyPosition()
+                                    ),
+                                  dummyPosition()
+                                  ),
+                                dummyPosition()
+                                ),
+                              dummyPosition()
+                              ),
+                            dummyPosition()
+                              ),
+                            new CallCommand(
+                                new Identifier(
+                                  "puteol",
+                                  dummyPosition()
+                                  ),
+                                new EmptyActualParameterSequence(
+                                  dummyPosition()
+                                  ),
+                                dummyPosition()
+                                ),
+                            dummyPosition()
+                              ),
+                            dummyPosition()
+                              ),
+                            dummyPosition()
+                              ),
+                            new ProcDeclaration(
+                                new Identifier(
+                                  "iterate",
+                                  dummyPosition()
+                                  ),
+                                new MultipleFormalParameterSequence(
+                                  new ProcFormalParameter(
+                                    new Identifier(
+                                      "f",
+                                      dummyPosition()
+                                      ),
+                                    new SingleFormalParameterSequence(
+                                      new ConstFormalParameter(
+                                        new Identifier(
+                                          "n",
+                                          dummyPosition()
+                                          ),
+                                        new SimpleTypeDenoter(
+                                          new Identifier(
+                                            "Integer",
+                                            dummyPosition()
+                                            ),
+                                          dummyPosition()
+                                          ),
+                                        dummyPosition()
+                                        ),
+                                      dummyPosition()
+                                      ),
+                                    dummyPosition()
+                                      ),
+                                    new SingleFormalParameterSequence(
+                                        new ConstFormalParameter(
+                                          new Identifier(
+                                            "arr",
+                                            dummyPosition()
+                                            ),
+                                          new ArrayTypeDenoter(
+                                            new IntegerLiteral(
+                                              "5",
+                                              dummyPosition()
+                                              ),
+                                            new SimpleTypeDenoter(
+                                              new Identifier(
+                                                "Integer",
+                                                dummyPosition()
+                                                ),
+                                              dummyPosition()
+                                              ),
+                                            dummyPosition()
+                                            ),
+                                          dummyPosition()
+                                          ),
+                                          dummyPosition()
+                                            ),
+                                          dummyPosition()
+                                            ),
+                                          new LetCommand(
+                                              new VarDeclaration(
+                                                new Identifier(
+                                                  "i",
+                                                  dummyPosition()
+                                                  ),
+                                                new SimpleTypeDenoter(
+                                                  new Identifier(
+                                                    "Integer",
+                                                    dummyPosition()
+                                                    ),
+                                                  dummyPosition()
+                                                  ),
+                                                dummyPosition()
+                                                ),
+                                              new SequentialCommand(
+                                                new AssignCommand(
+                                                  new SimpleVname(
+                                                    new Identifier(
+                                                      "i",
+                                                      dummyPosition()
+                                                      ),
+                                                    dummyPosition()
+                                                    ),
+                                                  new IntegerExpression(
+                                                    new IntegerLiteral(
+                                                      "0",
+                                                      dummyPosition()
+                                                      ),
+                                                    dummyPosition()
+                                                    ),
+                                                  dummyPosition()
+                                                  ),
+                                                new WhileCommand(
+                                                  new BinaryExpression(
+                                                    new VnameExpression(
+                                                      new SimpleVname(
+                                                        new Identifier(
+                                                          "i",
+                                                          dummyPosition()
+                                                          ),
+                                                        dummyPosition()
+                                                        ),
+                                                      dummyPosition()
+                                                      ),
+                                                    new Operator(
+                                                      "<",
+                                                      dummyPosition()
+                                                      ),
+                                                    new IntegerExpression(
+                                                      new IntegerLiteral(
+                                                        "5",
+                                                        dummyPosition()
+                                                        ),
+                                                      dummyPosition()
+                                                      ),
+                                                    dummyPosition()
+                                                      ),
+                                                    new SequentialCommand(
+                                                        new CallCommand(
+                                                          new Identifier(
+                                                            "f",
+                                                            dummyPosition()
+                                                            ),
+                                                          new SingleActualParameterSequence(
+                                                            new ConstActualParameter(
+                                                              new VnameExpression(
+                                                                new SubscriptVname(
+                                                                  new SimpleVname(
+                                                                    new Identifier(
+                                                                      "arr",
+                                                                      dummyPosition()
+                                                                      ),
+                                                                    dummyPosition()
+                                                                    ),
+                                                                  new VnameExpression(
+                                                                    new SimpleVname(
+                                                                      new Identifier(
+                                                                        "i",
+                                                                        dummyPosition()
+                                                                        ),
+                                                                      dummyPosition()
+                                                                      ),
+                                                                    dummyPosition()
+                                                                    ),
+                                                                  dummyPosition()
+                                                                  ),
+                                                    dummyPosition()
+                                                      ),
+                                                    dummyPosition()
+                                                      ),
+                                                    dummyPosition()
+                                                      ),
+                                                    dummyPosition()
+                                                      ),
+                                                    new AssignCommand(
+                                                        new SimpleVname(
+                                                          new Identifier(
+                                                            "i",
+                                                            dummyPosition()
+                                                            ),
+                                                          dummyPosition()
+                                                          ),
+                                                        new BinaryExpression(
+                                                          new VnameExpression(
+                                                            new SimpleVname(
+                                                              new Identifier(
+                                                                "i",
+                                                                dummyPosition()
+                                                                ),
+                                                              dummyPosition()
+                                                              ),
+                                                            dummyPosition()
+                                                            ),
+                                                          new Operator(
+                                                            "+",
+                                                            dummyPosition()
+                                                            ),
+                                                          new IntegerExpression(
+                                                            new IntegerLiteral(
+                                                              "1",
+                                                              dummyPosition()
+                                                              ),
+                                                            dummyPosition()
+                                                            ),
+                                                          dummyPosition()
+                                                            ),
+                                                          dummyPosition()
+                                                            ),
+                                                          dummyPosition()
+                                                            ),
+                                                          dummyPosition()
+                                                            ),
+                                                          dummyPosition()
+                                                            ),
+                                                          dummyPosition()
+                                                            ),
+                                                          dummyPosition()
+                                                            ),
+                                                          dummyPosition()
+                                                            ),
+                                                          new LetCommand(
+                                                              new VarDeclaration(
+                                                                new Identifier(
+                                                                  "i",
+                                                                  dummyPosition()
+                                                                  ),
+                                                                new SimpleTypeDenoter(
+                                                                  new Identifier(
+                                                                    "Integer",
+                                                                    dummyPosition()
+                                                                    ),
+                                                                  dummyPosition()
+                                                                  ),
+                                                                dummyPosition()
+                                                                ),
+                                                              new SequentialCommand(
+                                                                new SequentialCommand(
+                                                                  new AssignCommand(
+                                                                    new SimpleVname(
+                                                                      new Identifier(
+                                                                        "i",
+                                                                        dummyPosition()
+                                                                        ),
+                                                                      dummyPosition()
+                                                                      ),
+                                                                    new IntegerExpression(
+                                                                      new IntegerLiteral(
+                                                                        "0",
+                                                                        dummyPosition()
+                                                                        ),
+                                                                      dummyPosition()
+                                                                      ),
+                                                                    dummyPosition()
+                                                                    ),
+                                                                  new WhileCommand(
+                                                                    new BinaryExpression(
+                                                                      new VnameExpression(
+                                                                        new SimpleVname(
+                                                                          new Identifier(
+                                                                            "i",
+                                                                            dummyPosition()
+                                                                            ),
+                                                                          dummyPosition()
+                                                                          ),
+                                                                        dummyPosition()
+                                                                        ),
+                                                                      new Operator(
+                                                                        "<",
+                                                                        dummyPosition()
+                                                                        ),
+                                                                      new IntegerExpression(
+                                                                        new IntegerLiteral(
+                                                                          "5",
+                                                                          dummyPosition()
+                                                                          ),
+                                                                        dummyPosition()
+                                                                        ),
+                                                                      dummyPosition()
+                                                                        ),
+                                                                      new SequentialCommand(
+                                                                          new AssignCommand(
+                                                                            new SubscriptVname(
+                                                                              new SimpleVname(
+                                                                                new Identifier(
+                                                                                  "arr",
+                                                                                  dummyPosition()
+                                                                                  ),
+                                                                                dummyPosition()
+                                                                                ),
+                                                                              new VnameExpression(
+                                                                                new SimpleVname(
+                                                                                  new Identifier(
+                                                                                    "i",
+                                                                                    dummyPosition()
+                                                                                    ),
+                                                                                  dummyPosition()
+                                                                                  ),
+                                                                                dummyPosition()
+                                                                                ),
+                                                                              dummyPosition()
+                                                                              ),
+                                                                      new BinaryExpression(
+                                                                          new BinaryExpression(
+                                                                            new VnameExpression(
+                                                                              new SimpleVname(
+                                                                                new Identifier(
+                                                                                  "i",
+                                                                                  dummyPosition()
+                                                                                  ),
+                                                                                dummyPosition()
+                                                                                ),
+                                                                              dummyPosition()
+                                                                              ),
+                                                                            new Operator(
+                                                                              "+",
+                                                                              dummyPosition()
+                                                                              ),
+                                                                            new IntegerExpression(
+                                                                              new IntegerLiteral(
+                                                                                "1",
+                                                                                dummyPosition()
+                                                                                ),
+                                                                              dummyPosition()
+                                                                              ),
+                                                                            dummyPosition()
+                                                                              ),
+                                                                            new Operator(
+                                                                                "*",
+                                                                                dummyPosition()
+                                                                                ),
+                                                                            new IntegerExpression(
+                                                                                new IntegerLiteral(
+                                                                                  "100",
+                                                                                  dummyPosition()
+                                                                                  ),
+                                                                                dummyPosition()
+                                                                                ),
+                                                                            dummyPosition()
+                                                                              ),
+                                                                            dummyPosition()
+                                                                              ),
+                                                                            new AssignCommand(
+                                                                                new SimpleVname(
+                                                                                  new Identifier(
+                                                                                    "i",
+                                                                                    dummyPosition()
+                                                                                    ),
+                                                                                  dummyPosition()
+                                                                                  ),
+                                                                                new BinaryExpression(
+                                                                                  new VnameExpression(
+                                                                                    new SimpleVname(
+                                                                                      new Identifier(
+                                                                                        "i",
+                                                                                        dummyPosition()
+                                                                                        ),
+                                                                                      dummyPosition()
+                                                                                      ),
+                                                                                    dummyPosition()
+                                                                                    ),
+                                                                                  new Operator(
+                                                                                    "+",
+                                                                                    dummyPosition()
+                                                                                    ),
+                                                                                  new IntegerExpression(
+                                                                                    new IntegerLiteral(
+                                                                                      "1",
+                                                                                      dummyPosition()
+                                                                                      ),
+                                                                                    dummyPosition()
+                                                                                    ),
+                                                                                  dummyPosition()
+                                                                                    ),
+                                                                                  dummyPosition()
+                                                                                    ),
+                                                                                  dummyPosition()
+                                                                                    ),
+                                                                                  dummyPosition()
+                                                                                    ),
+                                                                                  dummyPosition()
+                                                                                    ),
+                                                                                  new CallCommand(
+                                                                                      new Identifier(
+                                                                                        "iterate",
+                                                                                        dummyPosition()
+                                                                                        ),
+                                                                                      new MultipleActualParameterSequence(
+                                                                                        new ProcActualParameter(
+                                                                                          new Identifier(
+                                                                                            "println",
+                                                                                            dummyPosition()
+                                                                                            ),
+                                                                                          dummyPosition()
+                                                                                          ),
+                                                                                        new SingleActualParameterSequence(
+                                                                                          new ConstActualParameter(
+                                                                                            new VnameExpression(
+                                                                                              new SimpleVname(
+                                                                                                new Identifier(
+                                                                                                  "arr",
+                                                                                                  dummyPosition()
+                                                                                                  ),
+                                                                                                dummyPosition()
+                                                                                                ),
+                                                                                              dummyPosition()
+                                                                                              ),
+                                                                                            dummyPosition()
+                                                                                            ),
+                                                                                          dummyPosition()
+                                                                                          ),
+                                                                                        dummyPosition()
+                                                                                          ),
+                                                                                        dummyPosition()
+                                                                                          ),
+                                                                                        dummyPosition()
+                                                                                          ),
+                                                                                        dummyPosition()
+                                                                                          ),
+                                                                                        dummyPosition()
+                                                                                          ),
+                                                                                        dummyPosition()
+                                                                                          );
 
+    Program actualProgram = parser.parseProgram();
+    assertEquals(expectedProgram, actualProgram);
   }
 
   public void testDate() {

@@ -180,7 +180,6 @@ public class Parser {
           accept(TokenType.IS);
           final Expression expr = parseExpression();
           finish(declPos);
-
           return new ConstDeclaration(id, expr, declPos);
         }
 
@@ -191,7 +190,6 @@ public class Parser {
           accept(TokenType.COLON);
           final TypeDenoter td = parseTypeDenoter();
           finish(declPos);
-
           return new VarDeclaration(id, td, declPos);
         }
 
@@ -205,7 +203,6 @@ public class Parser {
           accept(TokenType.IS);
           final Command cmd = parseSingleCommand();
           finish(declPos);
-
           return new ProcDeclaration(id, fps, cmd, declPos);
         }
 
@@ -458,6 +455,7 @@ public class Parser {
         final Expression expr = parseExpression();
         finish(vnPos);
         vname = new SubscriptVname(vname, expr, vnPos);
+        accept(TokenType.RIGHT_BRACKET);
       }
     }
 
@@ -695,7 +693,6 @@ public class Parser {
           acceptIt();
           final Vname vname = parseVname(null);
           finish(apPos);
-
           return new VarActualParameter(vname, apPos);
         }
 
@@ -703,26 +700,16 @@ public class Parser {
         {
           acceptIt();
           final Identifier id = parseIdentifier();
-          accept(TokenType.LEFT_PAREN);
-          final ActualParameterSequence aps = parseActualParameterSequence();
-          accept(TokenType.RIGHT_PAREN);
           finish(apPos);
-
-          return new ProcActualParameter(id, aps, apPos);
+          return new ProcActualParameter(id, apPos);
         }
 
       case FUNCTION:
         {
           acceptIt();
           final Identifier id = parseIdentifier();
-          accept(TokenType.LEFT_PAREN);
-          final ActualParameterSequence aps = parseActualParameterSequence();
-          accept(TokenType.RIGHT_PAREN);
-          accept(TokenType.COLON);
-          final TypeDenoter td = parseTypeDenoter();
           finish(apPos);
-
-          return new FuncActualParameter(id, aps, td, apPos);
+          return new FuncActualParameter(id, apPos);
         }
 
       default:
