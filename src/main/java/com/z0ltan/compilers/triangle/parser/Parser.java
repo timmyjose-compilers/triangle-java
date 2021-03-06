@@ -51,6 +51,14 @@ import com.z0ltan.compilers.triangle.ast.CallExpression;
 import com.z0ltan.compilers.triangle.ast.VnameExpression;
 import com.z0ltan.compilers.triangle.ast.UnaryExpression;
 import com.z0ltan.compilers.triangle.ast.BinaryExpression;
+import com.z0ltan.compilers.triangle.ast.ArrayExpression;
+import com.z0ltan.compilers.triangle.ast.RecordExpression;
+import com.z0ltan.compilers.triangle.ast.ArrayAggregate;
+import com.z0ltan.compilers.triangle.ast.SingleArrayAggregate;
+import com.z0ltan.compilers.triangle.ast.MultipleArrayAggregate;
+import com.z0ltan.compilers.triangle.ast.RecordAggregate;
+import com.z0ltan.compilers.triangle.ast.SingleRecordAggregate;
+import com.z0ltan.compilers.triangle.ast.MultipleRecordAggregate;
 import com.z0ltan.compilers.triangle.ast.TypeDenoter;
 import com.z0ltan.compilers.triangle.ast.SimpleTypeDenoter;
 import com.z0ltan.compilers.triangle.ast.ArrayTypeDenoter;
@@ -67,12 +75,10 @@ import com.z0ltan.compilers.triangle.error.SyntaxError;
 public class Parser {
   private Scanner scanner;
   private Token currentToken;
-  private SourcePosition currentPosition;
 
   public Parser(final Scanner scanner) {
     this.scanner = scanner;
     this.currentToken = scanner.scan();
-    this.currentPosition = currentToken.position;
   }
 
   void accept(final TokenType expectedKind) {
@@ -313,7 +319,7 @@ public class Parser {
             return new CallExpression(id, aps, exprPos);
           } else {
             finish(exprPos);
-            final Vname vname = new SimpleVname(id, exprPos);
+            final Vname vname = parseVname(id);
             return new VnameExpression(vname, exprPos);
           }
         }
@@ -336,17 +342,58 @@ public class Parser {
 
       case LEFT_BRACKET:
         {
-
+          acceptIt();
+          final ArrayAggregate aa = parseArrayAggregate();
+          accept(TokenType.RIGHT_PAREN);
+          finish(exprPos);
+          return new ArrayExpression(aa, exprPos);
         }
 
       case LEFT_CURLY:
         {
-
-
+          acceptIt();
+          final RecordAggregate ra = parseRecordAggregate();
+          accept(TokenType.RIGHT_CURLY);
+          finish(exprPos);
+          return new RecordExpression(ra, exprPos);
         }
 
       default:
         throw new SyntaxError(currentToken.kind + " cannot form an expression");
+    }
+  }
+
+  // ArrayAggregate ::= Expression | Expression , ArrayAggregate
+  ArrayAggregate parseArrayAggregate() {
+    SourcePosition aaPos = new SourcePosition();
+    final Expression expr = parseExpression();
+
+    if (currentToken.kind == TokenType.COMMA) {
+      acceptIt();
+      final ArrayAggregate aa = parseArrayAggregate();
+      finish(aaPos);
+      return new MultipleArrayAggregate(expr, aa, aaPos);
+    } else {
+      finish(aaPos);
+      return new SingleArrayAggregate(expr, aaPos);
+    }
+  }
+
+  // RecordAggregate ::= Identifier ~ Expression | Identifier ~ Expression , RecordAggregate
+  RecordAggregate parseRecordAggregate() {
+    SourcePosition raPos = new SourcePosition();
+    final Identifier id = parseIdentifier();
+    accept(TokenType.IS);
+    final Expression expr = parseExpression();
+
+    if (currentToken.kind == TokenType.COMMA) {
+      acceptIt();
+      final RecordAggregate ra = parseRecordAggregate();
+      finish(raPos);
+      return new MultipleRecordAggregate(id, expr, ra, raPos);
+    } else {
+      finish(raPos);
+      return new SingleRecordAggregate(id, expr, raPos);
     }
   }
 
@@ -687,6 +734,22 @@ public class Parser {
     }
   }
 
+  // Command ::= single-Command | Command ; single-Command
+  Command parseCommand() {
+    SourcePosition cmdPos = new SourcePosition();
+    start(cmdPos);
+    Command cmd1 = parseSingleCommand();
+
+    while (currentToken.kind == TokenType.SEMICOLON) {
+      acceptIt();
+      final Command cmd2 = parseSingleCommand();
+      finish(cmdPos);
+      cmd1 = new SequentialCommand(cmd1, cmd2, cmdPos);
+    }
+
+    return cmd1;
+  }
+
   /**
    * singleCommand ::= EmptyCommand 
    *              | AssignCommand 
@@ -770,21 +833,6 @@ public class Parser {
       default:
         throw new SyntaxError(currentToken.kind + " cannot start a command");
     }
-  }
-
-  // Command ::= single-Command | Command ; single-Command
-  Command parseCommand() {
-    SourcePosition cmdPos = new SourcePosition();
-    start(cmdPos);
-    Command cmd1 = parseSingleCommand();
-    while (currentToken.kind == TokenType.SEMICOLON) {
-      acceptIt();
-      final Command cmd2 = parseSingleCommand();
-      finish(cmdPos);
-      cmd1 = new SequentialCommand(cmd1, cmd2, cmdPos);
-    }
-
-    return cmd1;
   }
 
   // Program ::= Command <EOT>
