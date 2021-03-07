@@ -6,13 +6,13 @@ public class Token {
   public SourcePosition position;
 
   public Token(final TokenType kind, final String spelling, SourcePosition position) {
+    this.position = position;
     this.spelling = spelling;
-    if (TokenType.isKeyword(spelling)) {
+    if (kind == TokenType.IDENTIFIER && TokenType.isKeyword(spelling )) {
       this.kind = TokenType.getKeywordTokenType(spelling);
     } else {
       this.kind = kind;
     }
-    this.position = position;
   }
 
   @Override 

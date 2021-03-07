@@ -341,7 +341,7 @@ public class Parser {
         {
           acceptIt();
           final ArrayAggregate aa = parseArrayAggregate();
-          accept(TokenType.RIGHT_PAREN);
+          accept(TokenType.RIGHT_BRACKET);
           finish(exprPos);
           return new ArrayExpression(aa, exprPos);
         }
@@ -379,6 +379,7 @@ public class Parser {
   // RecordAggregate ::= Identifier ~ Expression | Identifier ~ Expression , RecordAggregate
   RecordAggregate parseRecordAggregate() {
     SourcePosition raPos = new SourcePosition();
+    start(raPos);
     final Identifier id = parseIdentifier();
     accept(TokenType.IS);
     final Expression expr = parseExpression();
@@ -725,16 +726,16 @@ public class Parser {
   Command parseCommand() {
     SourcePosition cmdPos = new SourcePosition();
     start(cmdPos);
-    Command cmd1 = parseSingleCommand();
+    Command cmd = parseSingleCommand();
 
     while (currentToken.kind == TokenType.SEMICOLON) {
       acceptIt();
-      final Command cmd2 = parseSingleCommand();
+      final Command cmd1 = parseSingleCommand();
       finish(cmdPos);
-      cmd1 = new SequentialCommand(cmd1, cmd2, cmdPos);
+      cmd = new SequentialCommand(cmd, cmd1, cmdPos);
     }
 
-    return cmd1;
+    return cmd;
   }
 
   /**
@@ -807,6 +808,12 @@ public class Parser {
           final Command cmd = parseCommand();
           accept(TokenType.END);
           return cmd;
+        }
+
+      case END:
+        {
+          finish(cmdPos);
+          return new EmptyCommand(cmdPos);
         }
 
       case SEMICOLON:

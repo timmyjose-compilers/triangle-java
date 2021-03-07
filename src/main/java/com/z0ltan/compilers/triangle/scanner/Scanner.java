@@ -84,7 +84,7 @@ public class Scanner {
       case ':':
         {
           eatIt();
-          kind = TokenType.SEMICOLON;
+          kind = TokenType.COLON;
 
           if (currentChar.c == '=') {
             eatIt();
@@ -139,6 +139,7 @@ public class Scanner {
       case 'h':
       case 'i':
       case 'j':
+      case 'k':
       case 'l':
       case 'm':
       case 'n':
@@ -164,6 +165,7 @@ public class Scanner {
       case 'H':
       case 'I':
       case 'J':
+      case 'K':
       case 'L':
       case 'M':
       case 'N':
