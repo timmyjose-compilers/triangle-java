@@ -30,4 +30,9 @@ public class SingleArrayAggregate extends ArrayAggregate {
   public String toString() {
     return "SingleArrayAggregate { E = " + this.E + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

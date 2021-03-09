@@ -3,22 +3,18 @@ package com.z0ltan.compilers.triangle.ast;
 import java.util.Objects;
 import com.z0ltan.compilers.triangle.scanner.SourcePosition;
 
-public class CharacterExpression extends Expression {
-  public CharacterLiteral CL;
-
-  public CharacterExpression(final CharacterLiteral CL, final SourcePosition position) {
+public class CharTypeDenoter extends TypeDenoter {
+  public CharTypeDenoter(final SourcePosition position) {
     super(position);
-    this.CL = CL;
   }
 
   @Override
   public boolean equals(Object o) {
-    if (!(o instanceof CharacterExpression)) {
+    if (!(o instanceof CharTypeDenoter)) {
       return false;
     }
 
-    CharacterExpression other = (CharacterExpression)o;
-    return this.CL.equals(other.CL);
+    return true;
   }
 
   @Override
@@ -28,7 +24,7 @@ public class CharacterExpression extends Expression {
 
   @Override
   public String toString() {
-    return "CharacterExpression { CL = " + this.CL + ", position = " + this.position + " }";
+    return "CharTypeDenoter { position = " + this.position + " }";
   }
 
   @Override

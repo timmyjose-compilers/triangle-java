@@ -32,4 +32,9 @@ public class CallExpression extends Expression {
   public String toString() {
     return "CallExpression { I = " + this.I + ", APS = " + this.APS + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

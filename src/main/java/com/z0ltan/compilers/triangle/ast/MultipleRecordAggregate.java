@@ -34,4 +34,9 @@ public class MultipleRecordAggregate extends RecordAggregate {
   public String toString() {
     return "MultipleRecordAggregate { I = " + this.I + ", E = " + this.E + ", RA = " + this.RA + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

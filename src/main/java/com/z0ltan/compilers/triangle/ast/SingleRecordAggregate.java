@@ -32,4 +32,9 @@ public class SingleRecordAggregate extends RecordAggregate {
   public String toString() {
     return "SingleRecordAggregate { I = " + this.I + ", E = " + this.E + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

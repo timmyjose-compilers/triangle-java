@@ -32,5 +32,9 @@ public class DotVname extends Vname {
   public String toString() {
     return "DotVname { V = " + this.V + ", I = " + this.I + ", position = " + this.position + " }";
   }
-}
 
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
+}

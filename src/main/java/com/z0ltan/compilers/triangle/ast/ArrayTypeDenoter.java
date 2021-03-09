@@ -32,5 +32,9 @@ public class ArrayTypeDenoter extends TypeDenoter {
   public String toString() {
     return "ArrayTypeDenoter { IL = " + this.IL + ", T = " + this.T + ", position = " + this.position + " }";
   }
-}
 
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
+}

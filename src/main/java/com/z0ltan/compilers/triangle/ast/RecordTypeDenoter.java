@@ -30,4 +30,9 @@ public class RecordTypeDenoter extends TypeDenoter {
   public String toString() {
     return "RecordTypeDenoter { FTD = " + this.FTD + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

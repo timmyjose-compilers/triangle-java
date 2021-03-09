@@ -32,4 +32,9 @@ public class AssignCommand extends Command {
   public String toString() {
     return "AssignCommand { V = " + this.V + ", E = " + this.E + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

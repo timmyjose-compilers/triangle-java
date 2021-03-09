@@ -32,4 +32,9 @@ public class SingleFieldTypeDenoter extends FieldTypeDenoter {
   public String toString() {
     return "SingleFieldTypeDenoter { I = " + this.I + ", T = " + this.T + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

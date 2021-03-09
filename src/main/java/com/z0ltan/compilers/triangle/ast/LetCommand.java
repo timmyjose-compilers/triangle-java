@@ -32,4 +32,9 @@ public class LetCommand extends Command {
   public String toString() {
     return "LetCommand { D = " + this.D + ", C = " + this.C + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

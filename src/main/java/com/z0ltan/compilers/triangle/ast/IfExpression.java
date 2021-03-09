@@ -34,4 +34,9 @@ public class IfExpression extends Expression {
   public String toString() {
     return "IfExpression { E1 = " + this.E1 + ", E2 = " + this.E2 + ", E3 = " + this.E3 + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

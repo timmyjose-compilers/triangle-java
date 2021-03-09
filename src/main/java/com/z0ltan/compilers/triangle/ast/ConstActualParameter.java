@@ -30,4 +30,9 @@ public class ConstActualParameter extends ActualParameter {
   public String toString() {
     return "ConstActualParameter { E = " + this.E + ", position = " + this.position + "}";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

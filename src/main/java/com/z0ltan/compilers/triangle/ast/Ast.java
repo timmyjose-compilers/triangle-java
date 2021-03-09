@@ -11,4 +11,6 @@ public abstract class Ast {
     this.position = position;
     this.entity = null;
   }
+
+  protected abstract Object accept(final Visitor visitor, final Object arg);
 }

@@ -34,4 +34,9 @@ public class FuncFormalParameter extends FormalParameter {
   public String toString() {
     return "FuncFormalParameter { I = " + this.I + ", FPS = " + this.FPS + ", T = " + this.T + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

@@ -30,4 +30,9 @@ public class SimpleVname extends Vname {
   public String toString() {
     return "SimpleVname { I = " + this.I + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

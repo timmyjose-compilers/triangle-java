@@ -27,4 +27,9 @@ public class CharacterLiteral extends Terminal {
   public String toString() {
     return "CharacterLiteral { spelling = " + this.spelling + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

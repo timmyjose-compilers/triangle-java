@@ -6,4 +6,6 @@ public abstract class Expression extends Ast {
   public Expression(final SourcePosition position) {
     super(position);
   }
+
+  public TypeDenoter type;
 }

@@ -30,4 +30,9 @@ public class IntegerExpression extends Expression {
   public String toString() {
     return "IntegerExpression { IL = " + this.IL + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

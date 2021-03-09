@@ -32,4 +32,9 @@ public class SequentialDeclaration extends Declaration {
   public String toString() {
     return "SequentialDeclaration { D1 = " + this.D1 + ", D2 = " + this.D2 + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

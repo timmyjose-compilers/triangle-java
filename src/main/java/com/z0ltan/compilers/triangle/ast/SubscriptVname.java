@@ -32,4 +32,9 @@ public class SubscriptVname extends Vname {
   public String toString() {
     return "SubscriptVname { V = " + this.V + ", E = " + this.E + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

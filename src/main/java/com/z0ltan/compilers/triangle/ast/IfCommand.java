@@ -34,4 +34,9 @@ public class IfCommand extends Command {
   public String toString() {
     return "IfCommand { E = " + this.E + ", C1 = " + this.C1 + ", C2 = " + this.C2 + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

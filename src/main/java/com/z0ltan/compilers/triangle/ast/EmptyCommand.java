@@ -27,4 +27,9 @@ public class EmptyCommand extends Command {
   public String toString() {
     return "EmptyCommand { position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

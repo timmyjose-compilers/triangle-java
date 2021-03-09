@@ -34,4 +34,9 @@ public class BinaryExpression extends Expression {
   public String toString() {
     return "BinaryExpression { E1 = " + this.E1 + ", O = " + this.O + ", E2 = " + this.E2 + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

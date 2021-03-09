@@ -30,4 +30,9 @@ public class VarActualParameter extends ActualParameter {
   public String toString() {
     return "VarActualParameter { V = " + this.V + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

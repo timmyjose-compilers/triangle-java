@@ -29,4 +29,9 @@ public class Program extends Ast {
   public String toString() {
     return "Program { C = " + this.C + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

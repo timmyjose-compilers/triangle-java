@@ -30,4 +30,9 @@ public class FuncActualParameter extends ActualParameter {
   public String toString() {
     return "FuncActualParameter { I = " + this.I + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

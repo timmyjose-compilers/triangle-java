@@ -32,4 +32,9 @@ public class MultipleArrayAggregate extends ArrayAggregate {
   public String toString() {
     return "MultipleArrayAggregate { E = " + this.E + ", AA = " + this.AA + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

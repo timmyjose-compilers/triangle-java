@@ -32,4 +32,9 @@ public class ProcFormalParameter extends FormalParameter {
   public String toString() {
     return "ProcFormalParameter { I = " + this.I + ", FPS = " + this.FPS + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

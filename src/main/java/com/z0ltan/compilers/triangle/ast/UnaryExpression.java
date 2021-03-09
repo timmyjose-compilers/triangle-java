@@ -32,4 +32,9 @@ public class UnaryExpression extends Expression {
   public String toString() {
     return "UnaryExpression { O = " + this.O + ", E = " + this.E + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

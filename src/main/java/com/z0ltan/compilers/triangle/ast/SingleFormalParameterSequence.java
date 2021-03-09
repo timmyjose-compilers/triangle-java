@@ -30,4 +30,9 @@ public class SingleFormalParameterSequence extends FormalParameterSequence {
   public String toString() {
     return "SingleFormalParameterSequence { FP = " + this.FP + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

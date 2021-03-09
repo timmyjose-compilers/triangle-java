@@ -36,4 +36,9 @@ public class FuncDeclaration extends Declaration {
   public String toString() {
     return "FuncDeclaration { I = " + this.I + ", FPS = " + this.FPS + ", T = " + this.T + ", E = " + this.E + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

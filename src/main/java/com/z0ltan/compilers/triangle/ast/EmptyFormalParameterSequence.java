@@ -26,4 +26,9 @@ public class EmptyFormalParameterSequence extends FormalParameterSequence {
   public String toString() {
     return "EmptyFormalParameterSequence { position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

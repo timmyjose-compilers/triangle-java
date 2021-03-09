@@ -34,4 +34,9 @@ public class MultipleFieldTypeDenoter extends FieldTypeDenoter {
   public String toString() {
     return "MultipleFieldTypeDenoter { I = " + this.I + ", T = " + this.T + ", FTD = " + this.FTD + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

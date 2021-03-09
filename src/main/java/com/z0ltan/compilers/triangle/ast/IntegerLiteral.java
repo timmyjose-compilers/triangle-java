@@ -27,4 +27,9 @@ public class IntegerLiteral extends Terminal {
   public String toString() {
     return "IntegerLiteral { spelling = " + this.spelling + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

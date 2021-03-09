@@ -32,4 +32,9 @@ public class LetExpression extends Expression {
   public String toString() {
     return "LetExpression { D = " + this.D + ", E = " + this.E + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

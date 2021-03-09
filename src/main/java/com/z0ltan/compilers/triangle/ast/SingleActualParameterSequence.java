@@ -30,4 +30,9 @@ public class SingleActualParameterSequence extends ActualParameterSequence {
   public String toString() {
     return "SingleActualParameterSequence { AP = " + this.AP + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }

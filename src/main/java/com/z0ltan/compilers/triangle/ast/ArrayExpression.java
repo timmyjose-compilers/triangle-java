@@ -30,4 +30,9 @@ public class ArrayExpression extends Expression {
   public String toString() {
     return "ArrayExpression { AA = " + this.AA + ", position = " + this.position + " }";
   }
+
+  @Override
+  public Object accept(final Visitor visitor, final Object arg) {
+    return visitor.visit(this, arg);
+  }
 }
