@@ -69,6 +69,9 @@ public class Checker implements Visitor {
   public Checker() {
   }
 
+  public void check(final Program program) {
+  }
+
   @Override
   public Object visit(final Program program, final Object arg) {
     return null; // TODO

@@ -830,7 +830,7 @@ public class Parser {
   }
 
   // Program ::= Command <EOT>
-  Program parseProgram() {
+  public Program parseProgram() {
     SourcePosition programPos = new SourcePosition();
     start(programPos);
     Command cmd = parseCommand();
