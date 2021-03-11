@@ -3,6 +3,7 @@ package com.z0ltan.compilers.triangle.checker;
 import com.z0ltan.compilers.triangle.ast.Program;
 import com.z0ltan.compilers.triangle.ast.Visitor;
 import com.z0ltan.compilers.triangle.ast.Program;
+import com.z0ltan.compilers.triangle.ast.Command;
 import com.z0ltan.compilers.triangle.ast.EmptyCommand;
 import com.z0ltan.compilers.triangle.ast.AssignCommand;
 import com.z0ltan.compilers.triangle.ast.CallCommand;
@@ -10,6 +11,7 @@ import com.z0ltan.compilers.triangle.ast.LetCommand;
 import com.z0ltan.compilers.triangle.ast.IfCommand;
 import com.z0ltan.compilers.triangle.ast.WhileCommand;
 import com.z0ltan.compilers.triangle.ast.SequentialCommand;
+import com.z0ltan.compilers.triangle.ast.Expression;
 import com.z0ltan.compilers.triangle.ast.EmptyExpression;
 import com.z0ltan.compilers.triangle.ast.IntegerExpression;
 import com.z0ltan.compilers.triangle.ast.CharacterExpression;
@@ -25,6 +27,7 @@ import com.z0ltan.compilers.triangle.ast.SingleArrayAggregate;
 import com.z0ltan.compilers.triangle.ast.MultipleArrayAggregate;
 import com.z0ltan.compilers.triangle.ast.SingleRecordAggregate;
 import com.z0ltan.compilers.triangle.ast.MultipleRecordAggregate;
+import com.z0ltan.compilers.triangle.ast.Declaration;
 import com.z0ltan.compilers.triangle.ast.ConstDeclaration;
 import com.z0ltan.compilers.triangle.ast.VarDeclaration;
 import com.z0ltan.compilers.triangle.ast.ProcDeclaration;
@@ -33,6 +36,7 @@ import com.z0ltan.compilers.triangle.ast.TypeDeclaration;
 import com.z0ltan.compilers.triangle.ast.UnaryOperatorDeclaration;
 import com.z0ltan.compilers.triangle.ast.BinaryOperatorDeclaration;
 import com.z0ltan.compilers.triangle.ast.SequentialDeclaration;
+import com.z0ltan.compilers.triangle.ast.TypeDenoter;
 import com.z0ltan.compilers.triangle.ast.AnyTypeDenoter;
 import com.z0ltan.compilers.triangle.ast.ErrorTypeDenoter;
 import com.z0ltan.compilers.triangle.ast.BoolTypeDenoter;
@@ -43,6 +47,7 @@ import com.z0ltan.compilers.triangle.ast.SimpleTypeDenoter;
 import com.z0ltan.compilers.triangle.ast.SingleFieldTypeDenoter;
 import com.z0ltan.compilers.triangle.ast.MultipleFieldTypeDenoter;
 import com.z0ltan.compilers.triangle.ast.RecordTypeDenoter;
+import com.z0ltan.compilers.triangle.ast.FormalParameterSequence;
 import com.z0ltan.compilers.triangle.ast.EmptyFormalParameterSequence;
 import com.z0ltan.compilers.triangle.ast.SingleFormalParameterSequence;
 import com.z0ltan.compilers.triangle.ast.MultipleFormalParameterSequence;
@@ -65,8 +70,133 @@ import com.z0ltan.compilers.triangle.ast.IntegerLiteral;
 import com.z0ltan.compilers.triangle.ast.CharacterLiteral;
 import com.z0ltan.compilers.triangle.ast.Operator;
 
+import static com.z0ltan.compilers.triangle.scanner.SourcePosition.dummyPosition;
+
 public class Checker implements Visitor {
   public Checker() {
+    establishStdEnvironment();
+  }
+
+  void establishStdEnvironment() {
+    StdEnvironment.anyType = new AnyTypeDenoter(dummyPosition());
+    StdEnvironment.errorType = new ErrorTypeDenoter(dummyPosition());
+    StdEnvironment.boolType = new BoolTypeDenoter(dummyPosition());
+    StdEnvironment.intType = new IntTypeDenoter(dummyPosition());
+    StdEnvironment.charType = new CharTypeDenoter(dummyPosition());
+
+    StdEnvironment.falseDecl = declareStdConst("false", StdEnvironment.boolType);
+    StdEnvironment.trueDecl = declareStdConst("true", StdEnvironment.boolType);
+
+    StdEnvironment.boolDecl = declareStdType("Boolean", StdEnvironment.boolType);
+    StdEnvironment.intDecl = declareStdType("Integer", StdEnvironment.intType);
+    StdEnvironment.charDecl = declareStdType("Char", StdEnvironment.charType);
+
+    StdEnvironment.notDecl = declareStdUnaryOperator("\\", StdEnvironment.intType, StdEnvironment.intType);
+    StdEnvironment.andDecl = declareStdBinaryOperator("/\\", StdEnvironment.boolType, StdEnvironment.boolType, StdEnvironment.boolType);
+    StdEnvironment.orDecl = declareStdBinaryOperator("\\/", StdEnvironment.boolType, StdEnvironment.boolType, StdEnvironment.boolType);
+    StdEnvironment.addDecl = declareStdBinaryOperator("+", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.intType);
+    StdEnvironment.subDecl = declareStdBinaryOperator("-", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.intType);
+    StdEnvironment.multDecl = declareStdBinaryOperator("*", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.intType);
+    StdEnvironment.divDecl = declareStdBinaryOperator("/", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.intType);
+    StdEnvironment.modDecl = declareStdBinaryOperator("//", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.intType);
+    StdEnvironment.lessThanDecl = declareStdBinaryOperator("<", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.intType);
+    StdEnvironment.lessThanOrEqualToDecl = declareStdBinaryOperator("<=", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.intType);
+    StdEnvironment.greaterThanDecl = declareStdBinaryOperator(">", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.intType);
+    StdEnvironment.greaterThanOrEqualToDecl = declareStdBinaryOperator(">=", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.intType);
+
+    final Identifier dummyId = new Identifier("", dummyPosition());
+
+    StdEnvironment.getDecl = 
+      declareStdProc("get", 
+          new SingleFormalParameterSequence(new VarFormalParameter(dummyId, StdEnvironment.charType, dummyPosition()), dummyPosition()), 
+          new EmptyCommand(dummyPosition()));
+
+    StdEnvironment.putDecl = 
+      declareStdProc("put",
+          new SingleFormalParameterSequence(new ConstFormalParameter(dummyId, StdEnvironment.charType, dummyPosition()), dummyPosition()),
+          new EmptyCommand(dummyPosition()));
+
+    StdEnvironment.getintDecl = 
+      declareStdProc("getint",
+          new SingleFormalParameterSequence(new VarFormalParameter(dummyId, StdEnvironment.charType, dummyPosition()), dummyPosition()),
+          new EmptyCommand(dummyPosition()));
+
+    StdEnvironment.putintDecl = 
+      declareStdProc("putint",
+          new SingleFormalParameterSequence(new ConstFormalParameter(dummyId, StdEnvironment.intType, dummyPosition()), dummyPosition()),
+          new EmptyCommand(dummyPosition()));
+
+    StdEnvironment.geteolDecl = 
+      declareStdProc("geteol",
+          new EmptyFormalParameterSequence(dummyPosition()),
+          new EmptyCommand(dummyPosition()));
+
+    StdEnvironment.puteolDecl = 
+      declareStdProc("puteol",
+          new EmptyFormalParameterSequence(dummyPosition()),
+          new EmptyCommand(dummyPosition()));
+
+    StdEnvironment.eolDecl = 
+      declareStdFunc("eol",
+          new EmptyFormalParameterSequence(dummyPosition()),
+          StdEnvironment.boolType,
+          new EmptyExpression(dummyPosition()));
+
+    StdEnvironment.eofDecl  =
+      declareStdFunc("eof",
+          new EmptyFormalParameterSequence(dummyPosition()),
+          StdEnvironment.boolType,
+          new EmptyExpression(dummyPosition()));
+
+    StdEnvironment.chrDecl = 
+      declareStdFunc("chr",
+          new SingleFormalParameterSequence(new ConstFormalParameter(dummyId, StdEnvironment.intType, dummyPosition()), dummyPosition()),
+          StdEnvironment.charType,
+          new EmptyExpression(dummyPosition()));
+
+    StdEnvironment.ordDecl = 
+      declareStdFunc("ord",
+          new SingleFormalParameterSequence(new ConstFormalParameter(dummyId, StdEnvironment.charType, dummyPosition()), dummyPosition()),
+          StdEnvironment.intType,
+          new EmptyExpression(dummyPosition()));
+  }
+
+  FuncDeclaration declareStdFunc(final String id, final FormalParameterSequence fps, final TypeDenoter retType, final Expression body) {
+    FuncDeclaration decl = new FuncDeclaration(new Identifier(id, dummyPosition()), fps, retType, body, dummyPosition());
+    // enter into idTable
+    return decl;
+  }
+
+  ProcDeclaration declareStdProc(final String id, final FormalParameterSequence fps, final Command cmd) {
+    ProcDeclaration decl = new ProcDeclaration(new Identifier(id, dummyPosition()), fps, cmd, dummyPosition());
+    // insert into idTable
+    return decl;
+  }
+
+  BinaryOperatorDeclaration declareStdBinaryOperator(final String id, final TypeDenoter arg1Type, final TypeDenoter arg2Type, final TypeDenoter resType) {
+    BinaryOperatorDeclaration decl = new BinaryOperatorDeclaration(arg1Type, new Operator(id, dummyPosition()), arg2Type, resType, dummyPosition());
+    // enter into idTable
+    return decl;
+  }
+
+  UnaryOperatorDeclaration declareStdUnaryOperator(final String id, final TypeDenoter argType, final TypeDenoter resType) {
+    UnaryOperatorDeclaration decl = new UnaryOperatorDeclaration(new Operator(id, dummyPosition()), argType, resType, dummyPosition());
+    // enter into idTable
+    return decl;
+  }
+
+  TypeDeclaration declareStdType(final String id, final TypeDenoter baseType) {
+    TypeDeclaration decl = new TypeDeclaration(new Identifier(id, dummyPosition()), baseType, dummyPosition());
+    // insert into idTable
+    return decl;
+  }
+
+  ConstDeclaration declareStdConst(final String id, final TypeDenoter constType) {
+    IntegerExpression iexpr = new IntegerExpression(null, dummyPosition());
+    iexpr.type = constType;
+    ConstDeclaration decl = new ConstDeclaration(new Identifier(id, dummyPosition()), iexpr, dummyPosition());
+    // insert into idTable
+    return decl;
   }
 
   public void check(final Program program) {

@@ -11,13 +11,17 @@ import com.z0ltan.compilers.triangle.ast.ConstActualParameter;
 import com.z0ltan.compilers.triangle.ast.IntTypeDenoter;
 import com.z0ltan.compilers.triangle.ast.IntegerExpression;
 
+import static com.z0ltan.compilers.triangle.checker.matchers.IsHello;
 import static com.z0ltan.compilers.triangle.scanner.SourcePosition.dummyPosition;
 
 public class IsHello extends TypeSafeMatcher<Program> {
   @Override
   public boolean matchesSafely(Program program) {
-    final IntegerExpression iexpr =
-      (IntegerExpression)((ConstActualParameter)((SingleActualParameterSequence)((CallCommand)program.C).APS).AP).E;
+    final Identifier id = (Identifier) travel(program, "C.I");
+    final Identifier idDeclaration = (Declaration) travel(program, "C.I.decl");
+    final Declaration expectedDeclaration = new 
+
+    final IntegerExpression iexpr = (IntegerExpression) travel(program, "C.APS.AP.E");
     return iexpr.type.equals(new IntTypeDenoter(dummyPosition()));
   }
 
