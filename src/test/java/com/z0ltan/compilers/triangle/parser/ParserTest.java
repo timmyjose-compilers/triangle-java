@@ -4,7 +4,9 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.equalTo;
 
 import com.z0ltan.compilers.triangle.scanner.Scanner;
 import com.z0ltan.compilers.triangle.scanner.SourcePosition;
@@ -80,7 +82,7 @@ public class ParserTest extends TestCase {
     Parser parser = new Parser(scanner);
     Program expectedProgram = new Program(new EmptyCommand(dummyPosition()), dummyPosition());
     Program actualProgram = parser.parseProgram();
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
 
   public void testEmptyCommandSemicolon() {
@@ -89,7 +91,7 @@ public class ParserTest extends TestCase {
     Parser parser = new Parser(scanner);
     Program expectedProgram = new Program(new EmptyCommand(dummyPosition()), dummyPosition());
     Program actualProgram = parser.parseProgram();
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
 
   public void testHello() {
@@ -103,7 +105,7 @@ public class ParserTest extends TestCase {
             dummyPosition()),
           dummyPosition());
     Program actualProgram = parser.parseProgram();
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
 
   public void testInc() {
@@ -160,7 +162,7 @@ public class ParserTest extends TestCase {
                   dummyPosition()),
                   dummyPosition());
     Program actualProgram = parser.parseProgram();
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
 
   public void testEcho() {
@@ -193,7 +195,7 @@ public class ParserTest extends TestCase {
                 new CallCommand(new Identifier("echo", dummyPosition()), new EmptyActualParameterSequence(dummyPosition()), dummyPosition()), dummyPosition()),
                 dummyPosition());
     Program actualProgram = parser.parseProgram();
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
 
   public void testOdd() {
@@ -253,7 +255,7 @@ public class ParserTest extends TestCase {
                   dummyPosition()),
                   dummyPosition());
     Program actualProgram = parser.parseProgram();
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
 
   public void testSumProc() {
@@ -540,7 +542,7 @@ public class ParserTest extends TestCase {
 
 
     Program actualProgram = parser.parseProgram();
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
 
   public void testPower() {
@@ -840,7 +842,7 @@ public class ParserTest extends TestCase {
                                                         );
 
     Program actualProgram = parser.parseProgram();
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
 
   public void testFactorial() {
@@ -1124,7 +1126,7 @@ public class ParserTest extends TestCase {
                                                     );
 
     Program actualProgram = parser.parseProgram();
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
 
   public void testRecord() {
@@ -1580,7 +1582,7 @@ public class ParserTest extends TestCase {
                                                                   dummyPosition()
                                                                     );
     Program actualProgram = parser.parseProgram();
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
 
   public void testLeapYear() {
@@ -2074,7 +2076,7 @@ public class ParserTest extends TestCase {
                                                                                         );
 
     Program actualProgram = parser.parseProgram();
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
 
   public void testPrintArray() {
@@ -2570,7 +2572,7 @@ public class ParserTest extends TestCase {
                                                                                           );
 
     Program actualProgram = parser.parseProgram();
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
 
   public void testDate() {
@@ -3152,7 +3154,7 @@ public class ParserTest extends TestCase {
                                                                                                 );
 
     Program actualProgram = parser.parseProgram();
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
 
   public void testString() {
@@ -3627,7 +3629,7 @@ public class ParserTest extends TestCase {
                                                                                               );
 
     Program actualProgram = parser.parseProgram();
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
 
   public void testIteratively() {
@@ -4192,7 +4194,7 @@ public class ParserTest extends TestCase {
                                                                                                         );
 
     Program actualProgram = parser.parseProgram();
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
 
   public void testReverseLine() {
@@ -4720,7 +4722,7 @@ public class ParserTest extends TestCase {
                                                                                                         dummyPosition()
                                                                                                           );
     Program actualProgram = parser.parseProgram();
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
 
   public void testLine() {
@@ -5442,7 +5444,7 @@ public class ParserTest extends TestCase {
                                                                                                                                                       );
 
     Program actualProgram = parser.parseProgram();
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
 
   public void testDates() {
@@ -6233,7 +6235,7 @@ public class ParserTest extends TestCase {
                                                                                                                         );
 
     Program actualProgram = parser.parseProgram();
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
 
   public void testMonthsOfYear() {
@@ -7135,7 +7137,7 @@ public class ParserTest extends TestCase {
                                                                                                                                                             );
 
     Program actualProgram = parser.parseProgram();
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
 
   public void testCapitalise() {
@@ -8083,7 +8085,7 @@ public class ParserTest extends TestCase {
                                                                                                                                                           );
 
     Program actualProgram = parser.parseProgram();
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
 
   public void testFreq() {
@@ -9133,7 +9135,7 @@ public class ParserTest extends TestCase {
                                                                                                                                                           );
 
     Program actualProgram = parser.parseProgram();
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
 
   public void testInsertionSort() {
@@ -10465,7 +10467,7 @@ public class ParserTest extends TestCase {
                                                                                                                                                                                                                 );
 
     Program actualProgram = parser.parseProgram();
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
 
   public void testRationals() {
@@ -11950,7 +11952,7 @@ public class ParserTest extends TestCase {
                                                                                                                                                                                                                         );
 
     Program actualProgram = parser.parseProgram();
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
 }
 

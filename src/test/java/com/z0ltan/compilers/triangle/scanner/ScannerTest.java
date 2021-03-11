@@ -4,7 +4,9 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.equalTo;
 
 import java.util.Iterator;
 
@@ -36,8 +38,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -50,8 +52,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -65,8 +67,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -80,8 +82,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -98,8 +100,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -116,8 +118,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -169,8 +171,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -222,8 +224,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -272,8 +274,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -321,8 +323,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -382,8 +384,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -443,8 +445,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -524,8 +526,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -605,8 +607,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -685,8 +687,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -765,8 +767,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -849,8 +851,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -933,8 +935,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -1058,8 +1060,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -1183,8 +1185,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -1325,8 +1327,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -1467,8 +1469,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -1606,8 +1608,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -1745,8 +1747,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -1910,8 +1912,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -2075,8 +2077,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -2215,8 +2217,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -2355,8 +2357,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -2525,8 +2527,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -2695,8 +2697,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -2851,8 +2853,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -3007,8 +3009,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -3204,8 +3206,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -3401,8 +3403,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -3626,8 +3628,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -3851,11 +3853,10 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
-
 
   public void testMonthsOfYear() {
     String filename = "samples/monthsofyear.t";
@@ -4100,8 +4101,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -4348,8 +4349,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -4603,8 +4604,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -4857,8 +4858,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -5141,8 +5142,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -5425,8 +5426,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -5757,8 +5758,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -6089,8 +6090,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -6457,8 +6458,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 
@@ -6825,8 +6826,8 @@ public class ScannerTest extends TestCase {
     Scanner scanner = new Scanner(filename);
     for (int i = 0; i < testCases.length; i++) {
       Token token = scanner.scan();
-      assertEquals(testCases[i].kind, token.kind);
-      assertEquals(testCases[i].spelling, token.spelling);
+      assertThat(testCases[i].kind, is(equalTo(token.kind)));
+      assertThat(testCases[i].spelling, is(equalTo(token.spelling)));
     }
   }
 }

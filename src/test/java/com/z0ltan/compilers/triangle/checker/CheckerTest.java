@@ -10,11 +10,25 @@ import com.z0ltan.compilers.triangle.scanner.Scanner;
 import com.z0ltan.compilers.triangle.parser.Parser;
 import com.z0ltan.compilers.triangle.ast.Program;
 import com.z0ltan.compilers.triangle.ast.EmptyCommand;
+import com.z0ltan.compilers.triangle.ast.AssignCommand;
 import com.z0ltan.compilers.triangle.ast.CallCommand;
+import com.z0ltan.compilers.triangle.ast.LetCommand;
+import com.z0ltan.compilers.triangle.ast.SequentialCommand;
 import com.z0ltan.compilers.triangle.ast.IntegerExpression;
+import com.z0ltan.compilers.triangle.ast.VnameExpression;
+import com.z0ltan.compilers.triangle.ast.BinaryExpression;
+import com.z0ltan.compilers.triangle.ast.VarDeclaration;
+import com.z0ltan.compilers.triangle.ast.ProcDeclaration;
+import com.z0ltan.compilers.triangle.ast.SequentialDeclaration;
+import com.z0ltan.compilers.triangle.ast.SingleFormalParameterSequence;
+import com.z0ltan.compilers.triangle.ast.VarFormalParameter;
 import com.z0ltan.compilers.triangle.ast.SingleActualParameterSequence;
 import com.z0ltan.compilers.triangle.ast.ConstActualParameter;
+import com.z0ltan.compilers.triangle.ast.VarActualParameter;
+import com.z0ltan.compilers.triangle.ast.SimpleTypeDenoter;
+import com.z0ltan.compilers.triangle.ast.SimpleVname;
 import com.z0ltan.compilers.triangle.ast.Identifier;
+import com.z0ltan.compilers.triangle.ast.Operator;
 import com.z0ltan.compilers.triangle.ast.IntegerLiteral;
 
 import static com.z0ltan.compilers.triangle.scanner.SourcePosition.dummyPosition;
@@ -30,33 +44,27 @@ public class CheckerTest extends TestCase {
 
   public void testEmptyCommandEot() {
     String filename = "samples/emptycommandeot.t";
-    Scanner scanner = new Scanner(filename);
-    Parser parser = new Parser(scanner);
+    Parser parser = new Parser(new Scanner(filename));
+    final Program expectedProgram = new Program(new EmptyCommand(dummyPosition()), dummyPosition());
     final Program actualProgram = parser.parseProgram();
     Checker checker = new Checker();
     checker.check(actualProgram);
-    final Program expectedProgram = new Program(new EmptyCommand(dummyPosition()), dummyPosition());
     assertEquals(expectedProgram, actualProgram);
   }
 
   public void testEmptyCommandSemicolon() {
     String filename = "samples/emptycommandsemicolon.t";
-    Scanner scanner = new Scanner(filename);
-    Parser parser = new Parser(scanner);
+    Parser parser = new Parser(new Scanner(filename));
+    final Program expectedProgram = new Program(new EmptyCommand(dummyPosition()), dummyPosition());
     final Program actualProgram = parser.parseProgram();
     Checker checker = new Checker();
     checker.check(actualProgram);
-    final Program expectedProgram = new Program(new EmptyCommand(dummyPosition()), dummyPosition());
     assertEquals(expectedProgram, actualProgram);
   }
 
   public void testHello() {
     String filename = "samples/hello.t";
-    Scanner scanner = new Scanner(filename);
-    Parser parser = new Parser(scanner);
-    final Program actualProgram = parser.parseProgram();
-    Checker checker = new Checker();
-    checker.check(actualProgram);
+    Parser parser = new Parser(new Scanner(filename));
     final Program expectedProgram =
       new Program(
           new CallCommand(
@@ -66,10 +74,68 @@ public class CheckerTest extends TestCase {
               dummyPosition()),
             dummyPosition()),
           dummyPosition());
+    final Program actualProgram = parser.parseProgram();
+    Checker checker = new Checker();
+    checker.check(actualProgram);
     assertEquals(expectedProgram, actualProgram);
   }
 
   public void testInc() {
+    String filename = "samples/inc.t";
+    Parser parser = new Parser(new Scanner(filename));
+    final Program expectedProgram = 
+      new Program(
+          new LetCommand(
+            new SequentialDeclaration(
+              new VarDeclaration(
+                new Identifier("x", dummyPosition()),
+                new SimpleTypeDenoter(new Identifier("Integer", dummyPosition()), dummyPosition()),
+                dummyPosition()),
+              new ProcDeclaration(
+                new Identifier("inc", dummyPosition()),
+                new SingleFormalParameterSequence(
+                  new VarFormalParameter(new Identifier("n", dummyPosition()), 
+                    new SimpleTypeDenoter(new Identifier("Integer", dummyPosition()), dummyPosition()),
+                    dummyPosition()),
+                  dummyPosition()),
+                new AssignCommand(
+                  new SimpleVname(new Identifier("n", dummyPosition()), dummyPosition()),
+                  new BinaryExpression(
+                    new VnameExpression(new SimpleVname(new Identifier("n", dummyPosition()), dummyPosition()), dummyPosition()),
+                    new Operator("+", dummyPosition()),
+                    new IntegerExpression(new IntegerLiteral("1", dummyPosition()), dummyPosition()),
+                    dummyPosition()),
+                  dummyPosition()),
+                dummyPosition()),
+              dummyPosition()),
+              new SequentialCommand(
+                  new SequentialCommand(
+                    new CallCommand(
+                      new Identifier("getint", dummyPosition()),
+                      new SingleActualParameterSequence(
+                        new VarActualParameter(new SimpleVname(new Identifier("x", dummyPosition()), dummyPosition()), dummyPosition()),
+                        dummyPosition()),
+                      dummyPosition()),
+                    new CallCommand(
+                      new Identifier("inc", dummyPosition()),
+                      new SingleActualParameterSequence(
+                        new VarActualParameter(new SimpleVname(new Identifier("x", dummyPosition()), dummyPosition()), dummyPosition()),
+                        dummyPosition()),
+                      dummyPosition()),
+                    dummyPosition()),
+                  new CallCommand(
+                    new Identifier("putint", dummyPosition()),
+                    new SingleActualParameterSequence(
+                      new ConstActualParameter(new VnameExpression(new SimpleVname(new Identifier("x", dummyPosition()), dummyPosition()), dummyPosition()),
+                        dummyPosition()),
+                      dummyPosition()), dummyPosition()),
+                  dummyPosition()),
+                  dummyPosition()),
+                  dummyPosition());
+    final Program actualProgram = parser.parseProgram();
+    Checker checker = new Checker();
+    checker.check(actualProgram);
+    assertEquals(expectedProgram, actualProgram);
   }
 
   public void testEcho() {

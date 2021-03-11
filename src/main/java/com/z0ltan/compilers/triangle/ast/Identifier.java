@@ -4,6 +4,9 @@ import java.util.Objects;
 import com.z0ltan.compilers.triangle.scanner.SourcePosition;
 
 public class Identifier extends Terminal {
+  public TypeDenoter type;
+  public Declaration decl;
+
   public Identifier(final String spelling, SourcePosition position) {
     super(spelling, position);
   }
