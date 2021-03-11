@@ -10,16 +10,20 @@ import com.z0ltan.compilers.triangle.ast.SingleActualParameterSequence;
 import com.z0ltan.compilers.triangle.ast.ConstActualParameter;
 import com.z0ltan.compilers.triangle.ast.IntTypeDenoter;
 import com.z0ltan.compilers.triangle.ast.IntegerExpression;
+import com.z0ltan.compilers.triangle.ast.Declaration;
+import com.z0ltan.compilers.triangle.ast.Identifier;
 
-import static com.z0ltan.compilers.triangle.checker.matchers.IsHello;
+import com.z0ltan.compilers.triangle.checker.StdEnvironment;
+
+import static com.z0ltan.compilers.triangle.helper.traveller.Traveller.travel;
 import static com.z0ltan.compilers.triangle.scanner.SourcePosition.dummyPosition;
 
 public class IsHello extends TypeSafeMatcher<Program> {
   @Override
   public boolean matchesSafely(Program program) {
     final Identifier id = (Identifier) travel(program, "C.I");
-    final Identifier idDeclaration = (Declaration) travel(program, "C.I.decl");
-    final Declaration expectedDeclaration = new 
+    final Declaration idDeclaration = (Declaration) travel(program, "C.I.decl");
+    final Declaration expectedDeclaration = StdEnvironment.putintDecl;
 
     final IntegerExpression iexpr = (IntegerExpression) travel(program, "C.APS.AP.E");
     return iexpr.type.equals(new IntTypeDenoter(dummyPosition()));
