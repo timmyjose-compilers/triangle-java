@@ -4,7 +4,9 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.equalTo;
 
 import com.z0ltan.compilers.triangle.scanner.Scanner;
 import com.z0ltan.compilers.triangle.parser.Parser;
@@ -26,12 +28,14 @@ import com.z0ltan.compilers.triangle.ast.SingleActualParameterSequence;
 import com.z0ltan.compilers.triangle.ast.ConstActualParameter;
 import com.z0ltan.compilers.triangle.ast.VarActualParameter;
 import com.z0ltan.compilers.triangle.ast.SimpleTypeDenoter;
+import com.z0ltan.compilers.triangle.ast.IntTypeDenoter;
 import com.z0ltan.compilers.triangle.ast.SimpleVname;
 import com.z0ltan.compilers.triangle.ast.Identifier;
 import com.z0ltan.compilers.triangle.ast.Operator;
 import com.z0ltan.compilers.triangle.ast.IntegerLiteral;
 
 import static com.z0ltan.compilers.triangle.scanner.SourcePosition.dummyPosition;
+import static com.z0ltan.compilers.triangle.checker.matchers.IsHello.hello;
 
 public class CheckerTest extends TestCase {
   public CheckerTest(String testName) {
@@ -49,7 +53,7 @@ public class CheckerTest extends TestCase {
     final Program actualProgram = parser.parseProgram();
     Checker checker = new Checker();
     checker.check(actualProgram);
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
 
   public void testEmptyCommandSemicolon() {
@@ -59,7 +63,7 @@ public class CheckerTest extends TestCase {
     final Program actualProgram = parser.parseProgram();
     Checker checker = new Checker();
     checker.check(actualProgram);
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
 
   public void testHello() {
@@ -77,7 +81,7 @@ public class CheckerTest extends TestCase {
     final Program actualProgram = parser.parseProgram();
     Checker checker = new Checker();
     checker.check(actualProgram);
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(actualProgram, is(hello()));
   }
 
   public void testInc() {
@@ -135,7 +139,7 @@ public class CheckerTest extends TestCase {
     final Program actualProgram = parser.parseProgram();
     Checker checker = new Checker();
     checker.check(actualProgram);
-    assertEquals(expectedProgram, actualProgram);
+    assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
 
   public void testEcho() {
