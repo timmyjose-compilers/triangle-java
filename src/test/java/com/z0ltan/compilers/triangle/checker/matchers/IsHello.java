@@ -22,11 +22,11 @@ public class IsHello extends TypeSafeMatcher<Program> {
   @Override
   public boolean matchesSafely(Program program) {
     final Identifier id = (Identifier) travel(program, "C.I");
-    final Declaration idDeclaration = (Declaration) travel(program, "C.I.decl");
-    final Declaration expectedDeclaration = StdEnvironment.putintDecl;
+    final Declaration idDecl = (Declaration) travel(program, "C.I.decl");
+    final Declaration expectedIdDecl = StdEnvironment.putintDecl;
 
     final IntegerExpression iexpr = (IntegerExpression) travel(program, "C.APS.AP.E");
-    return iexpr.type.equals(new IntTypeDenoter(dummyPosition()));
+    return idDecl.equals(expectedIdDecl) && iexpr.type.equals(StdEnvironment.intType);
   }
 
   @Override

@@ -12,5 +12,5 @@ public abstract class Ast {
     this.entity = null;
   }
 
-  protected abstract Object accept(final Visitor visitor, final Object arg);
+  public abstract Object accept(final Visitor visitor, final Object arg);
 }

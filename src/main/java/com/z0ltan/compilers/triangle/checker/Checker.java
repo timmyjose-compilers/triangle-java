@@ -1,5 +1,6 @@
 package com.z0ltan.compilers.triangle.checker;
 
+import com.z0ltan.compilers.triangle.error.CheckerError;
 import com.z0ltan.compilers.triangle.ast.Program;
 import com.z0ltan.compilers.triangle.ast.Visitor;
 import com.z0ltan.compilers.triangle.ast.Program;
@@ -73,7 +74,10 @@ import com.z0ltan.compilers.triangle.ast.Operator;
 import static com.z0ltan.compilers.triangle.scanner.SourcePosition.dummyPosition;
 
 public class Checker implements Visitor {
+  private IdentificationTable idTable;
+
   public Checker() {
+    this.idTable = new IdentificationTable();
     establishStdEnvironment();
   }
 
@@ -169,13 +173,13 @@ public class Checker implements Visitor {
 
   ProcDeclaration declareStdProc(final String id, final FormalParameterSequence fps, final Command cmd) {
     ProcDeclaration decl = new ProcDeclaration(new Identifier(id, dummyPosition()), fps, cmd, dummyPosition());
-    // insert into idTable
+    this.idTable.save(id, decl);
     return decl;
   }
 
   BinaryOperatorDeclaration declareStdBinaryOperator(final String id, final TypeDenoter arg1Type, final TypeDenoter arg2Type, final TypeDenoter resType) {
     BinaryOperatorDeclaration decl = new BinaryOperatorDeclaration(arg1Type, new Operator(id, dummyPosition()), arg2Type, resType, dummyPosition());
-    // enter into idTable
+    this.idTable.save(id, decl);
     return decl;
   }
 
@@ -187,7 +191,7 @@ public class Checker implements Visitor {
 
   TypeDeclaration declareStdType(final String id, final TypeDenoter baseType) {
     TypeDeclaration decl = new TypeDeclaration(new Identifier(id, dummyPosition()), baseType, dummyPosition());
-    // insert into idTable
+    this.idTable.save(id, decl);
     return decl;
   }
 
@@ -195,16 +199,17 @@ public class Checker implements Visitor {
     IntegerExpression iexpr = new IntegerExpression(null, dummyPosition());
     iexpr.type = constType;
     ConstDeclaration decl = new ConstDeclaration(new Identifier(id, dummyPosition()), iexpr, dummyPosition());
-    // insert into idTable
+    this.idTable.save(id, decl);
     return decl;
   }
 
   public void check(final Program program) {
+    program.accept(this, null);
   }
 
   @Override
   public Object visit(final Program program, final Object arg) {
-    return null; // TODO
+    return program.C.accept(this, null);
   }
 
   @Override
@@ -219,7 +224,9 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final CallCommand cmd, final Object arg) {
-    return null; // TODO
+    cmd.I.accept(this, null);
+    cmd.APS.accept(this, null);
+    return null;
   }
 
   @Override
@@ -249,7 +256,9 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final IntegerExpression expr, final Object arg) {
-    return null; // TODO
+    final IntegerLiteral il = (IntegerLiteral) expr.IL.accept(this, null);
+    expr.type = StdEnvironment.intType;
+    return expr.type;
   }
 
   @Override
@@ -450,7 +459,8 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final SingleActualParameterSequence aps, final Object arg) {
-    return null; // TODO
+    aps.AP.accept(this, null);
+    return null;
   }
 
   @Override
@@ -460,7 +470,8 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final ConstActualParameter param, final Object arg) {
-    return null; // TODO
+    param.E.accept(this, null);
+    return null;
   }
 
   @Override
@@ -495,7 +506,9 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final Identifier id, final Object arg) {
-    return null; // TODO
+    final Declaration binding = (Declaration) this.idTable.retrieve(id.spelling);
+    id.decl = binding;
+    return binding;
   }
 
   @Override
