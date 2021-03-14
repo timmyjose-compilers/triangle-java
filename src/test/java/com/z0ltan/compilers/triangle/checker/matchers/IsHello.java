@@ -10,6 +10,9 @@ import com.z0ltan.compilers.triangle.ast.Expression;
 import com.z0ltan.compilers.triangle.ast.IntegerExpression;
 import com.z0ltan.compilers.triangle.checker.StdEnvironment;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+
 import static com.z0ltan.compilers.triangle.scanner.SourcePosition.dummyPosition;
 import static com.z0ltan.compilers.triangle.helper.traveller.Traveller.travel;
 
@@ -18,14 +21,10 @@ public class IsHello extends TypeSafeMatcher<Program> {
   public boolean matchesSafely(final Program program) {
     final Declaration putintDecl = (Declaration)travel(program, "C.I.decl");
     final Declaration putintExpectedDecl = StdEnvironment.putintDecl;
-    if (!putintDecl.equals(putintExpectedDecl)) {
-      return false;
-    }
+    assertThat(putintDecl, is(putintExpectedDecl));
 
     final IntegerExpression iexpr1 = (IntegerExpression)travel(program, "C.APS.AP.E");
-    if (iexpr1.type != StdEnvironment.intType) {
-      return false;
-    }
+    assertThat(iexpr1.type, is(StdEnvironment.intType));
 
     return true;
   }

@@ -4,6 +4,8 @@ import java.util.Objects;
 import com.z0ltan.compilers.triangle.scanner.SourcePosition;
 
 public class Operator extends Terminal {
+  public Declaration decl;
+
   public Operator(final String spelling, final SourcePosition position) {
     super(spelling, position);
   }

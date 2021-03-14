@@ -2,6 +2,7 @@ package com.z0ltan.compilers.triangle.checker;
 
 import com.z0ltan.compilers.triangle.ast.Visitor;
 import com.z0ltan.compilers.triangle.ast.Program;
+import com.z0ltan.compilers.triangle.ast.Declaration;
 import com.z0ltan.compilers.triangle.ast.VarDeclaration;
 import com.z0ltan.compilers.triangle.ast.ConstDeclaration;
 import com.z0ltan.compilers.triangle.ast.TypeDeclaration;
@@ -66,6 +67,8 @@ import com.z0ltan.compilers.triangle.ast.CharacterLiteral;
 import com.z0ltan.compilers.triangle.ast.Identifier;
 import com.z0ltan.compilers.triangle.ast.Operator;
 
+import com.z0ltan.compilers.triangle.error.CheckerError;
+
 import static com.z0ltan.compilers.triangle.scanner.SourcePosition.dummyPosition;
 import static com.z0ltan.compilers.triangle.error.ErrorReporter.reportError;
 
@@ -78,6 +81,7 @@ public class Checker implements Visitor {
   }
 
   void establishStdEnvironment() {
+    idTable.openScope();
     StdEnvironment.anyType = new AnyTypeDenoter(dummyPosition());
     StdEnvironment.errorType = new ErrorTypeDenoter(dummyPosition());
     StdEnvironment.intType = new IntTypeDenoter(dummyPosition());
@@ -140,35 +144,47 @@ public class Checker implements Visitor {
 
   FuncDeclaration declareStdFunc(final String id, final FormalParameterSequence fps, final TypeDenoter resType) {
     final FuncDeclaration decl = new FuncDeclaration(new Identifier(id, dummyPosition()), fps, resType, new EmptyExpression(dummyPosition()), dummyPosition());
+    this.idTable.save(id, decl);
+
     return decl;
   }
 
   ProcDeclaration declareStdProc(final String id, final FormalParameterSequence fps) {
     final ProcDeclaration decl = new ProcDeclaration(new Identifier(id, dummyPosition()), fps, new EmptyCommand(dummyPosition()), dummyPosition());
+    this.idTable.save(id, decl);
+
     return decl;
   }
 
   BinaryOperatorDeclaration declareStdBinaryOp(final String id, final TypeDenoter arg1Type, final TypeDenoter arg2Type, final TypeDenoter resType) {
     final BinaryOperatorDeclaration decl = new BinaryOperatorDeclaration(arg1Type, new Operator(id, dummyPosition()), arg2Type, resType, dummyPosition());
+    this.idTable.save(id, decl);
+
     return decl;
   }
 
   UnaryOperatorDeclaration declareStdUnaryOp(final String id, final TypeDenoter argType, final TypeDenoter resType) {
     final UnaryOperatorDeclaration decl = new UnaryOperatorDeclaration(new Operator(id, dummyPosition()), argType, resType, dummyPosition());
+    this.idTable.save(id, decl);
+
     return decl;
   }
 
   ConstDeclaration declareStdConst(final String id) {
     final IntegerExpression il = new IntegerExpression(new IntegerLiteral("0", dummyPosition()), dummyPosition());
     final ConstDeclaration decl = new ConstDeclaration(new Identifier(id, dummyPosition()), il, dummyPosition());
+    this.idTable.save(id, decl);
+
     return decl;
   }
 
   public void check(final Program program) {
+    program.accept(this, null);
   }
 
   @Override
   public Object visit(final Program prog, Object arg) {
+    prog.C.accept(this, null);
     return null;
   }
 
@@ -184,6 +200,19 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final CallCommand cmd, Object arg) {
+    final Declaration binding = (Declaration)cmd.I.accept(this, null);
+    if (binding == null) {
+      throw new CheckerError(reportError(cmd.position, cmd.I.spelling, "is not a declared procedure"));
+    }
+
+    if (binding instanceof ProcDeclaration) {
+      cmd.APS.accept(this, ((ProcDeclaration)binding).FPS);
+    } else if (binding instanceof ProcFormalParameter) {
+      cmd.APS.accept(this, ((ProcFormalParameter)binding).FPS);
+    } else {
+      throw new CheckerError(reportError(cmd.position, cmd.I.spelling, " is not a declared procedure"));
+    }
+
     return null;
   }
 
@@ -212,12 +241,14 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final IntegerExpression expr, Object arg) {
-    return null;
+    expr.type = (TypeDenoter)expr.IL.accept(this, null);
+    return expr.type;
   }
 
   @Override
   public Object visit(final CharacterExpression expr, Object arg) {
-    return null;
+    expr.type = (TypeDenoter)expr.CL.accept(this, null);
+    return expr.type;
   }
 
   @Override
@@ -413,21 +444,59 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final SingleActualParameterSequence aps, Object arg) {
+    final FormalParameterSequence fps = (FormalParameterSequence) arg;
+
+    if (fps instanceof SingleFormalParameterSequence) {
+      final SingleFormalParameterSequence sfps = (SingleFormalParameterSequence)fps;
+      aps.AP.accept(this, sfps.FP);
+    } else if (fps instanceof MultipleFormalParameterSequence) {
+      throw new CheckerError(reportError(aps.position, "too few actual parameters"));
+    }
+
     return null;
   }
 
   @Override
   public Object visit(final MultipleActualParameterSequence aps, Object arg) {
+    final FormalParameterSequence fps = (FormalParameterSequence)arg;
+
+    if (fps instanceof SingleFormalParameterSequence) {
+      throw new CheckerError(reportError(aps.position, "too few actual parameters"));
+    } else {
+      final MultipleFormalParameterSequence mfps = (MultipleFormalParameterSequence)fps;
+      aps.AP.accept(this, mfps.FP);
+      aps.APS.accept(this, mfps.FPS);
+    }
+
     return null;
   }
 
   @Override
   public Object visit(final ConstActualParameter param, Object arg) {
+    final ConstFormalParameter cfp = (ConstFormalParameter)arg;
+    final TypeDenoter actualType = (TypeDenoter)param.E.accept(this, null);
+
+    if (!actualType.equals(cfp.T)) {
+      throw new CheckerError(reportError(param.position, "mismatch in actual parameter types, expected", cfp.T, "got", actualType));
+    }
+
     return null;
   }
 
   @Override
   public Object visit(final VarActualParameter param, Object arg) {
+    final VarFormalParameter fp = (VarFormalParameter)arg;
+
+    final VarFormalParameter vfp = (VarFormalParameter)fp;
+    final TypeDenoter actualType = (TypeDenoter)param.V.accept(this, null);
+    if (!actualType.equals(vfp.T)) {
+      throw new CheckerError(reportError(param.position, "mismatch in actual parameter types, expected", vfp.T, "got", actualType));
+    }
+
+    if (!param.V.variable) {
+      throw new CheckerError(reportError(param.position, "expected param to be a variable, but was not"));
+    }
+
     return null;
   }
 
@@ -458,21 +527,27 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final Identifier id, Object arg) {
-    return null;
+    final Declaration binding = (Declaration)this.idTable.retrieve(id.spelling);
+    id.decl = binding;
+
+    return id.decl;
   }
 
   @Override
   public Object visit(final IntegerLiteral il, Object arg) {
-    return null;
+    return StdEnvironment.intType;
   }
 
   @Override
   public Object visit(final CharacterLiteral cl, Object arg) {
-    return null;
+    return StdEnvironment.charType;
   }
 
   @Override
   public Object visit(final Operator op, Object arg) {
-    return null;
+    final Declaration binding = (Declaration)this.idTable.retrieve(op.spelling);
+    op.decl = binding;
+
+    return op.decl;
   }
 }

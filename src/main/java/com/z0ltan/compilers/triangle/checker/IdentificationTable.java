@@ -11,7 +11,7 @@ public class IdentificationTable {
 
   public IdentificationTable() {
     this.table = new HashMap<>();
-    this.level = 0;
+    this.level = -1;
   }
 
   public boolean isPresent(final String id) {
@@ -19,6 +19,9 @@ public class IdentificationTable {
   }
 
   public void save(final String id, final Declaration decl) {
+    if (this.table.get(this.level) == null) {
+      this.table.put(this.level, new HashMap<>());
+    }
     this.table.get(this.level).put(id, decl);
   }
 
