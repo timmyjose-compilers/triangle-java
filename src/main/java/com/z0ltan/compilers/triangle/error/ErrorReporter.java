@@ -1,7 +1,9 @@
 package com.z0ltan.compilers.triangle.error;
 
+import com.z0ltan.compilers.triangle.scanner.SourcePosition;
+
 public class ErrorReporter {
-  public static String reportError(final SourcePosition position, final String... message) {
+  public static String reportError(final SourcePosition position, final String... messages) {
     StringBuffer sb = new StringBuffer();
     for (String message : messages) {
       sb.append(message);
