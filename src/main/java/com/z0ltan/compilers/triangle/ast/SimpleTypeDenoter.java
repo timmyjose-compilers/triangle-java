@@ -27,6 +27,11 @@ public class SimpleTypeDenoter extends TypeDenoter {
   }
 
   @Override
+  public String toString() {
+    return "SimpleTypeDenoter { I = " + this.I + ", position = " + this.position + " }";
+  }
+
+  @Override
   public Object accept(final Visitor visitor, final Object arg) {
     return visitor.visit(this, arg);
   }

@@ -88,9 +88,9 @@ public class Checker implements Visitor {
     StdEnvironment.charType = new CharTypeDenoter(dummyPosition());
     StdEnvironment.boolType = new BoolTypeDenoter(dummyPosition());
 
-    StdEnvironment.intDecl = new TypeDeclaration(new Identifier("Integer", dummyPosition()), StdEnvironment.intType, dummyPosition());
-    StdEnvironment.charDecl = new TypeDeclaration(new Identifier("Char", dummyPosition()), StdEnvironment.charType, dummyPosition());
-    StdEnvironment.boolDecl = new TypeDeclaration(new Identifier("Boolean", dummyPosition()), StdEnvironment.boolType, dummyPosition());
+    StdEnvironment.intDecl = declareStdType("Integer", StdEnvironment.intType);
+    StdEnvironment.charDecl = declareStdType("Char", StdEnvironment.charType);
+    StdEnvironment.boolDecl = declareStdType("Boolean", StdEnvironment.boolType);
 
     StdEnvironment.falseDecl = declareStdConst("false");
     StdEnvironment.trueDecl = declareStdConst("true");
@@ -178,6 +178,13 @@ public class Checker implements Visitor {
     return decl;
   }
 
+  TypeDeclaration declareStdType(final String spelling, final TypeDenoter td) {
+    final TypeDeclaration decl = new TypeDeclaration(new Identifier(spelling, dummyPosition()), td, dummyPosition());
+    this.idTable.save(spelling, decl);
+
+    return decl;
+  }
+
   public void check(final Program program) {
     program.accept(this, null);
   }
@@ -195,6 +202,17 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final AssignCommand cmd, Object arg) {
+    final TypeDenoter vType = (TypeDenoter)cmd.V.accept(this, null);
+    final TypeDenoter eType = (TypeDenoter)cmd.E.accept(this, null);
+
+    if (!cmd.V.variable) {
+      throw new CheckerError(reportError(cmd.position, "can assign only to a variable.", cmd.V, "is not a variable"));
+    }
+
+    if (!vType.equals(eType)) {
+      throw new CheckerError(reportError(cmd.position, "type mismatch in assignment. lhs has type", vType, ", rhs has type", eType));
+    }
+
     return null;
   }
 
@@ -218,6 +236,11 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final LetCommand cmd, Object arg) {
+    this.idTable.openScope();
+    cmd.D.accept(this, null);
+    cmd.C.accept(this, null);
+    this.idTable.closeScope();
+
     return null;
   }
 
@@ -231,6 +254,9 @@ public class Checker implements Visitor {
   }
   @Override
   public Object visit(final SequentialCommand cmd, Object arg) {
+    cmd.C1.accept(this, null);
+    cmd.C2.accept(this, null);
+
     return null;
   }
 
@@ -253,7 +279,8 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final VnameExpression expr, Object arg) {
-    return null;
+    expr.type = (TypeDenoter)expr.V.accept(this, null);
+    return expr.type;
   }
 
   @Override
@@ -279,7 +306,37 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final BinaryExpression expr, Object arg) {
-    return null;
+    final TypeDenoter e1Type = (TypeDenoter)expr.E1.accept(this, null);
+    final TypeDenoter e2Type = (TypeDenoter)expr.E2.accept(this, null);
+
+    if (!e1Type.equals(e2Type)) {
+      throw new CheckerError(reportError(expr.position, "mismatched types: first expression has type", e1Type, ", and second expression has type", e2Type));
+    }
+
+    final Declaration binding = (Declaration)expr.O.accept(this, null);
+    if (binding == null) {
+      throw new CheckerError(reportError(expr.position, "operator", expr.O.spelling, "is not declared"));
+    }
+
+    if (binding instanceof UnaryOperatorDeclaration) {
+      throw new CheckerError(reportError(expr.position, "expected a binary operator here, but", expr.O.spelling, "is unary"));
+    } else if (binding instanceof BinaryOperatorDeclaration) {
+      final BinaryOperatorDeclaration binopDecl = (BinaryOperatorDeclaration)binding;
+
+      if (!e1Type.equals(binopDecl.ARG1TYPE)) {
+        throw new CheckerError(reportError(expr.position, "expected first expression of type", binopDecl.ARG1TYPE, "but was of type", e1Type));
+      }
+
+      if (!e2Type.equals(binopDecl.ARG2TYPE)) {
+        throw new CheckerError(reportError(expr.position, "expected second expression of type", binopDecl.ARG2TYPE, "but was of type", e2Type));
+      }
+
+      expr.type = binopDecl.RESTYPE;
+    } else {
+      throw new CheckerError(reportError(expr.position, "a binary operator was expected here"));
+    }
+
+    return expr.type;
   }
 
   @Override
@@ -319,11 +376,22 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final VarDeclaration decl, Object arg) {
+    this.idTable.save(decl.I.spelling, decl);
+    decl.I.accept(this, null);
+    decl.T = (TypeDenoter)decl.T.accept(this, null);
+
     return null;
   }
 
   @Override
   public Object visit(final ProcDeclaration decl, Object arg) {
+    this.idTable.save(decl.I.spelling, decl);
+    decl.I.accept(this, null);
+    this.idTable.openScope();
+    decl.FPS.accept(this, null);
+    decl.C.accept(this, null);
+    this.idTable.closeScope();
+
     return null;
   }
 
@@ -349,6 +417,9 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final SequentialDeclaration decl, Object arg) {
+    decl.D1.accept(this, null);
+    decl.D2.accept(this, null);
+
     return null;
   }
 
@@ -384,7 +455,17 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final SimpleTypeDenoter td, Object arg) {
-    return null;
+    final Declaration binding = (Declaration)td.I.accept(this, null);
+
+    if (binding == null) {
+      throw new CheckerError(reportError(td.position, td.I, "is an undeclared type identifier"));
+    }
+
+    if (!(binding instanceof TypeDeclaration)) {
+      throw new CheckerError(reportError(td.position, td.I, "is not a type identifier"));
+    }
+
+    return ((TypeDeclaration)binding).T;
   }
 
   @Override
@@ -409,21 +490,41 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final SingleFormalParameterSequence fps, Object args) {
+    fps.FP.accept(this, null);
     return null;
   }
 
   @Override
   public Object visit(final MultipleFormalParameterSequence fps, Object arg) {
+    fps.FP.accept(this, null);
+    fps.FPS.accept(this, null);
+
     return null;
   }
 
   @Override
   public Object visit(final ConstFormalParameter param, Object arg) {
+    if (this.idTable.isPresent(param.I.spelling)) {
+      throw new CheckerError(reportError(param.position, param.I.spelling, "is already declared"));
+    }
+
+    this.idTable.save(param.I.spelling, param);
+    param.I.accept(this, null);
+    param.T = (TypeDenoter)param.T.accept(this, null);
+
     return null;
   }
 
   @Override
   public Object visit(final VarFormalParameter param, Object arg) {
+    if (this.idTable.isPresent(param.I.spelling)) {
+      throw new CheckerError(reportError(param.position, param.I.spelling, "is already declared"));
+    }
+
+    this.idTable.save(param.I.spelling, param);
+    param.I.accept(this, null);
+    param.T = (TypeDenoter)param.T.accept(this, null);
+
     return null;
   }
 
@@ -485,10 +586,9 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final VarActualParameter param, Object arg) {
-    final VarFormalParameter fp = (VarFormalParameter)arg;
-
-    final VarFormalParameter vfp = (VarFormalParameter)fp;
+    final VarFormalParameter vfp = (VarFormalParameter)arg;
     final TypeDenoter actualType = (TypeDenoter)param.V.accept(this, null);
+
     if (!actualType.equals(vfp.T)) {
       throw new CheckerError(reportError(param.position, "mismatch in actual parameter types, expected", vfp.T, "got", actualType));
     }
@@ -512,7 +612,25 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final SimpleVname vname, Object arg) {
-    return null;
+    final Declaration binding = (Declaration)vname.I.accept(this, null);
+
+    if (binding instanceof VarDeclaration) {
+      vname.variable = true;
+      vname.type = ((VarDeclaration)binding).T;
+    } else if (binding instanceof ConstDeclaration) {
+      vname.variable = false;
+      vname.type = ((ConstDeclaration)binding).E.type;
+    } else if (binding instanceof VarFormalParameter) {
+      vname.variable = true;
+      vname.type = ((VarFormalParameter)binding).T;
+    } else if (binding instanceof ConstFormalParameter) {
+      vname.variable = false;
+      vname.type = ((ConstFormalParameter)binding).T;
+    } else {
+      throw new CheckerError(reportError(vname.position, vname.I.spelling, "is not a var or const identifier"));
+    }
+
+    return vname.type;
   }
 
   @Override

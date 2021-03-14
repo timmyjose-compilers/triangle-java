@@ -15,6 +15,9 @@ public class IdentificationTable {
   }
 
   public boolean isPresent(final String id) {
+    if (this.table.get(this.level) == null) {
+      this.table.put(this.level, new HashMap<>());
+    }
     return this.table.get(this.level).containsKey(id);
   }
 

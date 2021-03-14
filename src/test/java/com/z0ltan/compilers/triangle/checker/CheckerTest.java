@@ -15,6 +15,7 @@ import com.z0ltan.compilers.triangle.ast.Program;
 import static com.z0ltan.compilers.triangle.scanner.SourcePosition.dummyPosition;
 import static com.z0ltan.compilers.triangle.checker.matchers.IsEmptyCommand.emptycommand;
 import static com.z0ltan.compilers.triangle.checker.matchers.IsHello.hello;
+import static com.z0ltan.compilers.triangle.checker.matchers.IsInc.inc;
 
 public class CheckerTest extends TestCase {
   public CheckerTest(String testName) {
@@ -53,6 +54,12 @@ public class CheckerTest extends TestCase {
   }
 
   public void testInc() {
+    String filename = "samples/inc.t";
+    Parser parser = new Parser(new Scanner(filename));
+    Program program = parser.parseProgram();
+    Checker checker = new Checker();
+    checker.check(program);
+    assertThat(program, is(inc()));
   }
 
   public void testEcho() {
