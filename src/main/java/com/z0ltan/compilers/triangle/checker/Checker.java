@@ -51,6 +51,7 @@ import com.z0ltan.compilers.triangle.ast.FormalParameterSequence;
 import com.z0ltan.compilers.triangle.ast.EmptyFormalParameterSequence;
 import com.z0ltan.compilers.triangle.ast.SingleFormalParameterSequence;
 import com.z0ltan.compilers.triangle.ast.MultipleFormalParameterSequence;
+import com.z0ltan.compilers.triangle.ast.FormalParameter;
 import com.z0ltan.compilers.triangle.ast.VarFormalParameter;
 import com.z0ltan.compilers.triangle.ast.ConstFormalParameter;
 import com.z0ltan.compilers.triangle.ast.ProcFormalParameter;
@@ -250,6 +251,14 @@ public class Checker implements Visitor {
   }
   @Override
   public Object visit(final WhileCommand cmd, Object arg) {
+    final TypeDenoter eType = (TypeDenoter)cmd.E.accept(this, null);
+
+    if (!eType.equals(StdEnvironment.boolType)) {
+      throw new CheckerError(reportError(cmd.position, "check for a while command must be a boolean, got", eType));
+    }
+
+    cmd.C.accept(this, null);
+
     return null;
   }
   @Override
@@ -290,7 +299,23 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final CallExpression expr, Object arg) {
-    return null;
+    final Declaration binding = (Declaration)expr.I.accept(this, null);
+
+    if (binding == null) {
+      throw new CheckerError(reportError(expr.position, expr.I, "is not a declared function"));
+    }
+
+    if (binding instanceof FuncDeclaration) {
+      expr.APS.accept(this, ((FuncDeclaration)binding).FPS);
+      expr.type = ((FuncDeclaration)binding).T;
+    } else if (binding instanceof FuncFormalParameter) {
+      expr.APS.accept(this, ((FuncFormalParameter)binding).FPS);
+      expr.type = ((FuncFormalParameter)binding).T;
+    } else {
+      throw new CheckerError(reportError(expr.position, expr.I, "is not a valid function identifier"));
+    }
+
+    return expr.type;
   }
 
   @Override
@@ -301,7 +326,28 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final UnaryExpression expr, Object arg) {
-    return null;
+    final Declaration binding = (Declaration)expr.O.accept(this, null);
+    final TypeDenoter eType = (TypeDenoter)expr.E.accept(this, null);
+
+    if (binding == null) {
+      throw new CheckerError(reportError(expr.position, expr.O, "is not a declared operator"));
+    }
+
+    if (binding instanceof BinaryOperatorDeclaration) {
+      throw new CheckerError(reportError(expr.position, "expected a unary operator, but", expr.O, "is a binary operator"));
+    } else if (binding instanceof UnaryOperatorDeclaration) {
+      final UnaryOperatorDeclaration unopDecl = (UnaryOperatorDeclaration)binding;
+      
+      if (!eType.equals(unopDecl.ARGTYPE)) {
+        throw new CheckerError(reportError(expr.position, 
+              "mismatched argument type for unary operator", expr.O, "expected", unopDecl.ARGTYPE, "got", eType));
+      }
+      expr.type = unopDecl.RESTYPE;
+    } else {
+      throw new CheckerError(reportError(expr.position, expr.O, "is not a valid declared operator"));
+    }
+
+    return expr.type;
   }
 
   @Override
@@ -602,11 +648,82 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final ProcActualParameter param, Object arg) {
+    final FormalParameter fp = (FormalParameter)arg;
+    final Declaration binding = (Declaration)param.I.accept(this, null);
+
+    if (binding == null) {
+      throw new CheckerError(reportError(param.position, param.I, "is not declared"));
+    }
+
+    if (!(binding instanceof ProcFormalParameter) || (binding instanceof ProcDeclaration)) {
+      throw new CheckerError(reportError(param.position, param.I, "is not a valid procedure identifier"));
+    } 
+
+    if (!(fp instanceof ProcFormalParameter)) {
+      throw new CheckerError(reportError(param.position, "proc actual parameter was not expected here"));
+    } else{
+      FormalParameterSequence fps = null;
+      if (binding instanceof ProcFormalParameter) {
+        fps = ((ProcFormalParameter)binding).FPS;
+      } else {
+        fps = ((ProcDeclaration)binding).FPS;
+      }
+
+      final ProcFormalParameter pfp = (ProcFormalParameter)fp;
+
+      if (!fps.equals(pfp.FPS)) {
+        throw new CheckerError(reportError(param.position, 
+              "mismatch in procedure type signature. expected",
+              pfp.FPS,
+              "got",
+              fps));
+      }
+    }
+
     return null;
   }
 
   @Override
   public Object visit(final FuncActualParameter param, Object arg) {
+    final FormalParameter fp = (FormalParameter)arg;
+    final Declaration binding = (Declaration)param.I.accept(this, null);
+
+    if (binding == null) {
+      throw new CheckerError(reportError(param.position, param.I, "is not declared"));
+    }
+
+    if (!((binding instanceof FuncFormalParameter) || (binding instanceof FuncDeclaration))) {
+      throw new CheckerError(reportError(param.position, param.I, "is not a valid function identifier"));
+    } 
+
+    if (!(fp instanceof FuncFormalParameter)) {
+      throw new CheckerError(reportError(param.position, "func actual parameter was not expected here"));
+    } else {
+      FormalParameterSequence fps = null;
+      TypeDenoter td = null;
+      if (binding instanceof FuncFormalParameter) {
+        fps = ((FuncFormalParameter)binding).FPS;
+        td = ((FuncFormalParameter)binding).T;
+      } else {
+        fps = ((FuncDeclaration)binding).FPS;
+        td = ((FuncDeclaration)binding).T;
+      }
+
+      final FuncFormalParameter ffp = (FuncFormalParameter)fp;
+
+      if (!fps.equals(ffp.FPS) || !(td.equals(ffp.T))) {
+        throw new CheckerError(reportError(param.position,
+              "mismatch in function type signature.expected",
+            ffp.FPS,
+            "arguments, and return type",
+            ffp.T,
+            "got",
+            fps,
+            "with return type",
+            td));
+      }
+    }
+
     return null;
   }
 

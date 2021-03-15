@@ -6,19 +6,9 @@ import org.hamcrest.Description;
 
 import com.z0ltan.compilers.triangle.ast.Program;
 import com.z0ltan.compilers.triangle.ast.Declaration;
-import com.z0ltan.compilers.triangle.ast.ProcDeclaration;
-import com.z0ltan.compilers.triangle.ast.AssignCommand;
-import com.z0ltan.compilers.triangle.ast.Expression;
 import com.z0ltan.compilers.triangle.ast.BinaryExpression;
-import com.z0ltan.compilers.triangle.ast.VnameExpression;
-import com.z0ltan.compilers.triangle.ast.IntegerExpression;
-import com.z0ltan.compilers.triangle.ast.SimpleTypeDenoter;
-import com.z0ltan.compilers.triangle.ast.SingleFormalParameterSequence;
 import com.z0ltan.compilers.triangle.ast.VarFormalParameter;
-import com.z0ltan.compilers.triangle.ast.SimpleVname;
 import com.z0ltan.compilers.triangle.ast.Identifier;
-import com.z0ltan.compilers.triangle.ast.Operator;
-import com.z0ltan.compilers.triangle.ast.IntegerLiteral;
 import com.z0ltan.compilers.triangle.checker.StdEnvironment;
 
 import static org.hamcrest.MatcherAssert.assertThat;

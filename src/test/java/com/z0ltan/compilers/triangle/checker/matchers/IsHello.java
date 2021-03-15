@@ -6,7 +6,6 @@ import org.hamcrest.Description;
 
 import com.z0ltan.compilers.triangle.ast.Program;
 import com.z0ltan.compilers.triangle.ast.Declaration;
-import com.z0ltan.compilers.triangle.ast.Expression;
 import com.z0ltan.compilers.triangle.ast.IntegerExpression;
 import com.z0ltan.compilers.triangle.checker.StdEnvironment;
 
