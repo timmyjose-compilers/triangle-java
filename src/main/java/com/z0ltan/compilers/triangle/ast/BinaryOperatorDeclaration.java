@@ -24,7 +24,7 @@ public class BinaryOperatorDeclaration extends Declaration {
     }
 
     BinaryOperatorDeclaration other = (BinaryOperatorDeclaration)o;
-    return this.ARG1TYPE.equals(other.ARG1TYPE) && this.O.equals(other.O) && this.ARG2TYPE.equals(other.ARG2TYPE) && this.RESTYPE.equals(other.ARG2TYPE);
+    return this.ARG1TYPE.equals(other.ARG1TYPE) && this.O.equals(other.O) && this.ARG2TYPE.equals(other.ARG2TYPE) && this.RESTYPE.equals(other.RESTYPE);
   }
 
   @Override

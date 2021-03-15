@@ -104,6 +104,8 @@ public class Checker implements Visitor {
     StdEnvironment.multDecl = declareStdBinaryOp("*", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.intType);
     StdEnvironment.divDecl = declareStdBinaryOp("/", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.intType);
     StdEnvironment.modDecl = declareStdBinaryOp("//", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.intType);
+    StdEnvironment.eqDecl = declareStdBinaryOp("=", StdEnvironment.anyType, StdEnvironment.anyType, StdEnvironment.boolType);
+    StdEnvironment.noteqDecl = declareStdBinaryOp("\\=", StdEnvironment.anyType, StdEnvironment.anyType, StdEnvironment.boolType);
     StdEnvironment.lessThanDecl = declareStdBinaryOp("<", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.intType);
     StdEnvironment.lessThanOrEqualToDecl= declareStdBinaryOp("<=", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.intType);
     StdEnvironment.greaterThanDecl = declareStdBinaryOp(">", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.intType);
@@ -247,8 +249,17 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final IfCommand cmd, Object arg) {
+    final TypeDenoter eType = (TypeDenoter)cmd.E.accept(this, null);
+    if (!eType.equals(StdEnvironment.boolType)) {
+      throw new CheckerError(reportError(cmd.position, "the conditional of an if command must be a booolean, found", eType));
+    }
+
+    cmd.C1.accept(this, null);
+    cmd.C2.accept(this, null);
+
     return null;
   }
+
   @Override
   public Object visit(final WhileCommand cmd, Object arg) {
     final TypeDenoter eType = (TypeDenoter)cmd.E.accept(this, null);
@@ -337,7 +348,7 @@ public class Checker implements Visitor {
       throw new CheckerError(reportError(expr.position, "expected a unary operator, but", expr.O, "is a binary operator"));
     } else if (binding instanceof UnaryOperatorDeclaration) {
       final UnaryOperatorDeclaration unopDecl = (UnaryOperatorDeclaration)binding;
-      
+
       if (!eType.equals(unopDecl.ARGTYPE)) {
         throw new CheckerError(reportError(expr.position, 
               "mismatched argument type for unary operator", expr.O, "expected", unopDecl.ARGTYPE, "got", eType));
@@ -369,14 +380,22 @@ public class Checker implements Visitor {
     } else if (binding instanceof BinaryOperatorDeclaration) {
       final BinaryOperatorDeclaration binopDecl = (BinaryOperatorDeclaration)binding;
 
-      if (!e1Type.equals(binopDecl.ARG1TYPE)) {
-        throw new CheckerError(reportError(expr.position, "expected first expression of type", binopDecl.ARG1TYPE, "but was of type", e1Type));
-      }
+      if (binopDecl.ARG1TYPE.equals(StdEnvironment.anyType) && binopDecl.ARG2TYPE.equals(StdEnvironment.anyType)) {
+        if (!e1Type.equals(e2Type)) {
+          throw new CheckerError(reportError(expr.position, 
+                "mismatched types for operator", binopDecl.O.spelling,
+                ", expected expressions of the same type, but found types",
+                e1Type, "and", e2Type));
+        }
+      } else {
+        if (!e1Type.equals(binopDecl.ARG1TYPE)) {
+          throw new CheckerError(reportError(expr.position, "expected first expression of type", binopDecl.ARG1TYPE, "but was of type", e1Type));
+        }
 
-      if (!e2Type.equals(binopDecl.ARG2TYPE)) {
-        throw new CheckerError(reportError(expr.position, "expected second expression of type", binopDecl.ARG2TYPE, "but was of type", e2Type));
-      }
-
+        if (!e2Type.equals(binopDecl.ARG2TYPE)) {
+          throw new CheckerError(reportError(expr.position, "expected second expression of type", binopDecl.ARG2TYPE, "but was of type", e2Type));
+        }
+      }  
       expr.type = binopDecl.RESTYPE;
     } else {
       throw new CheckerError(reportError(expr.position, "a binary operator was expected here"));
@@ -443,6 +462,14 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final FuncDeclaration decl, Object arg) {
+    this.idTable.save(decl.I.spelling, decl);
+    decl.I.accept(this, null);
+    this.idTable.openScope();
+    decl.FPS.accept(this, null);
+    decl.E.accept(this, null);
+    decl.T = (TypeDenoter)decl.T.accept(this, null);
+    this.idTable.closeScope();
+
     return null;
   }
 
@@ -714,13 +741,13 @@ public class Checker implements Visitor {
       if (!fps.equals(ffp.FPS) || !(td.equals(ffp.T))) {
         throw new CheckerError(reportError(param.position,
               "mismatch in function type signature.expected",
-            ffp.FPS,
-            "arguments, and return type",
-            ffp.T,
-            "got",
-            fps,
-            "with return type",
-            td));
+              ffp.FPS,
+              "arguments, and return type",
+              ffp.T,
+              "got",
+              fps,
+              "with return type",
+              td));
       }
     }
 
