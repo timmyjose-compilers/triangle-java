@@ -282,7 +282,8 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final EmptyExpression expr, Object arg) {
-    return null;
+    expr.type = null;
+    return expr.type;
   }
 
   @Override
@@ -318,6 +319,7 @@ public class Checker implements Visitor {
 
     if (binding instanceof FuncDeclaration) {
       expr.APS.accept(this, ((FuncDeclaration)binding).FPS);
+      final FuncDeclaration fd = (FuncDeclaration)binding;
       expr.type = ((FuncDeclaration)binding).T;
     } else if (binding instanceof FuncFormalParameter) {
       expr.APS.accept(this, ((FuncFormalParameter)binding).FPS);
@@ -331,7 +333,25 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final IfExpression expr, Object arg) {
-    return null;
+    final TypeDenoter e1Type = (TypeDenoter)expr.E1.accept(this, null);
+    final TypeDenoter e2Type = (TypeDenoter)expr.E2.accept(this, null);
+    final TypeDenoter e3Type = (TypeDenoter)expr.E3.accept(this, null);
+
+    if (!e1Type.equals(StdEnvironment.boolType)) {
+      throw new CheckerError(reportError(expr.position, "the condition of an if expression must be boolean, got", e1Type));
+    }
+
+    if (!e2Type.equals(e3Type)) {
+      throw new CheckerError(reportError(expr.position, 
+            "both arms of an if expression must have the same type, but arm 1 has type",
+            e2Type,
+            "and arm 2 has type",
+            e3Type));
+    }
+
+    expr.type = e2Type;
+
+    return expr.type;
   }
 
 
@@ -466,8 +486,8 @@ public class Checker implements Visitor {
     decl.I.accept(this, null);
     this.idTable.openScope();
     decl.FPS.accept(this, null);
-    decl.E.accept(this, null);
     decl.T = (TypeDenoter)decl.T.accept(this, null);
+    decl.E.accept(this, null);
     this.idTable.closeScope();
 
     return null;

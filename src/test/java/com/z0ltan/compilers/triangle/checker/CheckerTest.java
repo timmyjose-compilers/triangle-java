@@ -19,6 +19,7 @@ import static com.z0ltan.compilers.triangle.checker.matchers.IsInc.inc;
 import static com.z0ltan.compilers.triangle.checker.matchers.IsEcho.echo;
 import static com.z0ltan.compilers.triangle.checker.matchers.IsOdd.odd;
 import static com.z0ltan.compilers.triangle.checker.matchers.IsSumProc.sumProc;
+import static com.z0ltan.compilers.triangle.checker.matchers.IsPower.power;
 
 public class CheckerTest extends TestCase {
   public CheckerTest(String testName) {
@@ -93,6 +94,12 @@ public class CheckerTest extends TestCase {
   }
 
   public void testPower() {
+    String filename = "samples/power.t";
+    Parser parser = new Parser(new Scanner(filename));
+    Program program = parser.parseProgram();
+    Checker checker = new Checker();
+    checker.check(program);
+    assertThat(program, is(power()));
   }
 
   public void testFactorial() {
