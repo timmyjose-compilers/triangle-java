@@ -20,6 +20,7 @@ import static com.z0ltan.compilers.triangle.checker.matchers.IsEcho.echo;
 import static com.z0ltan.compilers.triangle.checker.matchers.IsOdd.odd;
 import static com.z0ltan.compilers.triangle.checker.matchers.IsSumProc.sumProc;
 import static com.z0ltan.compilers.triangle.checker.matchers.IsPower.power;
+import static com.z0ltan.compilers.triangle.checker.matchers.IsFactorial.factorial;
 
 public class CheckerTest extends TestCase {
   public CheckerTest(String testName) {
@@ -103,6 +104,12 @@ public class CheckerTest extends TestCase {
   }
 
   public void testFactorial() {
+    String filename = "samples/factorial.t";
+    Parser parser = new Parser(new Scanner(filename));
+    Program program = parser.parseProgram();
+    Checker checker = new Checker();
+    checker.check(program);
+    assertThat(program, is(factorial()));
   }
 
   public void testRecord() {

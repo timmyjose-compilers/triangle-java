@@ -106,10 +106,10 @@ public class Checker implements Visitor {
     StdEnvironment.modDecl = declareStdBinaryOp("//", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.intType);
     StdEnvironment.eqDecl = declareStdBinaryOp("=", StdEnvironment.anyType, StdEnvironment.anyType, StdEnvironment.boolType);
     StdEnvironment.noteqDecl = declareStdBinaryOp("\\=", StdEnvironment.anyType, StdEnvironment.anyType, StdEnvironment.boolType);
-    StdEnvironment.lessThanDecl = declareStdBinaryOp("<", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.intType);
-    StdEnvironment.lessThanOrEqualToDecl= declareStdBinaryOp("<=", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.intType);
-    StdEnvironment.greaterThanDecl = declareStdBinaryOp(">", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.intType);
-    StdEnvironment.greaterThanOrEqualToDecl = declareStdBinaryOp(">=", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.intType);
+    StdEnvironment.lessThanDecl = declareStdBinaryOp("<", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.boolType);
+    StdEnvironment.lessThanOrEqualToDecl= declareStdBinaryOp("<=", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.boolType);
+    StdEnvironment.greaterThanDecl = declareStdBinaryOp(">", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.boolType);
+    StdEnvironment.greaterThanOrEqualToDecl = declareStdBinaryOp(">=", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.boolType);
 
     final Identifier dummyId = new Identifier("", dummyPosition());
 
