@@ -21,6 +21,7 @@ import static com.z0ltan.compilers.triangle.checker.matchers.IsOdd.odd;
 import static com.z0ltan.compilers.triangle.checker.matchers.IsSumProc.sumProc;
 import static com.z0ltan.compilers.triangle.checker.matchers.IsPower.power;
 import static com.z0ltan.compilers.triangle.checker.matchers.IsFactorial.factorial;
+import static com.z0ltan.compilers.triangle.checker.matchers.IsRecord.record;
 
 public class CheckerTest extends TestCase {
   public CheckerTest(String testName) {
@@ -113,6 +114,12 @@ public class CheckerTest extends TestCase {
   }
 
   public void testRecord() {
+    String filename = "samples/record.t";
+    Parser parser = new Parser(new Scanner(filename));
+    Program program = parser.parseProgram();
+    Checker checker = new Checker();
+    checker.check(program);
+    assertThat(program, is(record()));
   }
 
   public void testLeapYear() {

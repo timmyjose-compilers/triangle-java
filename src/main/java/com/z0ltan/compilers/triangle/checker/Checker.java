@@ -45,6 +45,7 @@ import com.z0ltan.compilers.triangle.ast.CharTypeDenoter;
 import com.z0ltan.compilers.triangle.ast.BoolTypeDenoter;
 import com.z0ltan.compilers.triangle.ast.ArrayTypeDenoter;
 import com.z0ltan.compilers.triangle.ast.RecordTypeDenoter;
+import com.z0ltan.compilers.triangle.ast.FieldTypeDenoter;
 import com.z0ltan.compilers.triangle.ast.SingleFieldTypeDenoter;
 import com.z0ltan.compilers.triangle.ast.MultipleFieldTypeDenoter;
 import com.z0ltan.compilers.triangle.ast.FormalParameterSequence;
@@ -69,6 +70,7 @@ import com.z0ltan.compilers.triangle.ast.Identifier;
 import com.z0ltan.compilers.triangle.ast.Operator;
 
 import com.z0ltan.compilers.triangle.error.CheckerError;
+import com.z0ltan.compilers.triangle.scanner.SourcePosition;
 
 import static com.z0ltan.compilers.triangle.scanner.SourcePosition.dummyPosition;
 import static com.z0ltan.compilers.triangle.error.ErrorReporter.reportError;
@@ -186,6 +188,32 @@ public class Checker implements Visitor {
     this.idTable.save(spelling, decl);
 
     return decl;
+  }
+
+  void checkDuplicated(final String spelling, final SourcePosition position) {
+    if (this.idTable.isPresent(spelling)) {
+      throw new CheckerError(reportError(position, spelling, "has already been declared in the current scope"));
+    }
+  }
+
+  TypeDenoter checkFieldIdentifier(final FieldTypeDenoter ftd, final Identifier I) {
+    if (ftd instanceof SingleFieldTypeDenoter) {
+      final SingleFieldTypeDenoter sftd = (SingleFieldTypeDenoter)ftd;
+      if (sftd.I.spelling.equals(I.spelling)) {
+        I.decl = ftd;
+        return sftd.T;
+      }
+    } else {
+      final MultipleFieldTypeDenoter mftd = (MultipleFieldTypeDenoter)ftd;
+      if (mftd.I.spelling.equals(I.spelling)) {
+        I.decl = ftd;
+        return mftd.T;
+      } else {
+        return checkFieldIdentifier(mftd.FTD, I);
+      }
+    }
+
+    return StdEnvironment.errorType;
   }
 
   public void check(final Program program) {
@@ -431,27 +459,43 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final RecordExpression expr, Object arg) {
+    final FieldTypeDenoter rType = (FieldTypeDenoter)expr.RA.accept(this, null);
+    expr.type = new RecordTypeDenoter(rType, dummyPosition());
+
+    return expr.type;
+  }
+
+  @Override
+  public Object visit(final SingleArrayAggregate aggr, Object arg) {
     return null;
   }
 
   @Override
-  public Object visit(final SingleArrayAggregate agg, Object arg) {
+  public Object visit(final MultipleArrayAggregate aggr, Object arg) {
     return null;
   }
 
   @Override
-  public Object visit(final MultipleArrayAggregate agg, Object arg) {
-    return null;
+  public Object visit(final SingleRecordAggregate aggr, Object arg) {
+    final TypeDenoter eType = (TypeDenoter)aggr.E.accept(this, null);
+    aggr.type = new SingleFieldTypeDenoter(aggr.I, eType, dummyPosition());
+
+    return aggr.type;
   }
 
   @Override
-  public Object visit(final SingleRecordAggregate agg, Object arg) {
-    return null;
-  }
+  public Object visit(final MultipleRecordAggregate aggr, Object arg) {
+    final TypeDenoter eType = (TypeDenoter)aggr.E.accept(this, null);
+    final FieldTypeDenoter rType = (FieldTypeDenoter)aggr.RA.accept(this, null);
+    final TypeDenoter fType = (TypeDenoter)checkFieldIdentifier(rType, aggr.I);
 
-  @Override
-  public Object visit(final MultipleRecordAggregate agg, Object arg) {
-    return null;
+    if (fType != StdEnvironment.errorType) {
+      throw new CheckerError(reportError(aggr.position, aggr.I, "is a duplicate field"));
+    }
+
+    aggr.type = new MultipleFieldTypeDenoter(aggr.I, eType, rType, dummyPosition());
+
+    return aggr.type;
   }
 
   @Override
@@ -461,6 +505,7 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final VarDeclaration decl, Object arg) {
+    checkDuplicated(decl.I.spelling, decl.position);
     this.idTable.save(decl.I.spelling, decl);
     decl.I.accept(this, null);
     decl.T = (TypeDenoter)decl.T.accept(this, null);
@@ -470,6 +515,7 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final ProcDeclaration decl, Object arg) {
+    checkDuplicated(decl.I.spelling, decl.position);
     this.idTable.save(decl.I.spelling, decl);
     decl.I.accept(this, null);
     this.idTable.openScope();
@@ -482,6 +528,7 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final FuncDeclaration decl, Object arg) {
+    checkDuplicated(decl.I.spelling, decl.position);
     this.idTable.save(decl.I.spelling, decl);
     decl.I.accept(this, null);
     this.idTable.openScope();
@@ -495,6 +542,11 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final TypeDeclaration decl, Object arg) {
+    decl.T = (TypeDenoter)decl.T.accept(this, null);
+    checkDuplicated(decl.I.spelling, decl.position);
+    this.idTable.save(decl.I.spelling, decl);
+    decl.I.accept(this, null);
+
     return null;
   }
 
@@ -563,17 +615,22 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final SingleFieldTypeDenoter td, Object arg) {
-    return null;
+    td.T = (TypeDenoter)td.T.accept(this, null);
+    return td;
   }
 
   @Override
   public Object visit(final MultipleFieldTypeDenoter td, Object arg) {
-    return null;
+    td.T = (TypeDenoter)td.T.accept(this, null);
+    td.FTD.accept(this, null);
+
+    return td;
   }
 
   @Override
   public Object visit(final RecordTypeDenoter td, Object arg) {
-    return null;
+    td.FTD = (FieldTypeDenoter)td.FTD.accept(this, null);
+    return td;
   }
 
   @Override
@@ -799,7 +856,24 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final DotVname vname, Object arg) {
-    return null;
+    final TypeDenoter vType = (TypeDenoter)vname.V.accept(this, null);
+
+    if (!(vType instanceof RecordTypeDenoter)) {
+      throw new CheckerError(reportError(vname.position, "required a record here"));
+    
+    }
+
+    final RecordTypeDenoter rtd = (RecordTypeDenoter)vType;
+    final TypeDenoter fType = checkFieldIdentifier(rtd.FTD, vname.I);
+
+    if (fType == StdEnvironment.errorType) {
+      throw new CheckerError(reportError(vname.position, "no such field in record - " + vname.I.spelling));
+    }
+
+    vname.type = fType;
+    vname.variable = vname.V.variable;
+
+    return vname.type;
   }
 
   @Override
