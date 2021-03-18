@@ -138,7 +138,7 @@ public class CheckerTest extends TestCase {
     Program program = parser.parseProgram();
     Checker checker = new Checker();
     checker.check(program);
-    //assertThat(program, is(leapYear()));
+    //assertThat(program, is(printArray()));
   }
 
   public void testDate() {
@@ -147,7 +147,7 @@ public class CheckerTest extends TestCase {
     Program program = parser.parseProgram();
     Checker checker = new Checker();
     checker.check(program);
-    //assertThat(program, is(leapYear()));
+    //assertThat(program, is(date()));
   }
 
   public void testString() {
@@ -156,7 +156,7 @@ public class CheckerTest extends TestCase {
     Program program = parser.parseProgram();
     Checker checker = new Checker();
     checker.check(program);
-    //assertThat(program, is(leapYear()));
+    //assertThat(program, is(string()));
   }
 
   public void testIteratively() {
@@ -165,7 +165,7 @@ public class CheckerTest extends TestCase {
     Program program = parser.parseProgram();
     Checker checker = new Checker();
     checker.check(program);
-    //assertThat(program, is(leapYear()));
+    //assertThat(program, is(iteratively()));
   }
 
   public void testReverseLine() {
@@ -174,7 +174,7 @@ public class CheckerTest extends TestCase {
     Program program = parser.parseProgram();
     Checker checker = new Checker();
     checker.check(program);
-    //assertThat(program, is(leapYear()));
+    //assertThat(program, is(reverseLine()));
   }
 
   public void testLine() {
@@ -183,7 +183,7 @@ public class CheckerTest extends TestCase {
     Program program = parser.parseProgram();
     Checker checker = new Checker();
     checker.check(program);
-    //assertThat(program, is(leapYear()));
+    //assertThat(program, is(line()));
   }
 
   public void testDates() {
@@ -192,7 +192,7 @@ public class CheckerTest extends TestCase {
     Program program = parser.parseProgram();
     Checker checker = new Checker();
     checker.check(program);
-    //assertThat(program, is(leapYear()));
+    //assertThat(program, is(dates()));
   }
 
   public void testMonthsOfYear() {
@@ -201,7 +201,7 @@ public class CheckerTest extends TestCase {
     Program program = parser.parseProgram();
     Checker checker = new Checker();
     checker.check(program);
-    //assertThat(program, is(leapYear()));
+    //assertThat(program, is(monthsOfYear()));
   }
 
   public void testCapitalise() {
@@ -210,7 +210,7 @@ public class CheckerTest extends TestCase {
     Program program = parser.parseProgram();
     Checker checker = new Checker();
     checker.check(program);
-    //assertThat(program, is(leapYear()));
+    //assertThat(program, is(capitalise()));
   }
 
   public void testFreq() {
@@ -219,7 +219,7 @@ public class CheckerTest extends TestCase {
     Program program = parser.parseProgram();
     Checker checker = new Checker();
     checker.check(program);
-    //assertThat(program, is(leapYear()));
+    //assertThat(program, is(freq()));
   }
 
   public void testInsertionSort() {
@@ -228,7 +228,7 @@ public class CheckerTest extends TestCase {
     Program program = parser.parseProgram();
     Checker checker = new Checker();
     checker.check(program);
-    //assertThat(program, is(leapYear()));
+    //assertThat(program, is(insertionSort()));
   }
 
   public void testRationals() {
@@ -237,6 +237,24 @@ public class CheckerTest extends TestCase {
     Program program = parser.parseProgram();
     Checker checker = new Checker();
     checker.check(program);
-    //assertThat(program, is(leapYear()));
+    //assertThat(program, is(rationals()));
+  }
+
+  public void testNestedRecords() {
+    String filename = "samples/nestedrecords.t";
+    Parser parser = new Parser(new Scanner(filename));
+    Program program = parser.parseProgram();
+    Checker checker = new Checker();
+    checker.check(program);
+    //assertThat(program, is(nestedRecords));
+  }
+
+  public void testNestedArrays() {
+    String filename = "samples/nestedarrays.t";
+    Parser parser = new Parser(new Scanner(filename));
+    Program program = parser.parseProgram();
+    Checker checker = new Checker();
+    checker.check(program);
+    //assertThat(program, is(nestedArrays));
   }
 }
