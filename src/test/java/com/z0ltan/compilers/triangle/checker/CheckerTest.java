@@ -195,7 +195,6 @@ public class CheckerTest extends TestCase {
     //assertThat(program, is(leapYear()));
   }
 
-  //@TODO
   public void testMonthsOfYear() {
     String filename = "samples/monthsofyear.t";
     Parser parser = new Parser(new Scanner(filename));
@@ -205,7 +204,6 @@ public class CheckerTest extends TestCase {
     //assertThat(program, is(leapYear()));
   }
 
-  //@TODO
   public void testCapitalise() {
     String filename = "samples/capitalise.t";
     Parser parser = new Parser(new Scanner(filename));
@@ -215,7 +213,6 @@ public class CheckerTest extends TestCase {
     //assertThat(program, is(leapYear()));
   }
 
-  //@TODO
   public void testFreq() {
     String filename = "samples/freq.t";
     Parser parser = new Parser(new Scanner(filename));
@@ -225,7 +222,6 @@ public class CheckerTest extends TestCase {
     //assertThat(program, is(leapYear()));
   }
 
-  //@TODO
   public void testInsertionSort() {
     String filename = "samples/insertion_sort.t";
     Parser parser = new Parser(new Scanner(filename));

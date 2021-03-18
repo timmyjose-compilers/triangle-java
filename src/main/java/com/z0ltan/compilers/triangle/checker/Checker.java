@@ -29,6 +29,7 @@ import com.z0ltan.compilers.triangle.ast.ArrayExpression;
 import com.z0ltan.compilers.triangle.ast.RecordExpression;
 import com.z0ltan.compilers.triangle.ast.UnaryExpression;
 import com.z0ltan.compilers.triangle.ast.BinaryExpression;
+import com.z0ltan.compilers.triangle.ast.ArrayAggregate;
 import com.z0ltan.compilers.triangle.ast.SingleArrayAggregate;
 import com.z0ltan.compilers.triangle.ast.MultipleArrayAggregate;
 import com.z0ltan.compilers.triangle.ast.SingleRecordAggregate;
@@ -335,7 +336,9 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final LetExpression expr, Object arg) {
-    return null;
+    expr.D.accept(this, null);
+    expr.type = (TypeDenoter)expr.E.accept(this, null);
+    return expr.type;
   }
 
   @Override
@@ -454,7 +457,11 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final ArrayExpression expr, Object arg) {
-    return null;
+    final ArrayAggregate aggr = (ArrayAggregate)expr.AA.accept(this, null);
+    final IntegerLiteral elemCount = new IntegerLiteral(String.valueOf(aggr.elemCount), dummyPosition());
+    expr.type = new ArrayTypeDenoter(elemCount, aggr.elemType, dummyPosition());
+
+    return expr.type;
   }
 
   @Override
@@ -467,12 +474,27 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final SingleArrayAggregate aggr, Object arg) {
-    return null;
+    final TypeDenoter eType = (TypeDenoter)aggr.E.accept(this, null);
+    aggr.elemType = eType;
+    aggr.elemCount = 1;
+
+    return aggr;
   }
 
   @Override
   public Object visit(final MultipleArrayAggregate aggr, Object arg) {
-    return null;
+    final TypeDenoter eType = (TypeDenoter)aggr.E.accept(this, null);
+    aggr.elemCount = 1;
+
+    final ArrayAggregate aggr1 = (ArrayAggregate)aggr.AA.accept(this, null);
+    aggr.elemCount += aggr1.elemCount;
+
+    if (!eType.equals(aggr1.elemType)) {
+      throw new CheckerError(reportError(aggr.position, "array elements have to be of the same type"));
+    }
+
+    aggr.elemType = eType;
+    return aggr;
   }
 
   @Override
@@ -540,6 +562,14 @@ public class Checker implements Visitor {
     decl.FPS.accept(this, null);
     decl.T = (TypeDenoter)decl.T.accept(this, null);
     decl.E.accept(this, null);
+
+    if (!decl.T.equals(decl.E.type)) {
+      throw new CheckerError(reportError(decl.position, 
+            "mismatched types - function declaration has type", 
+            decl.T, 
+            "and body has type", 
+            decl.E.type));
+    }
     this.idTable.closeScope();
 
     return null;
@@ -744,10 +774,6 @@ public class Checker implements Visitor {
   public Object visit(final ConstActualParameter param, Object arg) {
     final ConstFormalParameter cfp = (ConstFormalParameter)arg;
     final TypeDenoter actualType = (TypeDenoter)param.E.accept(this, null);
-
-    if (actualType == null) {
-      System.out.println("null for " + param);
-    }
 
     if (!actualType.equals(cfp.T)) {
       throw new CheckerError(reportError(param.position, "mismatch in actual parameter types, expected", cfp.T, "got", actualType));

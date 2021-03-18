@@ -30,7 +30,7 @@ let
     end;
 
   func leap(y: Integer): Boolean ~
-    if ((y // 100 = 0) /\ (y // 400 = 0)) \/ (y // 4 = 0)
+    if (((y // 100) = 0) /\ ((y // 400) = 0)) \/ ((y // 4) = 0)
       then true
       else false;
 

@@ -5,10 +5,12 @@ import com.z0ltan.compilers.triangle.scanner.SourcePosition;
 
 public class ArrayExpression extends Expression {
   public ArrayAggregate AA;
+  public int elemCount;
 
   public ArrayExpression(final ArrayAggregate AA, final SourcePosition position) {
     super(position);
     this.AA = AA;
+    this.elemCount = 0;
   }
 
   @Override
