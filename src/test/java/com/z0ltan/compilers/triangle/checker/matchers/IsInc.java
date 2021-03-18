@@ -53,7 +53,7 @@ public class IsInc extends TypeSafeMatcher<Program> {
 
   @Override
   public void describeTo(final Description description) {
-    description.appendText("is an ast for testcase inc");
+    description.appendText("an ast for testcase inc");
   }
 
   public static Matcher inc() {

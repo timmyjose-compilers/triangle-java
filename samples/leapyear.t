@@ -15,7 +15,8 @@ let
     end;
 
   func leapyear(d: Date): Boolean ~
-    if ((d.y // 100 = 0) /\ (d.y // 400 = 0)) \/ (d.y // 4 = 0)
+    !if ((d.y // 100 = 0) /\ (d.y // 400 = 0)) \/ (d.y // 4 = 0)
+    if (((d.y // 100) = 0) /\ ((d.y // 400) = 0)) \/ ((d.y // 4) = 0)
       then true
       else false
 in

@@ -137,7 +137,7 @@ public class IsFactorial extends TypeSafeMatcher<Program> {
 
   @Override
   public void describeTo(final Description description) {
-    description.appendText("is an ast for testcase factorial");
+    description.appendText("an ast for testcase factorial");
   }
 
   public static Matcher factorial() {

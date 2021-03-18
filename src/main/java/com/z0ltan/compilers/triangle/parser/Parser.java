@@ -263,6 +263,7 @@ public class Parser {
     while (currentToken.kind == TokenType.OPERATOR) {
       final Operator op = parseOperator();
       final Expression expr1 = parseSecondaryExpression(); 
+      //final Expression expr1 = parsePrimaryExpression(); @TODO
       finish(exprPos);
       expr = new BinaryExpression(expr, op, expr1, exprPos);
     }

@@ -22,7 +22,7 @@ public class FuncFormalParameter extends FormalParameter {
     }
 
     FuncFormalParameter other = (FuncFormalParameter)o;
-    return this.I.equals(other.I) && this.FPS.equals(other.FPS) && this.T.equals(other.T);
+    return this.FPS.equals(other.FPS) && this.T.equals(other.T);
   }
 
   @Override

@@ -20,7 +20,7 @@ public class ConstFormalParameter extends FormalParameter {
     }
 
     ConstFormalParameter other = (ConstFormalParameter)o;
-    return this.I.equals(other.I) && this.T.equals(other.T);
+    return this.T.equals(other.T);
   }
 
   @Override

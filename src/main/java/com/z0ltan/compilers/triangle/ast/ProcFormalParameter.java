@@ -20,7 +20,7 @@ public class ProcFormalParameter extends FormalParameter {
     }
 
     ProcFormalParameter other = (ProcFormalParameter)o;
-    return this.I.equals(other.I) && this.FPS.equals(other.FPS);
+    return this.FPS.equals(other.FPS);
   }
 
   @Override

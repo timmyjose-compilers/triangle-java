@@ -119,7 +119,7 @@ public class IsSumProc extends TypeSafeMatcher<Program> {
 
   @Override
   public void describeTo(final Description description) {
-    description.appendText("is an ast for testcase sumproc");
+    description.appendText("an ast for testcase sumproc");
   }
 
   public static Matcher sumProc() {

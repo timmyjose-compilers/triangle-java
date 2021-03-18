@@ -22,6 +22,7 @@ import static com.z0ltan.compilers.triangle.checker.matchers.IsSumProc.sumProc;
 import static com.z0ltan.compilers.triangle.checker.matchers.IsPower.power;
 import static com.z0ltan.compilers.triangle.checker.matchers.IsFactorial.factorial;
 import static com.z0ltan.compilers.triangle.checker.matchers.IsRecord.record;
+import static com.z0ltan.compilers.triangle.checker.matchers.IsLeapYear.leapYear;
 
 public class CheckerTest extends TestCase {
   public CheckerTest(String testName) {
@@ -123,41 +124,130 @@ public class CheckerTest extends TestCase {
   }
 
   public void testLeapYear() {
+    String filename = "samples/leapyear.t";
+    Parser parser = new Parser(new Scanner(filename));
+    Program program = parser.parseProgram();
+    Checker checker = new Checker();
+    checker.check(program);
+    //assertThat(program, is(leapYear()));
   }
 
+  //@TODO
   public void testPrintArray() {
+    String filename = "samples/print_array.t";
+    Parser parser = new Parser(new Scanner(filename));
+    Program program = parser.parseProgram();
+    Checker checker = new Checker();
+    checker.check(program);
+    //assertThat(program, is(leapYear()));
   }
 
+  //@TODO
   public void testDate() {
+    String filename = "samples/date.t";
+    Parser parser = new Parser(new Scanner(filename));
+    Program program = parser.parseProgram();
+    Checker checker = new Checker();
+    checker.check(program);
+    //assertThat(program, is(leapYear()));
   }
 
+  //@TODO
   public void testString() {
+    String filename = "samples/string.t";
+    Parser parser = new Parser(new Scanner(filename));
+    Program program = parser.parseProgram();
+    Checker checker = new Checker();
+    checker.check(program);
+    //assertThat(program, is(leapYear()));
   }
 
+  //@TODO
   public void testIteratively() {
+    String filename = "samples/iteratively.t";
+    Parser parser = new Parser(new Scanner(filename));
+    Program program = parser.parseProgram();
+    Checker checker = new Checker();
+    checker.check(program);
+    //assertThat(program, is(leapYear()));
   }
 
+  //@TODO
   public void testReverseLine() {
+    String filename = "samples/reverse_line.t";
+    Parser parser = new Parser(new Scanner(filename));
+    Program program = parser.parseProgram();
+    Checker checker = new Checker();
+    checker.check(program);
+    //assertThat(program, is(leapYear()));
   }
 
+  //@TODO
   public void testLine() {
+    String filename = "samples/line.t";
+    Parser parser = new Parser(new Scanner(filename));
+    Program program = parser.parseProgram();
+    Checker checker = new Checker();
+    checker.check(program);
+    //assertThat(program, is(leapYear()));
   }
 
+  //@TODO
   public void testDates() {
+    String filename = "samples/dates.t";
+    Parser parser = new Parser(new Scanner(filename));
+    Program program = parser.parseProgram();
+    Checker checker = new Checker();
+    checker.check(program);
+    //assertThat(program, is(leapYear()));
   }
 
+  //@TODO
   public void testMonthsOfYear() {
+    String filename = "samples/monthsofyear.t";
+    Parser parser = new Parser(new Scanner(filename));
+    Program program = parser.parseProgram();
+    Checker checker = new Checker();
+    checker.check(program);
+    //assertThat(program, is(leapYear()));
   }
 
+  //@TODO
   public void testCapitalise() {
+    String filename = "samples/capitalise.t";
+    Parser parser = new Parser(new Scanner(filename));
+    Program program = parser.parseProgram();
+    Checker checker = new Checker();
+    checker.check(program);
+    //assertThat(program, is(leapYear()));
   }
 
+  //@TODO
   public void testFreq() {
+    String filename = "samples/freq.t";
+    Parser parser = new Parser(new Scanner(filename));
+    Program program = parser.parseProgram();
+    Checker checker = new Checker();
+    checker.check(program);
+    //assertThat(program, is(leapYear()));
   }
 
+  //@TODO
   public void testInsertionSort() {
+    String filename = "samples/insertion_sort.t";
+    Parser parser = new Parser(new Scanner(filename));
+    Program program = parser.parseProgram();
+    Checker checker = new Checker();
+    checker.check(program);
+    //assertThat(program, is(leapYear()));
   }
 
   public void testRationals() {
+    String filename = "samples/rationals.t";
+    Parser parser = new Parser(new Scanner(filename));
+    Program program = parser.parseProgram();
+    Checker checker = new Checker();
+    checker.check(program);
+    //assertThat(program, is(leapYear()));
   }
 }

@@ -92,7 +92,7 @@ public class IsOdd extends TypeSafeMatcher<Program> {
 
   @Override
   public void describeTo(final Description description) {
-    description.appendText("is an ast for testcase odd");
+    description.appendText("an ast for testcase odd");
   }
 
   public static Matcher odd() {

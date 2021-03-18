@@ -30,7 +30,7 @@ public class IsHello extends TypeSafeMatcher<Program> {
 
   @Override
   public void describeTo(final Description description) {
-    description.appendText("is an ast for testcase hello");
+    description.appendText("an ast for testcase hello");
   }
 
   public static Matcher hello() {

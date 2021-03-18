@@ -187,7 +187,7 @@ public class IsRecord extends TypeSafeMatcher<Program> {
 
   @Override
   public void describeTo(final Description description) {
-    description.appendText("is an ast for testcase record");
+    description.appendText("an ast for testcase record");
   }
 
   public static Matcher record() {

@@ -176,8 +176,9 @@ public class Checker implements Visitor {
   }
 
   ConstDeclaration declareStdConst(final String id) {
-    final IntegerExpression il = new IntegerExpression(new IntegerLiteral("0", dummyPosition()), dummyPosition());
-    final ConstDeclaration decl = new ConstDeclaration(new Identifier(id, dummyPosition()), il, dummyPosition());
+    final IntegerExpression iexpr = new IntegerExpression(new IntegerLiteral("0", dummyPosition()), dummyPosition());
+    iexpr.type = StdEnvironment.boolType;
+    final ConstDeclaration decl = new ConstDeclaration(new Identifier(id, dummyPosition()), iexpr , dummyPosition());
     this.idTable.save(id, decl);
 
     return decl;
@@ -378,7 +379,6 @@ public class Checker implements Visitor {
     }
 
     expr.type = e2Type;
-
     return expr.type;
   }
 
@@ -500,6 +500,11 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final ConstDeclaration decl, Object arg) {
+    checkDuplicated(decl.I.spelling, decl.position);
+    this.idTable.save(decl.I.spelling, decl);
+    decl.I.accept(this, null);
+    decl.E.accept(this, null);
+
     return null;
   }
 
@@ -595,7 +600,12 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final ArrayTypeDenoter td, Object arg) {
-    return null;
+    td.T = (TypeDenoter)td.T.accept(this, null);
+    if (Integer.valueOf(td.IL.spelling).equals(0)) {
+      throw new CheckerError(reportError(td.position, "array dimension cannot be 0"));
+    }
+
+    return td;
   }
 
   @Override
@@ -654,10 +664,7 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final ConstFormalParameter param, Object arg) {
-    if (this.idTable.isPresent(param.I.spelling)) {
-      throw new CheckerError(reportError(param.position, param.I.spelling, "is already declared"));
-    }
-
+    checkDuplicated(param.I.spelling, param.position);
     this.idTable.save(param.I.spelling, param);
     param.I.accept(this, null);
     param.T = (TypeDenoter)param.T.accept(this, null);
@@ -680,11 +687,22 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final ProcFormalParameter param, Object arg) {
+    checkDuplicated(param.I.spelling, param.position);
+    this.idTable.save(param.I.spelling, param);
+    param.I.accept(this, null);
+    param.FPS.accept(this, null);
+
     return null;
   }
 
   @Override
   public Object visit(final FuncFormalParameter param, Object arg) {
+    checkDuplicated(param.I.spelling, param.position);
+    this.idTable.save(param.I.spelling, param);
+    param.I.accept(this, null);
+    param.FPS.accept(this, null);
+    param.T = (TypeDenoter)param.T.accept(this, null);
+
     return null;
   }
 
@@ -727,6 +745,10 @@ public class Checker implements Visitor {
     final ConstFormalParameter cfp = (ConstFormalParameter)arg;
     final TypeDenoter actualType = (TypeDenoter)param.E.accept(this, null);
 
+    if (actualType == null) {
+      System.out.println("null for " + param);
+    }
+
     if (!actualType.equals(cfp.T)) {
       throw new CheckerError(reportError(param.position, "mismatch in actual parameter types, expected", cfp.T, "got", actualType));
     }
@@ -759,7 +781,7 @@ public class Checker implements Visitor {
       throw new CheckerError(reportError(param.position, param.I, "is not declared"));
     }
 
-    if (!(binding instanceof ProcFormalParameter) || (binding instanceof ProcDeclaration)) {
+    if (!(binding instanceof ProcDeclaration || binding instanceof ProcFormalParameter)) {
       throw new CheckerError(reportError(param.position, param.I, "is not a valid procedure identifier"));
     } 
 
@@ -774,7 +796,6 @@ public class Checker implements Visitor {
       }
 
       final ProcFormalParameter pfp = (ProcFormalParameter)fp;
-
       if (!fps.equals(pfp.FPS)) {
         throw new CheckerError(reportError(param.position, 
               "mismatch in procedure type signature. expected",
@@ -878,7 +899,21 @@ public class Checker implements Visitor {
 
   @Override
   public Object visit(final SubscriptVname vname, Object arg) {
-    return null;
+    final TypeDenoter vType = (TypeDenoter)vname.V.accept(this, null);
+    if (!(vType instanceof ArrayTypeDenoter)) {
+      throw new CheckerError(reportError(vname.position, "expected to find an array here"));
+    }
+
+    final TypeDenoter eType = (TypeDenoter)vname.E.accept(this, null);
+    if (!eType.equals(StdEnvironment.intType)) {
+      throw new CheckerError(reportError(vname.position, "array subscript index must be an integer, got", eType));
+    }
+
+    vname.variable = vname.V.variable;
+    vname.indexed = true;
+    vname.type = eType;
+
+    return vname.type;
   }
 
   @Override

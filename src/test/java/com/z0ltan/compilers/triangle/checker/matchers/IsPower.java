@@ -143,7 +143,7 @@ public class IsPower extends TypeSafeMatcher<Program> {
 
   @Override
   public void describeTo(final Description description) {
-    description.appendText("is an ast for testcase power");
+    description.appendText("an ast for testcase power");
   }
 
   public static Matcher power() {

@@ -65,7 +65,7 @@ public class IsEcho extends TypeSafeMatcher<Program> {
 
   @Override
   public void describeTo(final Description description) {
-    description.appendText("is an ast for testcase echo");
+    description.appendText("an ast for testcase echo");
   }
 
   public static Matcher echo() {
