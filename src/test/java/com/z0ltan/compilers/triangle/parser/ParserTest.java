@@ -1809,55 +1809,56 @@ public class ParserTest extends TestCase {
                                                       new BinaryExpression(
                                                         new BinaryExpression(
                                                           new BinaryExpression(
-                                                            new VnameExpression(
-                                                              new DotVname(
-                                                                new SimpleVname(
+                                                            new BinaryExpression(
+                                                              new VnameExpression(
+                                                                new DotVname(
+                                                                  new SimpleVname(
+                                                                    new Identifier(
+                                                                      "d",
+                                                                      dummyPosition()
+                                                                      ),
+                                                                    dummyPosition()
+                                                                    ),
                                                                   new Identifier(
-                                                                    "d",
+                                                                    "y",
                                                                     dummyPosition()
                                                                     ),
                                                                   dummyPosition()
                                                                   ),
-                                                                new Identifier(
-                                                                  "y",
-                                                                  dummyPosition()
-                                                                  ),
                                                                 dummyPosition()
                                                                 ),
-                                                              dummyPosition()
-                                                              ),
-                                                            new Operator(
-                                                              "//",
-                                                              dummyPosition()
-                                                              ),
-                                                            new BinaryExpression(
-                                                                new IntegerExpression(
+                                                              new Operator(
+                                                                "//",
+                                                                dummyPosition()
+                                                                ),
+                                                              new IntegerExpression(
                                                                   new IntegerLiteral(
                                                                     "100",
                                                                     dummyPosition()
                                                                     ),
                                                                   dummyPosition()
                                                                   ),
-                                                                new Operator(
+                                                              dummyPosition()
+                                                                ),
+                                                              new Operator(
                                                                   "=",
                                                                   dummyPosition()
                                                                   ),
-                                                                new IntegerExpression(
+                                                              new IntegerExpression(
                                                                   new IntegerLiteral(
                                                                     "0",
                                                                     dummyPosition()
                                                                     ),
                                                                   dummyPosition()
                                                                   ),
-                                                                dummyPosition()
+                                                              dummyPosition()
                                                                 ),
-                                                                dummyPosition()
+                                                              new Operator(
+                                                                  "/\\",
+                                                                  dummyPosition()
                                                                   ),
-                                                                new Operator(
-                                                                    "/\\",
-                                                                    dummyPosition()
-                                                                    ),
-                                                                new BinaryExpression(
+                                                              new BinaryExpression(
+                                                                  new BinaryExpression(
                                                                     new VnameExpression(
                                                                       new DotVname(
                                                                         new SimpleVname(
@@ -1879,96 +1880,186 @@ public class ParserTest extends TestCase {
                                                                       "//",
                                                                       dummyPosition()
                                                                       ),
-                                                                    new BinaryExpression(
-                                                                        new IntegerExpression(
-                                                                          new IntegerLiteral(
-                                                                            "400",
-                                                                            dummyPosition()
-                                                                            ),
-                                                                          dummyPosition()
-                                                                          ),
-                                                                        new Operator(
-                                                                          "=",
-                                                                          dummyPosition()
-                                                                          ),
-                                                                        new IntegerExpression(
-                                                                          new IntegerLiteral(
-                                                                            "0",
-                                                                            dummyPosition()
-                                                                            ),
+                                                                    new IntegerExpression(
+                                                                        new IntegerLiteral(
+                                                                          "400",
                                                                           dummyPosition()
                                                                           ),
                                                                         dummyPosition()
                                                                         ),
+                                                                    dummyPosition()
+                                                                      ),
+                                                                    new Operator(
+                                                                        "=",
                                                                         dummyPosition()
+                                                                        ),
+                                                                    new IntegerExpression(
+                                                                        new IntegerLiteral(
+                                                                          "0",
+                                                                          dummyPosition()
                                                                           ),
                                                                         dummyPosition()
-                                                                          ),
-                                                                        new Operator(
-                                                                            "\\/",
+                                                                        ),
+                                                                    dummyPosition()
+                                                                      ),
+                                                                    dummyPosition()
+                                                                      ),
+                                                                    new Operator(
+                                                                        "\\/",
+                                                                        dummyPosition()
+                                                                        ),
+                                                                    new BinaryExpression(
+                                                                        new BinaryExpression(
+                                                                          new VnameExpression(
+                                                                            new DotVname(
+                                                                              new SimpleVname(
+                                                                                new Identifier(
+                                                                                  "d",
+                                                                                  dummyPosition()
+                                                                                  ),
+                                                                                dummyPosition()
+                                                                                ),
+                                                                              new Identifier(
+                                                                                "y",
+                                                                                dummyPosition()
+                                                                                ),
+                                                                              dummyPosition()
+                                                                              ),
                                                                             dummyPosition()
                                                                             ),
-                                                                        new BinaryExpression(
-                                                                            new VnameExpression(
-                                                                              new DotVname(
-                                                                                new SimpleVname(
-                                                                                  new Identifier(
-                                                                                    "d",
-                                                                                    dummyPosition()
-                                                                                    ),
-                                                                                  dummyPosition()
-                                                                                  ),
+                                                                          new Operator(
+                                                                            "//",
+                                                                            dummyPosition()
+                                                                            ),
+                                                                          new IntegerExpression(
+                                                                              new IntegerLiteral(
+                                                                                "4",
+                                                                                dummyPosition()
+                                                                                ),
+                                                                              dummyPosition()
+                                                                              ),
+                                                                          dummyPosition()
+                                                                            ),
+                                                                          new Operator(
+                                                                              "=",
+                                                                              dummyPosition()
+                                                                              ),
+                                                                          new IntegerExpression(
+                                                                              new IntegerLiteral(
+                                                                                "0",
+                                                                                dummyPosition()
+                                                                                ),
+                                                                              dummyPosition()
+                                                                              ),
+                                                                          dummyPosition()
+                                                                            ),
+                                                                          dummyPosition()
+                                                                            ),
+                                                                          new VnameExpression(
+                                                                              new SimpleVname(
                                                                                 new Identifier(
-                                                                                  "y",
+                                                                                  "true",
                                                                                   dummyPosition()
                                                                                   ),
                                                                                 dummyPosition()
                                                                                 ),
                                                                               dummyPosition()
                                                                               ),
-                                                                            new Operator(
-                                                                              "//",
+                                                                          new VnameExpression(
+                                                                              new SimpleVname(
+                                                                                new Identifier(
+                                                                                  "false",
+                                                                                  dummyPosition()
+                                                                                  ),
+                                                                                dummyPosition()
+                                                                                ),
                                                                               dummyPosition()
                                                                               ),
-                                                                            new BinaryExpression(
-                                                                                new IntegerExpression(
-                                                                                  new IntegerLiteral(
-                                                                                    "4",
-                                                                                    dummyPosition()
-                                                                                    ),
+                                                                          dummyPosition()
+                                                                            ),
+                                                                          dummyPosition()
+                                                                            ),
+                                                                          dummyPosition()
+                                                                            ),
+                                                                          new SequentialCommand(
+                                                                              new CallCommand(
+                                                                                new Identifier(
+                                                                                  "readdate",
                                                                                   dummyPosition()
                                                                                   ),
-                                                                                new Operator(
-                                                                                  "=",
-                                                                                  dummyPosition()
-                                                                                  ),
-                                                                                new IntegerExpression(
-                                                                                  new IntegerLiteral(
-                                                                                    "0",
+                                                                                new SingleActualParameterSequence(
+                                                                                  new VarActualParameter(
+                                                                                    new SimpleVname(
+                                                                                      new Identifier(
+                                                                                        "d",
+                                                                                        dummyPosition()
+                                                                                        ),
+                                                                                      dummyPosition()
+                                                                                      ),
                                                                                     dummyPosition()
                                                                                     ),
                                                                                   dummyPosition()
                                                                                   ),
                                                                                 dummyPosition()
                                                                                 ),
-                                                                                dummyPosition()
+                                                                          new IfCommand(
+                                                                              new CallExpression(
+                                                                                new Identifier(
+                                                                                  "leapyear",
+                                                                                  dummyPosition()
                                                                                   ),
-                                                                                dummyPosition()
-                                                                                  ),
-                                                                                new VnameExpression(
-                                                                                    new SimpleVname(
-                                                                                      new Identifier(
-                                                                                        "true",
+                                                                                new SingleActualParameterSequence(
+                                                                                  new ConstActualParameter(
+                                                                                    new VnameExpression(
+                                                                                      new SimpleVname(
+                                                                                        new Identifier(
+                                                                                          "d",
+                                                                                          dummyPosition()
+                                                                                          ),
                                                                                         dummyPosition()
                                                                                         ),
                                                                                       dummyPosition()
                                                                                       ),
                                                                                     dummyPosition()
                                                                                     ),
-                                                                                new VnameExpression(
-                                                                                    new SimpleVname(
-                                                                                      new Identifier(
-                                                                                        "false",
+                                                                                  dummyPosition()
+                                                                                  ),
+                                                                                dummyPosition()
+                                                                                  ),
+                                                                                new CallCommand(
+                                                                                    new Identifier(
+                                                                                      "putint",
+                                                                                      dummyPosition()
+                                                                                      ),
+                                                                                    new SingleActualParameterSequence(
+                                                                                      new ConstActualParameter(
+                                                                                        new IntegerExpression(
+                                                                                          new IntegerLiteral(
+                                                                                            "1",
+                                                                                            dummyPosition()
+                                                                                            ),
+                                                                                          dummyPosition()
+                                                                                          ),
+                                                                                        dummyPosition()
+                                                                                        ),
+                                                                                      dummyPosition()
+                                                                                      ),
+                                                                                    dummyPosition()
+                                                                                    ),
+                                                                                new CallCommand(
+                                                                                    new Identifier(
+                                                                                      "putint",
+                                                                                      dummyPosition()
+                                                                                      ),
+                                                                                    new SingleActualParameterSequence(
+                                                                                      new ConstActualParameter(
+                                                                                        new IntegerExpression(
+                                                                                          new IntegerLiteral(
+                                                                                            "0",
+                                                                                            dummyPosition()
+                                                                                            ),
+                                                                                          dummyPosition()
+                                                                                          ),
                                                                                         dummyPosition()
                                                                                         ),
                                                                                       dummyPosition()
@@ -1981,99 +2072,8 @@ public class ParserTest extends TestCase {
                                                                                   ),
                                                                                 dummyPosition()
                                                                                   ),
-                                                                                new SequentialCommand(
-                                                                                    new CallCommand(
-                                                                                      new Identifier(
-                                                                                        "readdate",
-                                                                                        dummyPosition()
-                                                                                        ),
-                                                                                      new SingleActualParameterSequence(
-                                                                                        new VarActualParameter(
-                                                                                          new SimpleVname(
-                                                                                            new Identifier(
-                                                                                              "d",
-                                                                                              dummyPosition()
-                                                                                              ),
-                                                                                            dummyPosition()
-                                                                                            ),
-                                                                                          dummyPosition()
-                                                                                          ),
-                                                                                        dummyPosition()
-                                                                                        ),
-                                                                                      dummyPosition()
-                                                                                      ),
-                                                                                new IfCommand(
-                                                                                    new CallExpression(
-                                                                                      new Identifier(
-                                                                                        "leapyear",
-                                                                                        dummyPosition()
-                                                                                        ),
-                                                                                      new SingleActualParameterSequence(
-                                                                                        new ConstActualParameter(
-                                                                                          new VnameExpression(
-                                                                                            new SimpleVname(
-                                                                                              new Identifier(
-                                                                                                "d",
-                                                                                                dummyPosition()
-                                                                                                ),
-                                                                                              dummyPosition()
-                                                                                              ),
-                                                                                            dummyPosition()
-                                                                                            ),
-                                                                                          dummyPosition()
-                                                                                          ),
-                                                                                        dummyPosition()
-                                                                                        ),
-                                                                                      dummyPosition()
-                                                                                        ),
-                                                                                      new CallCommand(
-                                                                                          new Identifier(
-                                                                                            "putint",
-                                                                                            dummyPosition()
-                                                                                            ),
-                                                                                          new SingleActualParameterSequence(
-                                                                                            new ConstActualParameter(
-                                                                                              new IntegerExpression(
-                                                                                                new IntegerLiteral(
-                                                                                                  "1",
-                                                                                                  dummyPosition()
-                                                                                                  ),
-                                                                                                dummyPosition()
-                                                                                                ),
-                                                                                              dummyPosition()
-                                                                                              ),
-                                                                                            dummyPosition()
-                                                                                            ),
-                                                                                          dummyPosition()
-                                                                                          ),
-                                                                                      new CallCommand(
-                                                                                          new Identifier(
-                                                                                            "putint",
-                                                                                            dummyPosition()
-                                                                                            ),
-                                                                                          new SingleActualParameterSequence(
-                                                                                            new ConstActualParameter(
-                                                                                              new IntegerExpression(
-                                                                                                new IntegerLiteral(
-                                                                                                  "0",
-                                                                                                  dummyPosition()
-                                                                                                  ),
-                                                                                                dummyPosition()
-                                                                                                ),
-                                                                                              dummyPosition()
-                                                                                              ),
-                                                                                            dummyPosition()
-                                                                                            ),
-                                                                                          dummyPosition()
-                                                                                          ),
-                                                                                      dummyPosition()
-                                                                                        ),
-                                                                                      dummyPosition()
-                                                                                        ),
-                                                                                      dummyPosition()
-                                                                                        ),
-                                                                                      dummyPosition()
-                                                                                        );
+                                                                                dummyPosition()
+                                                                                  );
 
     Program actualProgram = parser.parseProgram();
     assertThat(expectedProgram, is(equalTo(actualProgram)));
@@ -6671,21 +6671,21 @@ public class ParserTest extends TestCase {
                                                                                         new BinaryExpression(
                                                                                           new BinaryExpression(
                                                                                             new BinaryExpression(
-                                                                                              new VnameExpression(
-                                                                                                new SimpleVname(
-                                                                                                  new Identifier(
-                                                                                                    "y",
+                                                                                              new BinaryExpression(
+                                                                                                new VnameExpression(
+                                                                                                  new SimpleVname(
+                                                                                                    new Identifier(
+                                                                                                      "y",
+                                                                                                      dummyPosition()
+                                                                                                      ),
                                                                                                     dummyPosition()
                                                                                                     ),
                                                                                                   dummyPosition()
                                                                                                   ),
-                                                                                                dummyPosition()
-                                                                                                ),
-                                                                                              new Operator(
-                                                                                                "//",
-                                                                                                dummyPosition()
-                                                                                                ),
-                                                                                              new BinaryExpression(
+                                                                                                new Operator(
+                                                                                                  "//",
+                                                                                                  dummyPosition()
+                                                                                                  ),
                                                                                                 new IntegerExpression(
                                                                                                   new IntegerLiteral(
                                                                                                     "100",
@@ -6693,19 +6693,19 @@ public class ParserTest extends TestCase {
                                                                                                     ),
                                                                                                   dummyPosition()
                                                                                                   ),
-                                                                                                new Operator(
-                                                                                                  "=",
-                                                                                                  dummyPosition()
+                                                                                                dummyPosition()
                                                                                                   ),
-                                                                                                new IntegerExpression(
-                                                                                                  new IntegerLiteral(
-                                                                                                    "0",
+                                                                                                new Operator(
+                                                                                                    "=",
                                                                                                     dummyPosition()
                                                                                                     ),
-                                                                                                  dummyPosition()
-                                                                                                  ),
-                                                                                                dummyPosition()
-                                                                                                ),
+                                                                                                new IntegerExpression(
+                                                                                                    new IntegerLiteral(
+                                                                                                      "0",
+                                                                                                      dummyPosition()
+                                                                                                      ),
+                                                                                                    dummyPosition()
+                                                                                                    ),
                                                                                                 dummyPosition()
                                                                                                   ),
                                                                                                 new Operator(
@@ -6713,21 +6713,21 @@ public class ParserTest extends TestCase {
                                                                                                     dummyPosition()
                                                                                                     ),
                                                                                                 new BinaryExpression(
-                                                                                                    new VnameExpression(
-                                                                                                      new SimpleVname(
-                                                                                                        new Identifier(
-                                                                                                          "y",
+                                                                                                    new BinaryExpression(
+                                                                                                      new VnameExpression(
+                                                                                                        new SimpleVname(
+                                                                                                          new Identifier(
+                                                                                                            "y",
+                                                                                                            dummyPosition()
+                                                                                                            ),
                                                                                                           dummyPosition()
                                                                                                           ),
                                                                                                         dummyPosition()
                                                                                                         ),
-                                                                                                      dummyPosition()
-                                                                                                      ),
-                                                                                                    new Operator(
-                                                                                                      "//",
-                                                                                                      dummyPosition()
-                                                                                                      ),
-                                                                                                    new BinaryExpression(
+                                                                                                      new Operator(
+                                                                                                        "//",
+                                                                                                        dummyPosition()
+                                                                                                        ),
                                                                                                       new IntegerExpression(
                                                                                                         new IntegerLiteral(
                                                                                                           "400",
@@ -6735,19 +6735,19 @@ public class ParserTest extends TestCase {
                                                                                                           ),
                                                                                                         dummyPosition()
                                                                                                         ),
-                                                                                                      new Operator(
-                                                                                                        "=",
-                                                                                                        dummyPosition()
+                                                                                                      dummyPosition()
                                                                                                         ),
-                                                                                                      new IntegerExpression(
-                                                                                                        new IntegerLiteral(
-                                                                                                          "0",
+                                                                                                      new Operator(
+                                                                                                          "=",
                                                                                                           dummyPosition()
                                                                                                           ),
-                                                                                                        dummyPosition()
-                                                                                                        ),
-                                                                                                      dummyPosition()
-                                                                                                      ),
+                                                                                                      new IntegerExpression(
+                                                                                                          new IntegerLiteral(
+                                                                                                            "0",
+                                                                                                            dummyPosition()
+                                                                                                            ),
+                                                                                                          dummyPosition()
+                                                                                                          ),
                                                                                                       dummyPosition()
                                                                                                         ),
                                                                                                       dummyPosition()
@@ -6757,21 +6757,21 @@ public class ParserTest extends TestCase {
                                                                                                           dummyPosition()
                                                                                                           ),
                                                                                                       new BinaryExpression(
-                                                                                                          new VnameExpression(
-                                                                                                            new SimpleVname(
-                                                                                                              new Identifier(
-                                                                                                                "y",
+                                                                                                          new BinaryExpression(
+                                                                                                            new VnameExpression(
+                                                                                                              new SimpleVname(
+                                                                                                                new Identifier(
+                                                                                                                  "y",
+                                                                                                                  dummyPosition()
+                                                                                                                  ),
                                                                                                                 dummyPosition()
                                                                                                                 ),
                                                                                                               dummyPosition()
                                                                                                               ),
-                                                                                                            dummyPosition()
-                                                                                                            ),
-                                                                                                          new Operator(
-                                                                                                            "//",
-                                                                                                            dummyPosition()
-                                                                                                            ),
-                                                                                                          new BinaryExpression(
+                                                                                                            new Operator(
+                                                                                                              "//",
+                                                                                                              dummyPosition()
+                                                                                                              ),
                                                                                                             new IntegerExpression(
                                                                                                               new IntegerLiteral(
                                                                                                                 "4",
@@ -6779,19 +6779,19 @@ public class ParserTest extends TestCase {
                                                                                                                 ),
                                                                                                               dummyPosition()
                                                                                                               ),
-                                                                                                            new Operator(
-                                                                                                              "=",
-                                                                                                              dummyPosition()
+                                                                                                            dummyPosition()
                                                                                                               ),
-                                                                                                            new IntegerExpression(
-                                                                                                              new IntegerLiteral(
-                                                                                                                "0",
+                                                                                                            new Operator(
+                                                                                                                "=",
                                                                                                                 dummyPosition()
                                                                                                                 ),
-                                                                                                              dummyPosition()
-                                                                                                              ),
-                                                                                                            dummyPosition()
-                                                                                                            ),
+                                                                                                            new IntegerExpression(
+                                                                                                                new IntegerLiteral(
+                                                                                                                  "0",
+                                                                                                                  dummyPosition()
+                                                                                                                  ),
+                                                                                                                dummyPosition()
+                                                                                                                ),
                                                                                                             dummyPosition()
                                                                                                               ),
                                                                                                             dummyPosition()
@@ -7135,7 +7135,6 @@ public class ParserTest extends TestCase {
                                                                                                                                                             ),
                                                                                                                                                           dummyPosition()
                                                                                                                                                             );
-
     Program actualProgram = parser.parseProgram();
     assertThat(expectedProgram, is(equalTo(actualProgram)));
   }
