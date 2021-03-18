@@ -904,6 +904,9 @@ public class Checker implements Visitor {
       throw new CheckerError(reportError(vname.position, "expected to find an array here"));
     }
 
+    final ArrayTypeDenoter atd = (ArrayTypeDenoter)vType;
+    vname.type = atd.T;
+
     final TypeDenoter eType = (TypeDenoter)vname.E.accept(this, null);
     if (!eType.equals(StdEnvironment.intType)) {
       throw new CheckerError(reportError(vname.position, "array subscript index must be an integer, got", eType));
@@ -911,7 +914,6 @@ public class Checker implements Visitor {
 
     vname.variable = vname.V.variable;
     vname.indexed = true;
-    vname.type = eType;
 
     return vname.type;
   }
