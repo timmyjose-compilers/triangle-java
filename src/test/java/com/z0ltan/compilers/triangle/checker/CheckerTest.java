@@ -34,7 +34,7 @@ public class CheckerTest extends TestCase {
   }
 
   public void testEmptyCommandEot() {
-    String filename = "samples/emptycommandeot.t";
+    String filename = "samples/source/emptycommandeot.t";
     Parser parser = new Parser(new Scanner(filename));
     Program program = parser.parseProgram();
     Checker checker = new Checker();
@@ -43,7 +43,7 @@ public class CheckerTest extends TestCase {
   }
 
   public void testEmptyCommandSemicolon() {
-    String filename = "samples/emptycommandsemicolon.t";
+    String filename = "samples/source/emptycommandsemicolon.t";
     Parser parser = new Parser(new Scanner(filename));
     Program program = parser.parseProgram();
     Checker checker = new Checker();
@@ -52,7 +52,7 @@ public class CheckerTest extends TestCase {
   }
 
   public void testHello() {
-    String filename = "samples/hello.t";
+    String filename = "samples/source/hello.t";
     Parser parser = new Parser(new Scanner(filename));
     Program program = parser.parseProgram();
     Checker checker = new Checker();
@@ -61,7 +61,7 @@ public class CheckerTest extends TestCase {
   }
 
   public void testInc() {
-    String filename = "samples/inc.t";
+    String filename = "samples/source/inc.t";
     Parser parser = new Parser(new Scanner(filename));
     Program program = parser.parseProgram();
     Checker checker = new Checker();
@@ -70,7 +70,7 @@ public class CheckerTest extends TestCase {
   }
 
   public void testEcho() {
-    String filename = "samples/echo.t";
+    String filename = "samples/source/echo.t";
     Parser parser = new Parser(new Scanner(filename));
     Program program = parser.parseProgram();
     Checker checker = new Checker();
@@ -79,7 +79,7 @@ public class CheckerTest extends TestCase {
   }
 
   public void testOdd() {
-    String filename = "samples/odd.t";
+    String filename = "samples/source/odd.t";
     Parser parser = new Parser(new Scanner(filename));
     Program program = parser.parseProgram();
     Checker checker = new Checker();
@@ -88,7 +88,7 @@ public class CheckerTest extends TestCase {
   }
 
   public void testSumProc() {
-    String filename = "samples/sum_proc.t";
+    String filename = "samples/source/sum_proc.t";
     Parser parser = new Parser(new Scanner(filename));
     Program program = parser.parseProgram();
     Checker checker = new Checker();
@@ -97,7 +97,7 @@ public class CheckerTest extends TestCase {
   }
 
   public void testPower() {
-    String filename = "samples/power.t";
+    String filename = "samples/source/power.t";
     Parser parser = new Parser(new Scanner(filename));
     Program program = parser.parseProgram();
     Checker checker = new Checker();
@@ -106,7 +106,7 @@ public class CheckerTest extends TestCase {
   }
 
   public void testFactorial() {
-    String filename = "samples/factorial.t";
+    String filename = "samples/source/factorial.t";
     Parser parser = new Parser(new Scanner(filename));
     Program program = parser.parseProgram();
     Checker checker = new Checker();
@@ -115,7 +115,7 @@ public class CheckerTest extends TestCase {
   }
 
   public void testRecord() {
-    String filename = "samples/record.t";
+    String filename = "samples/source/record.t";
     Parser parser = new Parser(new Scanner(filename));
     Program program = parser.parseProgram();
     Checker checker = new Checker();
@@ -124,7 +124,7 @@ public class CheckerTest extends TestCase {
   }
 
   public void testLeapYear() {
-    String filename = "samples/leapyear.t";
+    String filename = "samples/source/leapyear.t";
     Parser parser = new Parser(new Scanner(filename));
     Program program = parser.parseProgram();
     Checker checker = new Checker();
@@ -133,7 +133,7 @@ public class CheckerTest extends TestCase {
   }
 
   public void testPrintArray() {
-    String filename = "samples/print_array.t";
+    String filename = "samples/source/print_array.t";
     Parser parser = new Parser(new Scanner(filename));
     Program program = parser.parseProgram();
     Checker checker = new Checker();
@@ -142,7 +142,7 @@ public class CheckerTest extends TestCase {
   }
 
   public void testDate() {
-    String filename = "samples/date.t";
+    String filename = "samples/source/date.t";
     Parser parser = new Parser(new Scanner(filename));
     Program program = parser.parseProgram();
     Checker checker = new Checker();
@@ -151,7 +151,7 @@ public class CheckerTest extends TestCase {
   }
 
   public void testString() {
-    String filename = "samples/string.t";
+    String filename = "samples/source/string.t";
     Parser parser = new Parser(new Scanner(filename));
     Program program = parser.parseProgram();
     Checker checker = new Checker();
@@ -160,7 +160,7 @@ public class CheckerTest extends TestCase {
   }
 
   public void testIteratively() {
-    String filename = "samples/iteratively.t";
+    String filename = "samples/source/iteratively.t";
     Parser parser = new Parser(new Scanner(filename));
     Program program = parser.parseProgram();
     Checker checker = new Checker();
@@ -169,7 +169,7 @@ public class CheckerTest extends TestCase {
   }
 
   public void testReverseLine() {
-    String filename = "samples/reverse_line.t";
+    String filename = "samples/source/reverse_line.t";
     Parser parser = new Parser(new Scanner(filename));
     Program program = parser.parseProgram();
     Checker checker = new Checker();
@@ -178,7 +178,7 @@ public class CheckerTest extends TestCase {
   }
 
   public void testLine() {
-    String filename = "samples/line.t";
+    String filename = "samples/source/line.t";
     Parser parser = new Parser(new Scanner(filename));
     Program program = parser.parseProgram();
     Checker checker = new Checker();
@@ -187,7 +187,7 @@ public class CheckerTest extends TestCase {
   }
 
   public void testDates() {
-    String filename = "samples/dates.t";
+    String filename = "samples/source/dates.t";
     Parser parser = new Parser(new Scanner(filename));
     Program program = parser.parseProgram();
     Checker checker = new Checker();
@@ -196,7 +196,7 @@ public class CheckerTest extends TestCase {
   }
 
   public void testMonthsOfYear() {
-    String filename = "samples/monthsofyear.t";
+    String filename = "samples/source/monthsofyear.t";
     Parser parser = new Parser(new Scanner(filename));
     Program program = parser.parseProgram();
     Checker checker = new Checker();
@@ -205,7 +205,7 @@ public class CheckerTest extends TestCase {
   }
 
   public void testCapitalise() {
-    String filename = "samples/capitalise.t";
+    String filename = "samples/source/capitalise.t";
     Parser parser = new Parser(new Scanner(filename));
     Program program = parser.parseProgram();
     Checker checker = new Checker();
@@ -214,7 +214,7 @@ public class CheckerTest extends TestCase {
   }
 
   public void testFreq() {
-    String filename = "samples/freq.t";
+    String filename = "samples/source/freq.t";
     Parser parser = new Parser(new Scanner(filename));
     Program program = parser.parseProgram();
     Checker checker = new Checker();
@@ -223,7 +223,7 @@ public class CheckerTest extends TestCase {
   }
 
   public void testInsertionSort() {
-    String filename = "samples/insertion_sort.t";
+    String filename = "samples/source/insertion_sort.t";
     Parser parser = new Parser(new Scanner(filename));
     Program program = parser.parseProgram();
     Checker checker = new Checker();
@@ -232,7 +232,7 @@ public class CheckerTest extends TestCase {
   }
 
   public void testRationals() {
-    String filename = "samples/rationals.t";
+    String filename = "samples/source/rationals.t";
     Parser parser = new Parser(new Scanner(filename));
     Program program = parser.parseProgram();
     Checker checker = new Checker();
@@ -241,7 +241,7 @@ public class CheckerTest extends TestCase {
   }
 
   public void testNestedRecords() {
-    String filename = "samples/nestedrecords.t";
+    String filename = "samples/source/nestedrecords.t";
     Parser parser = new Parser(new Scanner(filename));
     Program program = parser.parseProgram();
     Checker checker = new Checker();
@@ -250,7 +250,7 @@ public class CheckerTest extends TestCase {
   }
 
   public void testNestedArrays() {
-    String filename = "samples/nestedarrays.t";
+    String filename = "samples/source/nestedarrays.t";
     Parser parser = new Parser(new Scanner(filename));
     Program program = parser.parseProgram();
     Checker checker = new Checker();

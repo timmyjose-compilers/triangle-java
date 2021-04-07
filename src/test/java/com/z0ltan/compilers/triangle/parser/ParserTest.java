@@ -77,7 +77,7 @@ public class ParserTest extends TestCase {
   }
 
   public void testEmptyCommandEot() {
-    String filename = "samples/emptycommandeot.t";
+    String filename = "samples/source/emptycommandeot.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
     Program expectedProgram = new Program(new EmptyCommand(dummyPosition()), dummyPosition());
@@ -86,7 +86,7 @@ public class ParserTest extends TestCase {
   }
 
   public void testEmptyCommandSemicolon() {
-    String filename = "samples/emptycommandsemicolon.t";
+    String filename = "samples/source/emptycommandsemicolon.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
     Program expectedProgram = new Program(new EmptyCommand(dummyPosition()), dummyPosition());
@@ -95,7 +95,7 @@ public class ParserTest extends TestCase {
   }
 
   public void testHello() {
-    String filename = "samples/hello.t";
+    String filename = "samples/source/hello.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
     Program expectedProgram = 
@@ -109,7 +109,7 @@ public class ParserTest extends TestCase {
   }
 
   public void testInc() {
-    String filename = "samples/inc.t";
+    String filename = "samples/source/inc.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
     Program expectedProgram =
@@ -166,7 +166,7 @@ public class ParserTest extends TestCase {
   }
 
   public void testEcho() {
-    String filename = "samples/echo.t";
+    String filename = "samples/source/echo.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
     Program expectedProgram = 
@@ -199,7 +199,7 @@ public class ParserTest extends TestCase {
   }
 
   public void testOdd() {
-    String filename = "samples/odd.t";
+    String filename = "samples/source/odd.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
     Program expectedProgram = 
@@ -259,7 +259,7 @@ public class ParserTest extends TestCase {
   }
 
   public void testSumProc() {
-    String filename = "samples/sum_proc.t";
+    String filename = "samples/source/sum_proc.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
     Program expectedProgram =
@@ -546,7 +546,7 @@ public class ParserTest extends TestCase {
   }
 
   public void testPower() {
-    String filename = "samples/power.t";
+    String filename = "samples/source/power.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
     Program expectedProgram =
@@ -846,7 +846,7 @@ public class ParserTest extends TestCase {
   }
 
   public void testFactorial() {
-    String filename = "samples/factorial.t";
+    String filename = "samples/source/factorial.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
     Program expectedProgram =
@@ -1130,7 +1130,7 @@ public class ParserTest extends TestCase {
   }
 
   public void testRecord() {
-    String filename = "samples/record.t";
+    String filename = "samples/source/record.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
     Program expectedProgram = 
@@ -1586,7 +1586,7 @@ public class ParserTest extends TestCase {
   }
 
   public void testLeapYear() {
-    String filename = "samples/leapyear.t";
+    String filename = "samples/source/leapyear.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
     Program expectedProgram =
@@ -2080,7 +2080,7 @@ public class ParserTest extends TestCase {
   }
 
   public void testPrintArray() {
-    String filename = "samples/print_array.t";
+    String filename = "samples/source/print_array.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
     Program expectedProgram =
@@ -2576,7 +2576,7 @@ public class ParserTest extends TestCase {
   }
 
   public void testDate() {
-    String filename = "samples/date.t";
+    String filename = "samples/source/date.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
     Program expectedProgram =
@@ -3158,7 +3158,7 @@ public class ParserTest extends TestCase {
   }
 
   public void testString() {
-    String filename = "samples/string.t";
+    String filename = "samples/source/string.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
     Program expectedProgram =
@@ -3633,7 +3633,7 @@ public class ParserTest extends TestCase {
   }
 
   public void testIteratively() {
-    String filename = "samples/iteratively.t";
+    String filename = "samples/source/iteratively.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
     Program expectedProgram =
@@ -4198,7 +4198,7 @@ public class ParserTest extends TestCase {
   }
 
   public void testReverseLine() {
-    String filename = "samples/reverse_line.t";
+    String filename = "samples/source/reverse_line.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
     Program expectedProgram =
@@ -4726,7 +4726,7 @@ public class ParserTest extends TestCase {
   }
 
   public void testLine() {
-    String filename = "samples/line.t";
+    String filename = "samples/source/line.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
     Program expectedProgram =
@@ -5448,7 +5448,7 @@ public class ParserTest extends TestCase {
   }
 
   public void testDates() {
-    String filename = "samples/dates.t";
+    String filename = "samples/source/dates.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
     Program expectedProgram =
@@ -6239,7 +6239,7 @@ public class ParserTest extends TestCase {
   }
 
   public void testMonthsOfYear() {
-    String filename = "samples/monthsofyear.t";
+    String filename = "samples/source/monthsofyear.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
     Program expectedProgram =
@@ -7140,7 +7140,7 @@ public class ParserTest extends TestCase {
   }
 
   public void testCapitalise() {
-    String filename = "samples/capitalise.t";
+    String filename = "samples/source/capitalise.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
     Program expectedProgram =
@@ -8088,7 +8088,7 @@ public class ParserTest extends TestCase {
   }
 
   public void testFreq() {
-    String filename = "samples/freq.t";
+    String filename = "samples/source/freq.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
     Program expectedProgram =
@@ -9138,7 +9138,7 @@ public class ParserTest extends TestCase {
   }
 
   public void testInsertionSort() {
-    String filename = "samples/insertion_sort.t";
+    String filename = "samples/source/insertion_sort.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
     Program expectedProgram =
@@ -10470,7 +10470,7 @@ public class ParserTest extends TestCase {
   }
 
   public void testRationals() {
-    String filename = "samples/rationals.t";
+    String filename = "samples/source/rationals.t";
     Scanner scanner = new Scanner(filename);
     Parser parser = new Parser(scanner);
     Program expectedProgram =

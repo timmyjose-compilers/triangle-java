@@ -30,7 +30,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testEmptyCommandEot() {
-    String filename = "samples/emptycommandeot.t";
+    String filename = "samples/source/emptycommandeot.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.EOT, "")
     };
@@ -44,7 +44,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testEmptyCommandEotDegenerate() {
-    String filename = "samples/emptycommandeot_degenerate.t";
+    String filename = "samples/source/emptycommandeot_degenerate.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.EOT, "")
     };
@@ -58,7 +58,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testEmptyCommandSemicolon() {
-    String filename = "samples/emptycommandsemicolon.t";
+    String filename = "samples/source/emptycommandsemicolon.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.SEMICOLON, ";"),
           new ScannerTestCase(TokenType.EOT, "")
@@ -73,7 +73,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testEmptyCommandSemicolonDegenerate() {
-    String filename = "samples/emptycommandsemicolon_degenerate.t";
+    String filename = "samples/source/emptycommandsemicolon_degenerate.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.SEMICOLON, ";"),
           new ScannerTestCase(TokenType.EOT, "")
@@ -88,7 +88,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testHello() {
-    String filename = "samples/hello.t";
+    String filename = "samples/source/hello.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.IDENTIFIER, "putint"),
           new ScannerTestCase(TokenType.LEFT_PAREN, "("),
@@ -106,7 +106,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testHelloDegenerate() {
-    String filename = "samples/hello_degenerate.t";
+    String filename = "samples/source/hello_degenerate.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.IDENTIFIER, "putint"),
           new ScannerTestCase(TokenType.LEFT_PAREN, "("),
@@ -124,7 +124,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testInc() {
-    String filename = "samples/inc.t";
+    String filename = "samples/source/inc.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.VAR, "var"),
@@ -177,7 +177,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testIncDegenerate() {
-    String filename = "samples/inc_degenerate.t";
+    String filename = "samples/source/inc_degenerate.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.VAR, "var"),
@@ -231,7 +231,7 @@ public class ScannerTest extends TestCase {
 
 
   public void testEcho() {
-    String filename = "samples/echo.t";
+    String filename = "samples/source/echo.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.VAR, "var"),
@@ -280,7 +280,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testEchoDegenerate() {
-    String filename = "samples/echo_degenerate.t";
+    String filename = "samples/source/echo_degenerate.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.VAR, "var"),
@@ -329,7 +329,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testOdd() {
-    String filename = "samples/odd.t";
+    String filename = "samples/source/odd.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.VAR, "var"),
@@ -390,7 +390,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testOddDegenerate() {
-    String filename = "samples/odd_degenerate.t";
+    String filename = "samples/source/odd_degenerate.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.VAR, "var"),
@@ -451,7 +451,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testSumProc() {
-    String filename = "samples/sum_proc.t";
+    String filename = "samples/source/sum_proc.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.VAR, "var"),
@@ -532,7 +532,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testSumProcDegenerate() {
-    String filename = "samples/sum_proc_degenerate.t";
+    String filename = "samples/source/sum_proc_degenerate.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.VAR, "var"),
@@ -613,7 +613,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testPower() {
-    String filename = "samples/power.t";
+    String filename = "samples/source/power.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.VAR, "var"),
@@ -693,7 +693,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testPowerDegenerate() {
-    String filename = "samples/power_degenerate.t";
+    String filename = "samples/source/power_degenerate.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.VAR, "var"),
@@ -773,7 +773,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testFactorial() {
-    String filename = "samples/factorial.t";
+    String filename = "samples/source/factorial.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.VAR, "var"),
@@ -857,7 +857,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testFactorialDegenerate() {
-    String filename = "samples/factorial_degenerate.t";
+    String filename = "samples/source/factorial_degenerate.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.VAR, "var"),
@@ -941,7 +941,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testRecord() {
-    String filename = "samples/record.t";
+    String filename = "samples/source/record.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.TYPE, "type"),
@@ -1066,7 +1066,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testRecordDegenerate() {
-    String filename = "samples/record_degenerate.t";
+    String filename = "samples/source/record_degenerate.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.TYPE, "type"),
@@ -1191,7 +1191,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testLeapYear() {
-    String filename = "samples/leapyear.t";
+    String filename = "samples/source/leapyear.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.TYPE, "type"),
@@ -1339,7 +1339,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testLeapYearDegenerate() {
-    String filename = "samples/leapyear_degenerate.t";
+    String filename = "samples/source/leapyear_degenerate.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.TYPE, "type"),
@@ -1481,7 +1481,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testPrintArray() {
-    String filename = "samples/print_array.t";
+    String filename = "samples/source/print_array.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.VAR, "var"),
@@ -1620,7 +1620,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testPrintArrayDegenerate() {
-    String filename = "samples/print_array_degenerate.t";
+    String filename = "samples/source/print_array_degenerate.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.VAR, "var"),
@@ -1759,7 +1759,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testDate() {
-    String filename = "samples/date.t";
+    String filename = "samples/source/date.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.TYPE, "type"),
@@ -1924,7 +1924,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testDateDegenerate() {
-    String filename = "samples/date_degenerate.t";
+    String filename = "samples/source/date_degenerate.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.TYPE, "type"),
@@ -2089,7 +2089,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testString() {
-    String filename = "samples/string.t";
+    String filename = "samples/source/string.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.TYPE, "type"),
@@ -2229,7 +2229,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testStringDegenerate() {
-    String filename = "samples/string_degenerate.t";
+    String filename = "samples/source/string_degenerate.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.TYPE, "type"),
@@ -2369,7 +2369,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testIteratively() {
-    String filename = "samples/iteratively.t";
+    String filename = "samples/source/iteratively.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.PROCEDURE, "proc"),
@@ -2539,7 +2539,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testIterativelyDegenerate() {
-    String filename = "samples/iteratively_degenerate.t";
+    String filename = "samples/source/iteratively_degenerate.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.PROCEDURE, "proc"),
@@ -2709,7 +2709,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testReverseLine() {
-    String filename = "samples/reverse_line.t";
+    String filename = "samples/source/reverse_line.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.TYPE, "type"),
@@ -2865,7 +2865,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testReverseLineDegenerate() {
-    String filename = "samples/reverse_line_degenerate.t";
+    String filename = "samples/source/reverse_line_degenerate.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.TYPE, "type"),
@@ -3021,7 +3021,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testLine() {
-    String filename = "samples/line.t";
+    String filename = "samples/source/line.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.TYPE, "type"),
@@ -3218,7 +3218,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testLineDegenerate() {
-    String filename = "samples/line_degenerate.t";
+    String filename = "samples/source/line_degenerate.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.TYPE, "type"),
@@ -3415,7 +3415,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testDates() {
-    String filename = "samples/dates.t";
+    String filename = "samples/source/dates.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.TYPE, "type"),
@@ -3640,7 +3640,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testDatesDegenerate() {
-    String filename = "samples/dates_degenerate.t";
+    String filename = "samples/source/dates_degenerate.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.TYPE, "type"),
@@ -3865,7 +3865,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testMonthsOfYear() {
-    String filename = "samples/monthsofyear.t";
+    String filename = "samples/source/monthsofyear.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.TYPE, "type"),
@@ -4119,7 +4119,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testMonthsOfYearDegenerate() {
-    String filename = "samples/monthsofyear_degenerate.t";
+    String filename = "samples/source/monthsofyear_degenerate.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.TYPE, "type"),
@@ -4368,7 +4368,7 @@ public class ScannerTest extends TestCase {
 
 
   public void testCapitalise() {
-    String filename = "samples/capitalise.t";
+    String filename = "samples/source/capitalise.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.VAR, "var"),
@@ -4622,7 +4622,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testCapitaliseDegenerate() {
-    String filename = "samples/capitalise_degenerate.t";
+    String filename = "samples/source/capitalise_degenerate.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.VAR, "var"),
@@ -4876,7 +4876,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testFreq() {
-    String filename = "samples/freq.t";
+    String filename = "samples/source/freq.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.PROCEDURE, "proc"),
@@ -5160,7 +5160,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testFreqDegenerate() {
-    String filename = "samples/freq_degenerate.t";
+    String filename = "samples/source/freq_degenerate.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.PROCEDURE, "proc"),
@@ -5444,7 +5444,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testInsertionSort() {
-    String filename = "samples/insertion_sort.t";
+    String filename = "samples/source/insertion_sort.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.VAR, "var"),
@@ -5776,7 +5776,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testInsertionSortDegenerate() {
-    String filename = "samples/insertion_sort_degenerate.t";
+    String filename = "samples/source/insertion_sort_degenerate.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.VAR, "var"),
@@ -6108,7 +6108,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testRationals() {
-    String filename = "samples/rationals.t";
+    String filename = "samples/source/rationals.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.TYPE, "type"),
@@ -6476,7 +6476,7 @@ public class ScannerTest extends TestCase {
   }
 
   public void testRationalsDegenerate() {
-    String filename = "samples/rationals_degenerate.t";
+    String filename = "samples/source/rationals_degenerate.t";
     ScannerTestCase testCases[] = new ScannerTestCase[] {
       new ScannerTestCase(TokenType.LET, "let"),
           new ScannerTestCase(TokenType.TYPE, "type"),
