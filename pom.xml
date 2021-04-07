@@ -7,6 +7,12 @@
   <version>1.0-SNAPSHOT</version>
   <name>triangle-java</name>
   <url>http://maven.apache.org</url>
+  <repositories>
+		<repository>
+	    <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+	</repository>
+  </repositories>  
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -20,6 +26,12 @@
       <version>2.2</version>
       <scope>test</scope>
     </dependency>  
+    <dependency>
+      <groupId>com.github.timmyjose-compilers</groupId>
+      <artifactId>tam-java</artifactId>
+      <version>-b6489e9271-1</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
