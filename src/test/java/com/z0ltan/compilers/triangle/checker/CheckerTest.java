@@ -1,9 +1,5 @@
 package com.z0ltan.compilers.triangle.checker;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -24,15 +20,7 @@ import static com.z0ltan.compilers.triangle.checker.matchers.IsFactorial.factori
 import static com.z0ltan.compilers.triangle.checker.matchers.IsRecord.record;
 import static com.z0ltan.compilers.triangle.checker.matchers.IsLeapYear.leapYear;
 
-public class CheckerTest extends TestCase {
-  public CheckerTest(String testName) {
-    super(testName);
-  }
-
-  public static Test suite() {
-    return new TestSuite(CheckerTest.class);
-  }
-
+public class CheckerTest {
   public void testEmptyCommandEot() {
     String filename = "samples/source/emptycommandeot.t";
     Parser parser = new Parser(new Scanner(filename));

@@ -1,24 +1,12 @@
 package com.z0ltan.compilers.triangle.scanner;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.equalTo;
 
 import java.util.Iterator;
 
-public class ScannerTest extends TestCase {
-  public ScannerTest(String testName) {
-    super(testName);
-  }
-
-  public static Test suite() {
-    return new TestSuite(ScannerTest.class);
-  }
-
+public class ScannerTest {
   static class ScannerTestCase {
     TokenType kind;
     String spelling;

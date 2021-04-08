@@ -15,9 +15,9 @@
   </repositories>  
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.2</version>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.8.0-M1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -26,7 +26,13 @@
       <version>2.2</version>
       <scope>test</scope>
     </dependency>  
-    <dependency>
+     <dependency>
+      <groupId>com.github.stefanbirkner</groupId>
+      <artifactId>system-lambda</artifactId>
+      <version>1.2.0</version>
+      <scope>test</scope>
+     </dependency>
+     <dependency>
       <groupId>com.github.timmyjose-compilers</groupId>
       <artifactId>tam-java</artifactId>
       <version>-b6489e9271-1</version>
@@ -35,7 +41,7 @@
   </dependencies>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>9</maven.compiler.source>
-    <maven.compiler.target>9</maven.compiler.target>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
   </properties>
 </project>

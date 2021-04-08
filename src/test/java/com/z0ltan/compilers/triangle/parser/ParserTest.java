@@ -1,9 +1,5 @@
 package com.z0ltan.compilers.triangle.parser;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.equalTo;
@@ -67,15 +63,7 @@ import com.z0ltan.compilers.triangle.ast.CharacterLiteral;
 
 import static com.z0ltan.compilers.triangle.scanner.SourcePosition.dummyPosition;
 
-public class ParserTest extends TestCase {
-  public ParserTest(String testName) {
-    super(testName);
-  }
-
-  public static Test suite() {
-    return new TestSuite(ParserTest.class);
-  }
-
+public class ParserTest {
   public void testEmptyCommandEot() {
     String filename = "samples/source/emptycommandeot.t";
     Scanner scanner = new Scanner(filename);

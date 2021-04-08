@@ -1,9 +1,5 @@
 package com.z0ltan.compilers.triangle.encoder;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -13,15 +9,7 @@ import com.z0ltan.compilers.triangle.parser.Parser;
 import com.z0ltan.tam.Interpreter;
 import com.z0ltan.compilers.triangle.ast.Program;
 
-public class EncoderTest extends TestCase {
-  public EncoderTest(String testName) {
-    super(testName);
-  }
-
-  public static Test suite() {
-    return new TestSuite(EncoderTest.class);
-  }
-
+public class EncoderTest {
   public void testEmptyCommandEot() {
     String filename = "samples/source/emptycommandeot.t";
     final Interpreter interpreter = new Interpreter();
