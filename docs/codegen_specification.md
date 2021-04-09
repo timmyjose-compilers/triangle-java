@@ -13,6 +13,7 @@ This document records the code specification for the Triangle programming langua
 
   fetch : Vname -> Instruction*
   assign : Vname -> Instruction*
+  fetch-address : Vname -> Instruction*
 
 ```
 
@@ -56,10 +57,20 @@ Expected behaviour of code functions:
 #### CallCommand
 
 ```
-  execute [[I (E)]] = 
+  execute [[I (AP)]] = 
+    pass-argument AP
+    CALL(r) e where (l, e) = address of routine bound to I,
+                    cl = current routine level (call level)
+                    r = display-register(cl, l)
+
+  pass-argument [[E]] = 
     evaluate E
-    CALL P, where p = addr(I)
+
+  pass-argument [[V]] = 
+    fetch-address V
+
 ```
+
 
 #### SequentialCommand
 
@@ -155,17 +166,74 @@ Expected behaviour of code functions:
 
 ### V-name
 
+
+  * KnownValue - a value bound in a constant declaration, whose RHS is a literal.
+
+  * UnknownValue - a value bound in a const declaration, whose RHS contains entities evaluated at runtime. Also an argument value bound to a constant parameter.
+
+  * KnownAddress - an address allocated in a variable declaration. Each such address is represented by a (level, displacement) pair.
+
+  * UnknownAddress - an argument address bound to a variable parameter.
+
+  * KnownRoutine - a routine (user-defined) bound in a procedure or function declaration.
+
+  * UnknownRoutine - describes a closure argument bound to a procedure or function parameter.
+
+  * PrimitiveRoutine - a primitive routine defined by the TAM.
+
+  * EqualityRoutine - a special primitive routine that checks for equality of (same type) values of any type.
+  
+  * Field - describes a field of a record.
+
+  * Type representation - describes a type. Every type has a known constant size.
+
+
 #### SimpleVname
 
+##### KnownValue
+
 ```
-  fetch [[I]] = 
-    LOAD(s) d[r]
-  
+  fetch [[I]] =
+    LOADL v where v = value bound to I
+```
+
+##### UnknownValue or KnownAddress
+
+```
+  fetch [[I]] =
+    LOAD(s) d[r] where s = size(type(I))
+                      (l, d) = address bound to I
+                      cl = current routine level
+                      r = display-register(cl, l)
+```
+
+```
+  assign [[I]] = (only for KnownAddress)
+    STORE(s) d[r]
+```
+
+```
+  fetch-Address [[I]] = (only for KnownAddress)
+    LOADA d[r]
+```
+
+##### UnknownAddress
+
+```
+  fetch [[I]] =
+    LOAD(1) d[r]
+    LOADI(s) 
 ```
 
 ```
   assign [[I]] = 
-    STORE(s) d[r]
+    LOAD(1) d[r]
+    STOREI(S) 
+```
+
+```
+  fetch-address [[I]] =
+    LOAD(1) d[r]
 ```
 
 #### DotVname
@@ -206,7 +274,19 @@ Expected behaviour of code functions:
 
 #### ProcDeclaration
 
+```
+  elaborate [[proc I (FP) ~ C]] =
+    JUMP g
+ e: execute C
+    RETURN(0) d, where d = size of FP
+  g:  
+```
+
 #### FuncDeclaration
+
+```
+  elaborate [[func I(FP): T ~ C]] =
+```
 
 #### SequentialDeclaration
 
