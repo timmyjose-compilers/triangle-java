@@ -71,7 +71,6 @@ Expected behaviour of code functions:
 
 ```
 
-
 #### SequentialCommand
 
 ```
@@ -137,7 +136,13 @@ Expected behaviour of code functions:
 
 #### LetExpression
 
-#### ArrayExpresssion
+#### ArrayExpresssion 
+
+```
+  evaluate [[ [E] ]] = 
+    visit type(E)
+    visit E.AA
+```
 
 #### RecordExpresssion
 
@@ -201,7 +206,12 @@ Expected behaviour of code functions:
 
 ```
   fetch [[I]] =
-    LOAD(s) d[r] where s = size(type(I))
+    if I is indexed
+      LOADA d[r] where d = address of entity + offset(I)
+      CALL add
+      LOADI(s)
+    else
+      LOAD(s) d[r] where s = size(type(I))
                       (l, d) = address bound to I
                       cl = current routine level
                       r = display-register(cl, l)
@@ -209,31 +219,55 @@ Expected behaviour of code functions:
 
 ```
   assign [[I]] = (only for KnownAddress)
-    STORE(s) d[r]
+    if I is indexed 
+      ! the index value is already available on the stack top
+      LOADA d[r] where d = address of entity + offset of I (array base address)
+      CALL add ! effective address of index item
+      STOREI(s)
+    else
+      STORE(s) d[r]
 ```
 
 ```
   fetch-Address [[I]] = (only for KnownAddress)
     LOADA d[r]
+    if I is indexed
+      CALL add
 ```
 
 ##### UnknownAddress
 
 ```
   fetch [[I]] =
-    LOAD(1) d[r]
+    LOAD(addrSize) d[r]
+    if I is indexed
+      CALL add
+    if offset(I) != 0
+      LOADL offset(I)
+      CALL add
     LOADI(s) 
 ```
 
 ```
   assign [[I]] = 
-    LOAD(1) d[r]
+    LOAD(addrSize) d[r] where addrSize is the addressSize (1 in TAM)
+    ! the index value is, again, already on the stack top
+    if I is indexed
+      CALL add
+    if offset(I) > 0 
+      LOADL offset(I)
+      CALL add
     STOREI(S) 
 ```
 
 ```
   fetch-address [[I]] =
-    LOAD(1) d[r]
+    LOAD(addrSize) d[r]
+    if I is indexed
+      CALL add
+    if offset(I) != 0
+      LOADL offset(I)
+      CALL add
 ```
 
 #### DotVname
