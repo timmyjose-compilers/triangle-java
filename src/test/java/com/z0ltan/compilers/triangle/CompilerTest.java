@@ -15,387 +15,282 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static com.z0ltan.compilers.triangle.matchers.ContentMatcher.contentIsSame;
 
 public class CompilerTest {
+  private void compareContents(final String sourceFile, final String binaryFile, final String outputFile) {
+    try {
+      final String expectedOutput = Files.readString(Paths.get(outputFile));
+      final String generatedOutput = tapSystemOut(() -> {
+        Compiler.main(new String[] { sourceFile, binaryFile });
+        Interpreter.main(new String[] { binaryFile });
+        Files.deleteIfExists(Paths.get(binaryFile));
+      });
+
+      assertThat(generatedOutput, contentIsSame(expectedOutput));
+    } catch (Exception ex) {
+      throw new RuntimeException(ex);
+    }
+  }
+
   public void testEmptyCommandEot() throws Exception {
-    final String sourceFile = "samples/source/emptycommandeot.t";
-    final String binaryFile = Files.createTempFile("emptycommandeot", ".tam").toString();
-    final String outputFile = "samples/output/emptycommandeot.out";
+    withTextFromSystemIn("")
+      .execute(() -> {
+        final String sourceFile = "samples/source/emptycommandeot.t";
+        final String binaryFile = "emptycommandeot.tam";
+        final String outputFile = "samples/output/emptycommandeot.out";
 
-    final Compiler compiler = new Compiler(sourceFile, binaryFile);
-    compiler.compile();
-
-    final String expectedOutput = Files.readString(Paths.get(outputFile));
-    final String generatedOutput = tapSystemOut(() -> {
-      Interpreter.main(new String[] { binaryFile });
-    });
-
-    assertThat(generatedOutput, contentIsSame(expectedOutput));
+        compareContents(sourceFile, binaryFile, outputFile);
+      });
   }
 
   public void testEmptyCommandSemicolon() throws Exception {
-    final String sourceFile = "samples/source/emptycommandsemicolon.t";
-    final String binaryFile = Files.createTempFile("emptycommandsemicolon", ".tam").toString();
-    final String outputFile = "samples/output/emptycommandsemicolon.out";
+    withTextFromSystemIn("")
+      .execute(() -> {
+        final String sourceFile = "samples/source/emptycommandsemicolon.t";
+        final String binaryFile = "emptycommandsemicolon.tam";
+        final String outputFile = "samples/output/emptycommandsemicolon.out";
 
-    final Compiler compiler = new Compiler(sourceFile, binaryFile);
-    compiler.compile();
-
-    final String expectedOutput = Files.readString(Paths.get(outputFile));
-    final String generatedOutput = tapSystemOut(() -> {
-      Interpreter.main(new String[] { binaryFile });
-    });
-
-    //assertThat(generatedOutput, contentIsSame(expectedOutput));
+        compareContents(sourceFile, binaryFile, outputFile);
+      });
   }
 
-  public void testHello() throws Exception {
-    final String sourceFile = "samples/source/hello.t";
-    final String binaryFile = Files.createTempFile("hello", ".tam").toString();
-    final String outputFile = "samples/output/hello.out";
+  public void xtestHello() throws Exception {
+    withTextFromSystemIn("")
+      .execute(() -> {
+        final String sourceFile = "samples/source/hello.t";
+        final String binaryFile = "hello.tam";
+        final String outputFile = "samples/output/hello.out";
 
-    final Compiler compiler = new Compiler(sourceFile, binaryFile);
-    compiler.compile();
-
-    final String expectedOutput = Files.readString(Paths.get(outputFile));
-    final String generatedOutput = tapSystemOut(() -> {
-      Interpreter.main(new String[] { binaryFile });
-    });
-
-    //assertThat(generatedOutput, contentIsSame(expectedOutput));
+        compareContents(sourceFile, binaryFile, outputFile);
+      });
   }
 
-  public void testInc() throws Exception {
-    final String sourceFile = "samples/source/inc.t";
-    final String binaryFile = Files.createTempFile("inc", ".tam").toString();
-    final String outputFile = "samples/output/inc.out";
+  public void xtestInc() throws Exception {
+    withTextFromSystemIn("")
+      .execute(() -> {
+        final String sourceFile = "samples/source/inc.t";
+        final String binaryFile = "inc.tam";
+        final String outputFile = "samples/output/inc.out";
 
-    final Compiler compiler = new Compiler(sourceFile, binaryFile);
-    compiler.compile();
-
-    final String expectedOutput = Files.readString(Paths.get(outputFile));
-    final String generatedOutput = tapSystemOut(() -> {
-      Interpreter.main(new String[] { binaryFile });
-    });
-
-    //assertThat(generatedOutput, contentIsSame(expectedOutput));
+        compareContents(sourceFile, binaryFile, outputFile);
+      });
   }
 
-  public void testEcho() throws Exception {
-    final String sourceFile = "samples/source/echo.t";
-    final String binaryFile = Files.createTempFile("echo", ".tam").toString();
-    final String outputFile = "samples/output/echo.out";
+  public void xtestEcho() throws Exception {
+    withTextFromSystemIn("")
+      .execute(() -> {
+        final String sourceFile = "samples/source/echo.t";
+        final String binaryFile = "echo.tam";
+        final String outputFile = "samples/output/echo.out";
 
-    final Compiler compiler = new Compiler(sourceFile, binaryFile);
-    compiler.compile();
-
-    final String expectedOutput = Files.readString(Paths.get(outputFile));
-    final String generatedOutput = tapSystemOut(() -> {
-      Interpreter.main(new String[] { binaryFile });
-    });
-
-    //assertThat(generatedOutput, contentIsSame(expectedOutput));
+        compareContents(sourceFile, binaryFile, outputFile);
+      });
   }
 
-  public void testOdd() throws Exception {
-    final String sourceFile = "samples/source/odd.t";
-    final String binaryFile = Files.createTempFile("odd", ".tam").toString();
-    final String outputFile = "samples/output/odd.out";
+  public void xtestOdd() throws Exception {
+    withTextFromSystemIn("")
+      .execute(() -> {
+        final String sourceFile = "samples/source/odd.t";
+        final String binaryFile = "odd.tam";
+        final String outputFile = "samples/output/odd.out";
 
-    final Compiler compiler = new Compiler(sourceFile, binaryFile);
-    compiler.compile();
-
-    final String expectedOutput = Files.readString(Paths.get(outputFile));
-    final String generatedOutput = tapSystemOut(() -> {
-      Interpreter.main(new String[] { binaryFile });
-    });
-
-    //assertThat(generatedOutput, contentIsSame(expectedOutput));
+        compareContents(sourceFile, binaryFile, outputFile);
+      });
   }
 
-  public void testSumProc() throws Exception {
-    final String sourceFile = "samples/source/sum_proc.t";
-    final String binaryFile = Files.createTempFile("sum_proc", ".tam").toString();
-    final String outputFile = "samples/output/sum_proc.out";
+  public void xtestSumProc() throws Exception {
+    withTextFromSystemIn("")
+      .execute(() -> {
+        final String sourceFile = "samples/source/sum_proc.t";
+        final String binaryFile = "sum_proc.tam";
+        final String outputFile = "samples/output/sum_proc.out";
 
-    final Compiler compiler = new Compiler(sourceFile, binaryFile);
-    compiler.compile();
-
-    final String expectedOutput = Files.readString(Paths.get(outputFile));
-    final String generatedOutput = tapSystemOut(() -> {
-      Interpreter.main(new String[] { binaryFile });
-    });
-
-    //assertThat(generatedOutput, contentIsSame(expectedOutput));
+        compareContents(sourceFile, binaryFile, outputFile);
+      });
   }
 
-  public void testPower() throws Exception {
-    final String sourceFile = "samples/source/power.t";
-    final String binaryFile = Files.createTempFile("power", ".tam").toString();
-    final String outputFile = "samples/output/power.out";
+  public void xtestPower() throws Exception {
+    withTextFromSystemIn("")
+      .execute(() -> {
+        final String sourceFile = "samples/source/power.t";
+        final String binaryFile = "power.tam";
+        final String outputFile = "samples/output/power.out";
 
-    final Compiler compiler = new Compiler(sourceFile, binaryFile);
-    compiler.compile();
-
-    final String expectedOutput = Files.readString(Paths.get(outputFile));
-    final String generatedOutput = tapSystemOut(() -> {
-      Interpreter.main(new String[] { binaryFile });
-    });
-
-    //assertThat(generatedOutput, contentIsSame(expectedOutput));
+        compareContents(sourceFile, binaryFile, outputFile);
+      });
   }
 
-  public void testFactorial() throws Exception {
-    final String sourceFile = "samples/source/factorial.t";
-    final String binaryFile = Files.createTempFile("factorial", ".tam").toString();
-    final String outputFile = "samples/output/factorial.out";
+  public void xtestFactorial() throws Exception {
+    withTextFromSystemIn("")
+      .execute(() -> {
+        final String sourceFile = "samples/source/factorial.t";
+        final String binaryFile = "factorial.tam";
+        final String outputFile = "samples/output/factorial.out";
 
-    final Compiler compiler = new Compiler(sourceFile, binaryFile);
-    compiler.compile();
-
-    final String expectedOutput = Files.readString(Paths.get(outputFile));
-    final String generatedOutput = tapSystemOut(() -> {
-      Interpreter.main(new String[] { binaryFile });
-    });
-
-    //assertThat(generatedOutput, contentIsSame(expectedOutput));
+        compareContents(sourceFile, binaryFile, outputFile);
+      });
   }
 
-  public void testRecord() throws Exception {
-    final String sourceFile = "samples/source/record.t";
-    final String binaryFile = Files.createTempFile("record", ".tam").toString();
-    final String outputFile = "samples/output/record.out";
+  public void xtestRecord() throws Exception {
+    withTextFromSystemIn("")
+      .execute(() -> {
+        final String sourceFile = "samples/source/record.t";
+        final String binaryFile = "record.tam";
+        final String outputFile = "samples/output/record.out";
 
-    final Compiler compiler = new Compiler(sourceFile, binaryFile);
-    compiler.compile();
-
-    final String expectedOutput = Files.readString(Paths.get(outputFile));
-    final String generatedOutput = tapSystemOut(() -> {
-      Interpreter.main(new String[] { binaryFile });
-    });
-
-    //assertThat(generatedOutput, contentIsSame(expectedOutput));
+        compareContents(sourceFile, binaryFile, outputFile);
+      });
   }
 
-  public void testLeapYear() throws Exception {
-    final String sourceFile = "samples/source/leapyear.t";
-    final String binaryFile = Files.createTempFile("leapyear", ".tam").toString();
-    final String outputFile = "samples/output/leapyear.out";
+  public void xtestLeapYear() throws Exception {
+    withTextFromSystemIn("")
+      .execute(() -> {
+        final String sourceFile = "samples/source/leapyear.t";
+        final String binaryFile = "leapyear.tam";
+        final String outputFile = "samples/output/leapyear.out";
 
-    final Compiler compiler = new Compiler(sourceFile, binaryFile);
-    compiler.compile();
-
-    final String expectedOutput = Files.readString(Paths.get(outputFile));
-    final String generatedOutput = tapSystemOut(() -> {
-      Interpreter.main(new String[] { binaryFile });
-    });
-
-    //assertThat(generatedOutput, contentIsSame(expectedOutput));
+        compareContents(sourceFile, binaryFile, outputFile);
+      });
   }
 
-  public void testPrintArray() throws Exception {
-    final String sourceFile = "samples/source/print_array.t";
-    final String binaryFile = Files.createTempFile("print_array", ".tam").toString();
-    final String outputFile = "samples/output/print_array.out";
+  public void xtestPrintArray() throws Exception {
+    withTextFromSystemIn("")
+      .execute(() -> {
+        final String sourceFile = "samples/source/print_array.t";
+        final String binaryFile = "print_array.tam";
+        final String outputFile = "samples/output/print_array.out";
 
-    final Compiler compiler = new Compiler(sourceFile, binaryFile);
-    compiler.compile();
-
-    final String expectedOutput = Files.readString(Paths.get(outputFile));
-    final String generatedOutput = tapSystemOut(() -> {
-      Interpreter.main(new String[] { binaryFile });
-    });
-
-    //assertThat(generatedOutput, contentIsSame(expectedOutput));
+        compareContents(sourceFile, binaryFile, outputFile);
+      });
   }
 
-  public void testDate() throws Exception {
-    final String sourceFile = "samples/source/date.t";
-    final String binaryFile = Files.createTempFile("date", ".tam").toString();
-    final String outputFile = "samples/output/date.out";
+  public void xtestDate() throws Exception {
+    withTextFromSystemIn("")
+      .execute(() -> {
+        final String sourceFile = "samples/source/date.t";
+        final String binaryFile = "date.tam";
+        final String outputFile = "samples/output/date.out";
 
-    final Compiler compiler = new Compiler(sourceFile, binaryFile);
-    compiler.compile();
-
-    final String expectedOutput = Files.readString(Paths.get(outputFile));
-    final String generatedOutput = tapSystemOut(() -> {
-      Interpreter.main(new String[] { binaryFile });
-    });
-
-    //assertThat(generatedOutput, contentIsSame(expectedOutput));
+        compareContents(sourceFile, binaryFile, outputFile);
+      });
   }
 
-  public void testString() throws Exception {
-    final String sourceFile = "samples/source/string.t";
-    final String binaryFile = Files.createTempFile("string", ".tam").toString();
-    final String outputFile = "samples/output/string.out";
+  public void xtestString() throws Exception {
+    withTextFromSystemIn("")
+      .execute(() -> {
+        final String sourceFile = "samples/source/string.t";
+        final String binaryFile = "string.tam";
+        final String outputFile = "samples/output/string.out";
 
-    final Compiler compiler = new Compiler(sourceFile, binaryFile);
-    compiler.compile();
-
-    final String expectedOutput = Files.readString(Paths.get(outputFile));
-    final String generatedOutput = tapSystemOut(() -> {
-      Interpreter.main(new String[] { binaryFile });
-    });
-
-    //assertThat(generatedOutput, contentIsSame(expectedOutput));
+        compareContents(sourceFile, binaryFile, outputFile);
+      });
   }
 
-  public void testIteratively() throws Exception {
-    final String sourceFile = "samples/source/iteratively.t";
-    final String binaryFile = Files.createTempFile("iteratively", ".tam").toString();
-    final String outputFile = "samples/output/iteratively.out";
+  public void xtestIteratively() throws Exception {
+    withTextFromSystemIn("")
+      .execute(() -> {
+        final String sourceFile = "samples/source/iteratively.t";
+        final String binaryFile = "iteratively.tam";
+        final String outputFile = "samples/output/iteratively.out";
 
-    final Compiler compiler = new Compiler(sourceFile, binaryFile);
-    compiler.compile();
-
-    final String expectedOutput = Files.readString(Paths.get(outputFile));
-    final String generatedOutput = tapSystemOut(() -> {
-      Interpreter.main(new String[] { binaryFile });
-    });
-
-    //assertThat(generatedOutput, contentIsSame(expectedOutput));
+        compareContents(sourceFile, binaryFile, outputFile);
+      });
   }
 
-  public void testLine() throws Exception {
-    final String sourceFile = "samples/source/line.t";
-    final String binaryFile = Files.createTempFile("line", ".tam").toString();
-    final String outputFile = "samples/output/line.out";
+  public void xtestLine() throws Exception {
+    withTextFromSystemIn("")
+      .execute(() -> {
+        final String sourceFile = "samples/source/line.t";
+        final String binaryFile = "line.tam";
+        final String outputFile = "samples/output/line.out";
 
-    final Compiler compiler = new Compiler(sourceFile, binaryFile);
-    compiler.compile();
-
-    final String expectedOutput = Files.readString(Paths.get(outputFile));
-    final String generatedOutput = tapSystemOut(() -> {
-      Interpreter.main(new String[] { binaryFile });
-    });
-
-    //assertThat(generatedOutput, contentIsSame(expectedOutput));
+        compareContents(sourceFile, binaryFile, outputFile);
+      });
   }
 
-  public void testDates() throws Exception {
-    final String sourceFile = "samples/source/dates.t";
-    final String binaryFile = Files.createTempFile("dates", ".tam").toString();
-    final String outputFile = "samples/output/dates.out";
+  public void xtestDates() throws Exception {
+    withTextFromSystemIn("")
+      .execute(() -> {
+        final String sourceFile = "samples/source/dates.t";
+        final String binaryFile = "dates.tam";
+        final String outputFile = "samples/output/dates.out";
 
-    final Compiler compiler = new Compiler(sourceFile, binaryFile);
-    compiler.compile();
-
-    final String expectedOutput = Files.readString(Paths.get(outputFile));
-    final String generatedOutput = tapSystemOut(() -> {
-      Interpreter.main(new String[] { binaryFile });
-    });
-
-    //assertThat(generatedOutput, contentIsSame(expectedOutput));
+        compareContents(sourceFile, binaryFile, outputFile);
+      });
   }
 
-  public void testMonthsOfYear() throws Exception {
-    final String sourceFile = "samples/source/monthsofyear.t";
-    final String binaryFile = Files.createTempFile("monthsofyear", ".tam").toString();
-    final String outputFile = "samples/output/monthsofyear.out";
+  public void xtestMonthsOfYear() throws Exception {
+    withTextFromSystemIn("")
+      .execute(() -> {
+        final String sourceFile = "samples/source/monthsofyear.t";
+        final String binaryFile = "monthsofyear.tam";
+        final String outputFile = "samples/output/monthsofyear.out";
 
-    final Compiler compiler = new Compiler(sourceFile, binaryFile);
-    compiler.compile();
-
-    final String expectedOutput = Files.readString(Paths.get(outputFile));
-    final String generatedOutput = tapSystemOut(() -> {
-      Interpreter.main(new String[] { binaryFile });
-    });
-
-    //assertThat(generatedOutput, contentIsSame(expectedOutput));
+        compareContents(sourceFile, binaryFile, outputFile);
+      });
   }
 
-  public void testCapitalise() throws Exception {
-    final String sourceFile = "samples/source/capitalise.t";
-    final String binaryFile = Files.createTempFile("capitalise", ".tam").toString();
-    final String outputFile = "samples/output/capitalise.out";
+  public void xtestCapitalise() throws Exception {
+    withTextFromSystemIn("")
+      .execute(() -> {
+        final String sourceFile = "samples/source/capitalise.t";
+        final String binaryFile = "capitalise.tam";
+        final String outputFile = "samples/output/capitalise.out";
 
-    final Compiler compiler = new Compiler(sourceFile, binaryFile);
-    compiler.compile();
-
-    final String expectedOutput = Files.readString(Paths.get(outputFile));
-    final String generatedOutput = tapSystemOut(() -> {
-      Interpreter.main(new String[] { binaryFile });
-    });
-
-    //assertThat(generatedOutput, contentIsSame(expectedOutput));
+        compareContents(sourceFile, binaryFile, outputFile);
+      });
   }
 
-  public void testFreq() throws Exception {
-    final String sourceFile = "samples/source/freq.t";
-    final String binaryFile = Files.createTempFile("freq", ".tam").toString();
-    final String outputFile = "samples/output/freq.out";
+  public void xtestFreq() throws Exception {
+    withTextFromSystemIn("")
+      .execute(() -> {
+        final String sourceFile = "samples/source/freq.t";
+        final String binaryFile = "freq.tam";
+        final String outputFile = "samples/output/freq.out";
 
-    final Compiler compiler = new Compiler(sourceFile, binaryFile);
-    compiler.compile();
-
-    final String expectedOutput = Files.readString(Paths.get(outputFile));
-    final String generatedOutput = tapSystemOut(() -> {
-      Interpreter.main(new String[] { binaryFile });
-    });
-
-    //assertThat(generatedOutput, contentIsSame(expectedOutput));
+        compareContents(sourceFile, binaryFile, outputFile);
+      });
   }
 
-  public void testInsertionSort() throws Exception {
-    final String sourceFile = "samples/source/insertion_sort.t";
-    final String binaryFile = Files.createTempFile("insertion_sort", ".tam").toString();
-    final String outputFile = "samples/output/insertion_sort.out";
+  public void xtestInsertionSort() throws Exception {
+    withTextFromSystemIn("")
+      .execute(() -> {
+        final String sourceFile = "samples/source/insertion_sort.t";
+        final String binaryFile = "insertion_sort.tam";
+        final String outputFile = "samples/output/insertion_sort.out";
 
-    final Compiler compiler = new Compiler(sourceFile, binaryFile);
-    compiler.compile();
-
-    final String expectedOutput = Files.readString(Paths.get(outputFile));
-    final String generatedOutput = tapSystemOut(() -> {
-      Interpreter.main(new String[] { binaryFile });
-    });
-
-    //assertThat(generatedOutput, contentIsSame(expectedOutput));
+        compareContents(sourceFile, binaryFile, outputFile);
+      });
   }
 
-  public void testRationals() throws Exception {
-    final String sourceFile = "samples/source/rationals.t";
-    final String binaryFile = Files.createTempFile("rationals", ".tam").toString();
-    final String outputFile = "samples/output/rationals.out";
+  public void xtestRationals() throws Exception {
+    withTextFromSystemIn("")
+      .execute(() -> {
+        final String sourceFile = "samples/source/rationals.t";
+        final String binaryFile = "rationals.tam";
+        final String outputFile = "samples/output/rationals.out";
 
-    final Compiler compiler = new Compiler(sourceFile, binaryFile);
-    compiler.compile();
-
-    final String expectedOutput = Files.readString(Paths.get(outputFile));
-    final String generatedOutput = tapSystemOut(() -> {
-      Interpreter.main(new String[] { binaryFile });
-    });
-
-    //assertThat(generatedOutput, contentIsSame(expectedOutput));
+        compareContents(sourceFile, binaryFile, outputFile);
+      });
   }
 
-  public void testNestedRecords() throws Exception {
-    final String sourceFile = "samples/source/nestedrecords.t";
-    final String binaryFile = Files.createTempFile("nestedrecords", ".tam").toString();
-    final String outputFile = "samples/output/nestedrecords.out";
+  public void xtestNestedRecords() throws Exception {
+    withTextFromSystemIn("")
+      .execute(() -> {
+        final String sourceFile = "samples/source/nestedrecords.t";
+        final String binaryFile = "nestedrecords.tam";
+        final String outputFile = "samples/output/nestedrecords.out";
 
-    final Compiler compiler = new Compiler(sourceFile, binaryFile);
-    compiler.compile();
-
-    final String expectedOutput = Files.readString(Paths.get(outputFile));
-    final String generatedOutput = tapSystemOut(() -> {
-      Interpreter.main(new String[] { binaryFile });
-    });
-
-    //assertThat(generatedOutput, contentIsSame(expectedOutput));
+        compareContents(sourceFile, binaryFile, outputFile);
+      });
   }
 
-  public void testNestedArrays() throws Exception {
-    final String sourceFile = "samples/source/nestedarrays.t";
-    final String binaryFile = Files.createTempFile("nestedarrays", ".tam").toString();
-    final String outputFile = "samples/output/nestedarrays.out";
+  public void xtestNestedArrays() throws Exception {
+    withTextFromSystemIn("")
+      .execute(() -> {
+        final String sourceFile = "samples/source/nestedarrays.t";
+        final String binaryFile = "nestedarrays.tam";
+        final String outputFile = "samples/output/nestedarrays.out";
 
-    final Compiler compiler = new Compiler(sourceFile, binaryFile);
-    compiler.compile();
-
-    final String expectedOutput = Files.readString(Paths.get(outputFile));
-    final String generatedOutput = tapSystemOut(() -> {
-      Interpreter.main(new String[] { binaryFile });
-    });
-
-    //assertThat(generatedOutput, contentIsSame(expectedOutput));
+        compareContents(sourceFile, binaryFile, outputFile);
+      });
   }
 }

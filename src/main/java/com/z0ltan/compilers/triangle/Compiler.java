@@ -10,13 +10,11 @@ public class Compiler {
   private String sourceFile;
   private String binaryFile;
 
-  public Compiler(final String sourceFile, final String objectName) {
+  private static final String DEFAULT_BINARY_FILE = "obj.tam";
+
+  public Compiler(final String sourceFile, final String binaryFile) {
     this.sourceFile = sourceFile;
     this.binaryFile = binaryFile;
-  }
-
-  public static void main(String[] args) {
-    System.out.println("Triangle Compiler v1.0");
   }
 
   public void compile() {
@@ -29,5 +27,25 @@ public class Compiler {
     final Encoder encoder = new Encoder();
     encoder.encodeRun(ast);
     encoder.saveBinary(this.binaryFile);
+  }
+
+  public static void main(String[] args) {
+    if (args == null || args.length == 0 || args.length > 2) {
+      usage();
+    }
+
+    Compiler compiler = null;
+    if (args.length == 2) {
+      compiler = new Compiler(args[0], args[1]);
+    } else {
+      compiler = new Compiler(args[0], DEFAULT_BINARY_FILE);
+    }
+
+    compiler.compile();
+  }
+
+  private static void usage() {
+    System.err.println("Usage: tc SOURCE-FILE [OUTPUT-FILE]");
+    System.exit(1);
   }
 }

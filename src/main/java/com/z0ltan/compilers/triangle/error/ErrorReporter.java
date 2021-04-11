@@ -11,4 +11,9 @@ public class ErrorReporter {
     }
     return String.format("[Line %d, column %d] %s\n", position.start.line, position.start.column, sb.toString());
   }
+
+  public static void reportError(final String message) {
+    System.err.println(message);
+    System.exit(1);
+  }
 }

@@ -8,4 +8,9 @@ public class Frame {
     this.level = level;
     this.size = size;
   }
+
+  public Frame(final Frame frame, final int newSize) {
+    this.level = frame.level;
+    this.size = newSize;
+  }
 }
