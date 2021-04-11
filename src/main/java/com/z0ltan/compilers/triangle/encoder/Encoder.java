@@ -65,6 +65,22 @@ import com.z0ltan.compilers.triangle.ast.CharacterLiteral;
 import com.z0ltan.compilers.triangle.ast.Operator;
 
 public class Encoder implements Visitor {
+  public Encoder() {
+    elaborateStdEnvironment();
+  }
+
+  private void elaborateStdEnvironment() {
+
+  }
+
+  public void encodeRun(final Program ast) {
+
+  }
+
+  public void saveBinary(final String binaryFile) {
+
+  }
+
   @Override
   public Object visit(Program prog, Object arg)  {
     return null;

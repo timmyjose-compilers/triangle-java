@@ -32,7 +32,7 @@ public class CompilerTest {
   }
 
   public void testEmptyCommandSemicolon() throws Exception {
-    final String sourceFile = "sampels/source/emptycommandsemicolon.t";
+    final String sourceFile = "samples/source/emptycommandsemicolon.t";
     final String binaryFile = Files.createTempFile("emptycommandsemicolon", ".tam").toString();
     final String outputFile = "samples/output/emptycommandsemicolon.out";
 

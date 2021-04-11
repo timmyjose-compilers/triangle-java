@@ -34,7 +34,7 @@ public class SourceFile implements Iterable<Char> {
       }
       this.chars.add(new Char(SourceFile.EOT, -1, -1));
     } catch (Exception ex) {
-      throw new SyntaxError("error while reading source file: " + ex.getLocalizedMessage());
+      throw new SyntaxError("error while reading source file " + filename + ": " + ex.getLocalizedMessage());
     }
   }
 
