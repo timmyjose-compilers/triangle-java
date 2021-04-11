@@ -1,5 +1,6 @@
 package com.z0ltan.compilers.triangle.encoder;
 
+import com.z0ltan.compilers.triangle.checker.StdEnvironment;
 import com.z0ltan.compilers.triangle.ast.Visitor;
 import com.z0ltan.compilers.triangle.ast.Program;
 import com.z0ltan.compilers.triangle.ast.EmptyCommand;
@@ -20,6 +21,7 @@ import com.z0ltan.compilers.triangle.ast.UnaryExpression;
 import com.z0ltan.compilers.triangle.ast.ArrayExpression;
 import com.z0ltan.compilers.triangle.ast.RecordExpression;
 import com.z0ltan.compilers.triangle.ast.BinaryExpression;
+import com.z0ltan.compilers.triangle.ast.Declaration;
 import com.z0ltan.compilers.triangle.ast.VarDeclaration;
 import com.z0ltan.compilers.triangle.ast.ConstDeclaration;
 import com.z0ltan.compilers.triangle.ast.ProcDeclaration;
@@ -70,6 +72,22 @@ public class Encoder implements Visitor {
   }
 
   private void elaborateStdEnvironment() {
+    elaborateStdConst(StdEnvironment.falseDecl, Machine.falseRep);
+    elaborateStdConst(StdEnvironment.trueDecl, Machine.trueRep);
+  }
+
+  private void elaborateStdConst(final Declaration decl, final int value) {
+  }
+
+  private void elaborateStdRoutine(final Declaration decl) {
+
+  }
+
+  private void elaborateStdPrimitiveRoutine(final Declaration decl) {
+
+  }
+
+  private void elaborateStdEqualityRoutine(final Declaration decl) {
 
   }
 
