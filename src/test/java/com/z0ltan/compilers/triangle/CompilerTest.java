@@ -255,22 +255,6 @@ public class CompilerTest {
     //assertThat(generatedOutput, contentIsSame(expectedOutput));
   }
 
-  public void testReverseLine() throws Exception {
-    final String sourceFile = "samples/source/reverse_line.t";
-    final String binaryFile = Files.createTempFile("reverse_line", ".tam").toString();
-    final String outputFile = "samples/output/reverse_line.out";
-
-    final Compiler compiler = new Compiler(sourceFile, binaryFile);
-    compiler.compile();
-
-    final String expectedOutput = Files.readString(Paths.get(outputFile));
-    final String generatedOutput = tapSystemOut(() -> {
-      Interpreter.main(new String[] { binaryFile });
-    });
-
-    //assertThat(generatedOutput, contentIsSame(expectedOutput));
-  }
-
   public void testLine() throws Exception {
     final String sourceFile = "samples/source/line.t";
     final String binaryFile = Files.createTempFile("line", ".tam").toString();
