@@ -24,20 +24,24 @@ public class StdEnvironment {
   public static ConstDeclaration falseDecl;
   public static ConstDeclaration trueDecl;
 
+  public static UnaryOperatorDeclaration idDecl;
   public static UnaryOperatorDeclaration notDecl;
   public static BinaryOperatorDeclaration andDecl;
   public static BinaryOperatorDeclaration orDecl;
+  public static UnaryOperatorDeclaration succDecl;
+  public static UnaryOperatorDeclaration predDecl;
+  public static UnaryOperatorDeclaration negDecl;
   public static BinaryOperatorDeclaration addDecl;
   public static BinaryOperatorDeclaration subDecl;
   public static BinaryOperatorDeclaration multDecl;
   public static BinaryOperatorDeclaration divDecl;
   public static BinaryOperatorDeclaration modDecl;
+  public static BinaryOperatorDeclaration ltDecl;
+  public static BinaryOperatorDeclaration leDecl;
+  public static BinaryOperatorDeclaration geDecl;
+  public static BinaryOperatorDeclaration gtDecl;
   public static BinaryOperatorDeclaration eqDecl;
-  public static BinaryOperatorDeclaration noteqDecl;
-  public static BinaryOperatorDeclaration lessThanDecl;
-  public static BinaryOperatorDeclaration lessThanOrEqualToDecl;
-  public static BinaryOperatorDeclaration greaterThanDecl;
-  public static BinaryOperatorDeclaration greaterThanOrEqualToDecl;
+  public static BinaryOperatorDeclaration neDecl;
 
   public static ProcDeclaration getDecl;
   public static ProcDeclaration getintDecl;
@@ -45,9 +49,11 @@ public class StdEnvironment {
   public static ProcDeclaration putDecl;
   public static ProcDeclaration putintDecl;
   public static ProcDeclaration puteolDecl;
+  public static ProcDeclaration disposeDecl;
 
   public static FuncDeclaration chrDecl;
   public static FuncDeclaration ordDecl;
   public static FuncDeclaration eolDecl;
   public static FuncDeclaration eofDecl;
+  public static FuncDeclaration newDecl;
 }

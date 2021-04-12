@@ -52,7 +52,7 @@ public class CompilerTest {
       });
   }
 
-  public void xtestHello() throws Exception {
+  public void testHello() throws Exception {
     withTextFromSystemIn("")
       .execute(() -> {
         final String sourceFile = "samples/source/hello.t";

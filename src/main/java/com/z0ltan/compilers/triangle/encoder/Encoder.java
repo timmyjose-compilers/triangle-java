@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import com.z0ltan.compilers.triangle.checker.StdEnvironment;
+import com.z0ltan.compilers.triangle.error.CodegenError;
 import com.z0ltan.compilers.triangle.ast.Visitor;
 import com.z0ltan.compilers.triangle.ast.Program;
 import com.z0ltan.compilers.triangle.ast.EmptyCommand;
@@ -58,6 +59,7 @@ import com.z0ltan.compilers.triangle.ast.FuncActualParameter;
 import com.z0ltan.compilers.triangle.ast.EmptyActualParameterSequence;
 import com.z0ltan.compilers.triangle.ast.SingleActualParameterSequence;
 import com.z0ltan.compilers.triangle.ast.MultipleActualParameterSequence;
+import com.z0ltan.compilers.triangle.ast.Vname;
 import com.z0ltan.compilers.triangle.ast.SimpleVname;
 import com.z0ltan.compilers.triangle.ast.DotVname;
 import com.z0ltan.compilers.triangle.ast.SubscriptVname;
@@ -80,23 +82,42 @@ public class Encoder implements Visitor {
   }
 
   private void elaborateStdEnvironment() {
-    elaborateStdConst(StdEnvironment.falseDecl, Machine.falseRep);
-    elaborateStdConst(StdEnvironment.trueDecl, Machine.trueRep);
+    elaborateStdConst(StdEnvironment.falseDecl, Machine.Repr.falseRep);
+    elaborateStdConst(StdEnvironment.trueDecl, Machine.Repr.trueRep);
+    elaborateStdPrimitiveRoutine(StdEnvironment.idDecl, Machine.Primitives.idDisplacement);
+    elaborateStdPrimitiveRoutine(StdEnvironment.notDecl, Machine.Primitives.notDisplacement);
+    elaborateStdPrimitiveRoutine(StdEnvironment.andDecl, Machine.Primitives.andDisplacement);
+    elaborateStdPrimitiveRoutine(StdEnvironment.orDecl, Machine.Primitives.orDisplacement);
+    elaborateStdPrimitiveRoutine(StdEnvironment.succDecl, Machine.Primitives.succDisplacement);
+    elaborateStdPrimitiveRoutine(StdEnvironment.predDecl, Machine.Primitives.predDisplacement);
+    elaborateStdPrimitiveRoutine(StdEnvironment.negDecl, Machine.Primitives.negDisplacement);
+    elaborateStdPrimitiveRoutine(StdEnvironment.addDecl, Machine.Primitives.addDisplacement);
+    elaborateStdPrimitiveRoutine(StdEnvironment.subDecl, Machine.Primitives.subDisplacement);
+    elaborateStdPrimitiveRoutine(StdEnvironment.multDecl, Machine.Primitives.multDisplacement);
+    elaborateStdPrimitiveRoutine(StdEnvironment.divDecl, Machine.Primitives.divDisplacement);
+    elaborateStdPrimitiveRoutine(StdEnvironment.modDecl, Machine.Primitives.modDisplacement);
+    elaborateStdPrimitiveRoutine(StdEnvironment.ltDecl, Machine.Primitives.ltDisplacement);
+    elaborateStdPrimitiveRoutine(StdEnvironment.leDecl, Machine.Primitives.leDisplacement);
+    elaborateStdPrimitiveRoutine(StdEnvironment.geDecl, Machine.Primitives.geDisplacement);
+    elaborateStdPrimitiveRoutine(StdEnvironment.gtDecl, Machine.Primitives.gtDisplacement);
+    elaborateStdEqualityRoutine(StdEnvironment.eqDecl, Machine.Primitives.eqDisplacement);
+    elaborateStdEqualityRoutine(StdEnvironment.neDecl, Machine.Primitives.neDisplacement);
   }
-
+  
   private void elaborateStdConst(final Declaration decl, final int value) {
+    if (decl instanceof ConstDeclaration) {
+      final ConstDeclaration constDecl = (ConstDeclaration)decl;
+      int typeSize = ((Integer)constDecl.E.type.accept(this, null)).intValue();
+      constDecl.entity = new KnownValue(typeSize, value);
+    }
   }
 
-  private void elaborateStdRoutine(final Declaration decl) {
-
+  private void elaborateStdPrimitiveRoutine(final Declaration decl, final int primOffset) {
+    decl.entity = new PrimitiveRoutine(Machine.Sizes.closureSize, primOffset);
   }
 
-  private void elaborateStdPrimitiveRoutine(final Declaration decl) {
-
-  }
-
-  private void elaborateStdEqualityRoutine(final Declaration decl) {
-
+  private void elaborateStdEqualityRoutine(final Declaration decl, final int eqOffset) {
+    decl.entity = new EqualityRoutine(Machine.Sizes.closureSize, eqOffset);
   }
 
   public void encodeRun(final Program ast) {
@@ -115,8 +136,34 @@ public class Encoder implements Visitor {
         Machine.code[addr].writeInstruction(os);
       }
     } catch (IOException ex) {
-      ErrorReporter.reportError("Failed to save to binary file " + binaryFile + ": " + ex.getLocalizedMessage());
+      throw new CodegenError("Failed to save to binary file " + binaryFile + ": " + ex.getLocalizedMessage());
     }
+  }
+
+  private void patch(final int addr, final int d) {
+    Machine.code[addr].d = d;
+  }
+
+  private int displayRegister(final int callingLevel, final int declLevel) {
+    if (declLevel == 0) {
+      return Machine.Registers.SBr;
+    } else if (callingLevel - declLevel < Machine.maxRoutineLevels) {
+      return Machine.Registers.LBr + (callingLevel - declLevel);
+    } else {
+      throw new CodegenError("Cannot address beyond " + (Machine.maxRoutineLevels - 1) + " levels up");
+    }
+  }
+
+  private void encodeStore(final Vname vname, final Frame frame, final int valSize) {
+
+  }
+
+  private void encodefetch(final Vname vname, final Frame frame, final int valSize) {
+
+  }
+
+  private void encodeFetchAddress(final Vname vname, final Frame frame) {
+
   }
 
   @Override
@@ -166,7 +213,7 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final IntegerExpression expr, final Object arg) {
-    return null;
+    return Integer.valueOf(0);
   }
 
   @Override
@@ -276,27 +323,36 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final AnyTypeDenoter td, final Object arg) {
-    return null;
+    return Integer.valueOf(0);
   }
 
   @Override
   public Object visit(final ErrorTypeDenoter td, final Object arg) {
-    return null;
+    return Integer.valueOf(0);
   }
 
   @Override
   public Object visit(final BoolTypeDenoter td, final Object arg) {
-    return null;
+    if (td.entity == null) {
+      td.entity = new TypeRepresentation(Machine.Sizes.boolSize);
+    }
+    return Integer.valueOf(Machine.Sizes.boolSize);
   }
 
   @Override
   public Object visit(final CharTypeDenoter td, final Object arg) {
-    return null;
+    if (td.entity == null) {
+      td.entity = new TypeRepresentation(Machine.Sizes.charSize);
+    }
+    return Integer.valueOf(Machine.Sizes.charSize);
   }
 
   @Override
   public Object visit(final IntTypeDenoter td, final Object arg) {
-    return null;
+    if (td.entity == null) {
+      td.entity = new TypeRepresentation(Machine.Sizes.intSize);
+    }
+    return Integer.valueOf(Machine.Sizes.intSize);
   }
 
   @Override
@@ -306,7 +362,7 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final SimpleTypeDenoter td, final Object arg) {
-    return null;
+    return Integer.valueOf(0);
   }
 
   @Override

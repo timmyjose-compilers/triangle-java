@@ -1,10 +1,10 @@
 package com.z0ltan.compilers.triangle.encoder;
 
 public class EqualityRoutine extends RuntimeEntity {
-  public EntityAddress address;
+  public int offset;
 
-  public EqualityRoutine(final int size, final int level, final int displacement) {
+  public EqualityRoutine(final int size, final int offset) {
     super(size);
-    this.address = new EntityAddress(level, displacement);
+    this.offset = offset;
   }
 }

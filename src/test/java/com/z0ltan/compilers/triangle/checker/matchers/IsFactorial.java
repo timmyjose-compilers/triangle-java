@@ -57,7 +57,7 @@ public class IsFactorial extends TypeSafeMatcher<Program> {
     assertThat(nParamAppliedDecl1, is(equalTo(nParamDecl)));
 
     final BinaryOperatorDeclaration lessThanOrEqualToDecl = (BinaryOperatorDeclaration)travel(program, "C.D.D1.D2.E.E1.O.decl");
-    assertThat(lessThanOrEqualToDecl, is(equalTo(StdEnvironment.lessThanOrEqualToDecl)));
+    assertThat(lessThanOrEqualToDecl, is(equalTo(StdEnvironment.leDecl)));
 
     final IntegerExpression iexpr1 = (IntegerExpression)travel(program, "C.D.D1.D2.E.E1.E2");
     assertThat(iexpr1.type, is(equalTo(StdEnvironment.intType)));

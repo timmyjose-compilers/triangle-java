@@ -99,20 +99,24 @@ public class Checker implements Visitor {
     StdEnvironment.falseDecl = declareStdConst("false");
     StdEnvironment.trueDecl = declareStdConst("true");
 
+    StdEnvironment.idDecl = declareStdUnaryOp("id", StdEnvironment.anyType, StdEnvironment.anyType);
     StdEnvironment.notDecl = declareStdUnaryOp("\\", StdEnvironment.boolType, StdEnvironment.boolType);
     StdEnvironment.andDecl = declareStdBinaryOp("/\\", StdEnvironment.boolType, StdEnvironment.boolType, StdEnvironment.boolType);
     StdEnvironment.orDecl= declareStdBinaryOp("\\/", StdEnvironment.boolType, StdEnvironment.boolType, StdEnvironment.boolType);
+    StdEnvironment.succDecl = declareStdUnaryOp("succ", StdEnvironment.intType, StdEnvironment.intType);
+    StdEnvironment.predDecl = declareStdUnaryOp("pred", StdEnvironment.intType, StdEnvironment.intType);
+    StdEnvironment.negDecl = declareStdUnaryOp("neg", StdEnvironment.intType, StdEnvironment.intType);
     StdEnvironment.addDecl = declareStdBinaryOp("+", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.intType);
     StdEnvironment.subDecl = declareStdBinaryOp("-", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.intType);
     StdEnvironment.multDecl = declareStdBinaryOp("*", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.intType);
     StdEnvironment.divDecl = declareStdBinaryOp("/", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.intType);
     StdEnvironment.modDecl = declareStdBinaryOp("//", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.intType);
+    StdEnvironment.ltDecl = declareStdBinaryOp("<", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.boolType);
+    StdEnvironment.leDecl= declareStdBinaryOp("<=", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.boolType);
+    StdEnvironment.geDecl = declareStdBinaryOp(">=", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.boolType);
+    StdEnvironment.gtDecl = declareStdBinaryOp(">", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.boolType);
     StdEnvironment.eqDecl = declareStdBinaryOp("=", StdEnvironment.anyType, StdEnvironment.anyType, StdEnvironment.boolType);
-    StdEnvironment.noteqDecl = declareStdBinaryOp("\\=", StdEnvironment.anyType, StdEnvironment.anyType, StdEnvironment.boolType);
-    StdEnvironment.lessThanDecl = declareStdBinaryOp("<", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.boolType);
-    StdEnvironment.lessThanOrEqualToDecl= declareStdBinaryOp("<=", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.boolType);
-    StdEnvironment.greaterThanDecl = declareStdBinaryOp(">", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.boolType);
-    StdEnvironment.greaterThanOrEqualToDecl = declareStdBinaryOp(">=", StdEnvironment.intType, StdEnvironment.intType, StdEnvironment.boolType);
+    StdEnvironment.neDecl = declareStdBinaryOp("\\=", StdEnvironment.anyType, StdEnvironment.anyType, StdEnvironment.boolType);
 
     final Identifier dummyId = new Identifier("", dummyPosition());
 

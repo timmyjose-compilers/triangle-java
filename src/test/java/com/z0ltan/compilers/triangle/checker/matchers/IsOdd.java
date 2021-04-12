@@ -52,7 +52,7 @@ public class IsOdd extends TypeSafeMatcher<Program> {
     assertThat(binexpr2.type, is(equalTo(StdEnvironment.intType)));
 
     final BinaryOperatorDeclaration binopdecl2 = (BinaryOperatorDeclaration)travel(program, "C.D.D2.E.O.decl");
-    assertThat(binopdecl2, is(equalTo(StdEnvironment.noteqDecl)));
+    assertThat(binopdecl2, is(equalTo(StdEnvironment.neDecl)));
 
     final IntegerExpression iexpr2 = (IntegerExpression)travel(program, "C.D.D2.E.E2");
     assertThat(iexpr2.type, is(equalTo(StdEnvironment.intType)));

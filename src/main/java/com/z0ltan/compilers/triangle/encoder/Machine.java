@@ -7,6 +7,7 @@ public class Machine {
   // code store
   private static final int CODESIZE = 1024;
   private static final int PRIMITIVES_COUNT = 28;
+  public static final int maxRoutineLevels = 7;
   public static Instruction code[] = new Instruction[CODESIZE];
   public static int CB = 0;
   public static int CT = Machine.CB;
@@ -176,145 +177,145 @@ public class Machine {
   // primitive routine offsets
 
   static class Primitives {
-    public static final int idOffset = 1;
-    public static final int notOffset = 2;
-    public static final int andOffset = 3;
-    public static final int orOffset = 4;
-    public static final int succOffset = 5;
-    public static final int predOffset = 6;
-    public static final int negOffset = 7;
-    public static final int addOffset = 8;
-    public static final int subOffset = 9;
-    public static final int multOffset = 10;
-    public static final int divOffset = 11;
-    public static final int modOffset = 12;
-    public static final int ltOffset = 13;
-    public static final int leOffset = 14;
-    public static final int geOffset = 15;
-    public static final int gtOffset = 16;
-    public static final int eqOffset = 17;
-    public static final int neOffset = 18;
-    public static final int eolOffset = 19;
-    public static final int eofOffset = 20;
-    public static final int getOffset = 21;
-    public static final int putOffset = 22;
-    public static final int geteolOffset = 23;
-    public static final int puteolOffset = 24;
-    public static final int getintOffset = 25;
-    public static final int putintOffset = 26;
-    public static final int newOffset = 27;
-    public static final int disposeOffset = 28;
+    public static final int idDisplacement = 1;
+    public static final int notDisplacement = 2;
+    public static final int andDisplacement = 3;
+    public static final int orDisplacement = 4;
+    public static final int succDisplacement = 5;
+    public static final int predDisplacement = 6;
+    public static final int negDisplacement = 7;
+    public static final int addDisplacement = 8;
+    public static final int subDisplacement = 9;
+    public static final int multDisplacement = 10;
+    public static final int divDisplacement = 11;
+    public static final int modDisplacement = 12;
+    public static final int ltDisplacement = 13;
+    public static final int leDisplacement = 14;
+    public static final int geDisplacement = 15;
+    public static final int gtDisplacement = 16;
+    public static final int eqDisplacement = 17;
+    public static final int neDisplacement = 18;
+    public static final int eolDisplacement = 19;
+    public static final int eofDisplacement = 20;
+    public static final int getDisplacement = 21;
+    public static final int putDisplacement = 22;
+    public static final int geteolDisplacement = 23;
+    public static final int puteolDisplacement = 24;
+    public static final int getintDisplacement = 25;
+    public static final int putintDisplacement = 26;
+    public static final int newDisplacement = 27;
+    public static final int disposeDisplacement = 28;
 
-  public static String primitiveName(int offset) {
-    switch (offset) {
-      case  Machine.Primitives.idOffset:
-        return "id";
+    public static String primitiveName(int offset) {
+      switch (offset) {
+        case  Machine.Primitives.idDisplacement:
+          return "id";
 
-      case  Machine.Primitives.notOffset:
-        return "not";
+        case  Machine.Primitives.notDisplacement:
+          return "not";
 
-      case  Machine.Primitives.andOffset:
-        return "and";
+        case  Machine.Primitives.andDisplacement:
+          return "and";
 
-      case  Machine.Primitives.orOffset:
-        return "or";
+        case  Machine.Primitives.orDisplacement:
+          return "or";
 
-      case  Machine.Primitives.succOffset:
-        return "succ";
+        case  Machine.Primitives.succDisplacement:
+          return "succ";
 
-      case  Machine.Primitives.predOffset:
-        return "pred";
+        case  Machine.Primitives.predDisplacement:
+          return "pred";
 
-      case  Machine.Primitives.negOffset:
-        return "neg";
+        case  Machine.Primitives.negDisplacement:
+          return "neg";
 
-      case  Machine.Primitives.addOffset:
-        return "add";
+        case  Machine.Primitives.addDisplacement:
+          return "add";
 
-      case  Machine.Primitives.subOffset:
-        return "sub";
+        case  Machine.Primitives.subDisplacement:
+          return "sub";
 
-      case  Machine.Primitives.multOffset:
-        return "mult";
+        case  Machine.Primitives.multDisplacement:
+          return "mult";
 
-      case  Machine.Primitives.divOffset:
-        return "div";
+        case  Machine.Primitives.divDisplacement:
+          return "div";
 
-      case  Machine.Primitives.modOffset:
-        return "mod";
+        case  Machine.Primitives.modDisplacement:
+          return "mod";
 
-      case  Machine.Primitives.ltOffset:
-        return "lt";
+        case  Machine.Primitives.ltDisplacement:
+          return "lt";
 
-      case  Machine.Primitives.leOffset:
-        return "le";
+        case  Machine.Primitives.leDisplacement:
+          return "le";
 
-      case  Machine.Primitives.geOffset:
-        return "ge";
+        case  Machine.Primitives.geDisplacement:
+          return "ge";
 
-      case  Machine.Primitives.gtOffset:
-        return "gt";
+        case  Machine.Primitives.gtDisplacement:
+          return "gt";
 
-      case  Machine.Primitives.eqOffset:
-        return "eq";
+        case  Machine.Primitives.eqDisplacement:
+          return "eq";
 
-      case  Machine.Primitives.neOffset:
-        return "ne";
+        case  Machine.Primitives.neDisplacement:
+          return "ne";
 
-      case  Machine.Primitives.eolOffset:
-        return "eol";
+        case  Machine.Primitives.eolDisplacement:
+          return "eol";
 
-      case  Machine.Primitives.eofOffset:
-        return "eof";
+        case  Machine.Primitives.eofDisplacement:
+          return "eof";
 
-      case  Machine.Primitives.getOffset:
-        return "get";
+        case  Machine.Primitives.getDisplacement:
+          return "get";
 
-      case  Machine.Primitives.putOffset:
-        return "put";
+        case  Machine.Primitives.putDisplacement:
+          return "put";
 
-      case  Machine.Primitives.geteolOffset:
-        return "geteol";
+        case  Machine.Primitives.geteolDisplacement:
+          return "geteol";
 
-      case  Machine.Primitives.puteolOffset:
-        return "puteol";
+        case  Machine.Primitives.puteolDisplacement:
+          return "puteol";
 
-      case  Machine.Primitives.getintOffset:
-        return "getint";
+        case  Machine.Primitives.getintDisplacement:
+          return "getint";
 
-      case  Machine.Primitives.putintOffset:
-        return "putint";
+        case  Machine.Primitives.putintDisplacement:
+          return "putint";
 
-      case  Machine.Primitives.newOffset:
-        return "new";
+        case  Machine.Primitives.newDisplacement:
+          return "new";
 
-      case  Machine.Primitives.disposeOffset:
-        return "dispose";
+        case  Machine.Primitives.disposeDisplacement:
+          return "dispose";
 
-      default:
-        throw new IllegalStateException("invalid offset for primitive routines: " + offset);
+        default:
+          throw new IllegalStateException("invalid offset for primitive routines: " + offset);
+      }
     }
   }
 
+  static class Repr {
+    // supported int range
+    public static final int minIntRep = -32767;
+    public static final int maxIntRep = 32768;
+
+    // boolean representation
+    public static final int falseRep = 0;
+    public static final int trueRep = 1;
   }
 
-  // supported int range
-
-  public static final int minIntRep = -32767;
-  public static final int maxIntRep = 32768;
-
-  // boolean representation
-
-  public static final int falseRep = 0;
-  public static final int trueRep = 1;
-
   // sizes of common types (in words)
-
-  public static final int intSize = 1;
-  public static final int charSize = 1;
-  public static final int boolSize = 1;
-  public static final int closureSize = 2;
-  public static final int linkDataSize = 3;
+  static class Sizes {
+    public static final int intSize = 1;
+    public static final int charSize = 1;
+    public static final int boolSize = 1;
+    public static final int closureSize = 2;
+    public static final int linkDataSize = 3;
+  }
 
   // statuses
   static class VMStatuses {
