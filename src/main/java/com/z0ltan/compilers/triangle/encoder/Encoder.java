@@ -129,7 +129,7 @@ public class Encoder implements Visitor {
   }
 
   public void encodeRun(final Program ast) {
-    ast.C.accept(this, new Frame(0, 0));
+    ast.accept(this, new Frame(0, 0));
     emit(Machine.Opcodes.HALTOp, 0, 0, 0);
   }
 
@@ -262,7 +262,7 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final Program prog, final Object arg)  {
-    return null;
+    return prog.C.accept(this, arg);
   }
 
   @Override
@@ -351,16 +351,19 @@ public class Encoder implements Visitor {
   @Override
   public Object visit(final IntegerExpression expr, final Object arg) {
     Frame frame = (Frame)arg;
-    final int typeSize = ((Integer)expr.type.accept(this, frame)).intValue();
+    final int typeSz= ((Integer)expr.type.accept(this, frame)).intValue();
     final int ival = Integer.parseInt(expr.IL.spelling);
     emit(Machine.Opcodes.LOADLOp, 0, 0, ival);
-
-    return Integer.valueOf(typeSize);
+    return Integer.valueOf(typeSz);
   }
 
   @Override
   public Object visit(final CharacterExpression expr, final Object arg) {
-    return null;
+    Frame frame = (Frame)arg;
+    final int typeSz = ((Integer)expr.type.accept(this, frame)).intValue();
+    final char cval = expr.CL.spelling.charAt(0);
+    emit(Machine.Opcodes.LOADLOp, 0, 0, cval);
+    return Integer.valueOf(typeSz);
   }
 
   @Override
@@ -475,6 +478,19 @@ public class Encoder implements Visitor {
   @Override
   public Object visit(final ConstDeclaration decl, final Object arg) {
     Frame frame = (Frame)arg;
+
+    if (decl.E instanceof CharacterExpression) {
+      final CharacterLiteral CL = ((CharacterExpression)decl.E).CL;
+      decl.entity = new KnownValue(Machine.Sizes.charSize, CL.spelling.charAt(0));
+    } else if (decl.E instanceof IntegerExpression) {
+      final IntegerLiteral IL = ((IntegerExpression)decl.E).IL;
+      decl.entity = new KnownValue(Machine.Sizes.intSize, Integer.valueOf(IL.spelling));
+    } else {
+      final int typeSz = ((Integer)decl.E.accept(this, frame)).intValue();
+      decl.entity = new UnknownValue(typeSz, frame.level, frame.size);
+      return Integer.valueOf(typeSz);
+    }
+
     return Integer.valueOf(0);
   }
 

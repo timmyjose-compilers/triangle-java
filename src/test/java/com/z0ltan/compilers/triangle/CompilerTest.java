@@ -217,7 +217,7 @@ public class CompilerTest {
       });
   }
 
-  public void xtestMonthsOfYear() throws Exception {
+  public void testMonthsOfYear() throws Exception {
     withTextFromSystemIn("2021\n04\n06\n")
       .execute(() -> {
         final String sourceFile = "samples/source/monthsofyear.t";
@@ -228,7 +228,7 @@ public class CompilerTest {
       });
   }
 
-  public void xtestCapitalise() throws Exception {
+  public void testCapitalise() throws Exception {
     withTextFromSystemIn("Hello\n")
       .execute(() -> {
         final String sourceFile = "samples/source/capitalise.t";
