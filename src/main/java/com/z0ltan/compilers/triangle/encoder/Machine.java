@@ -7,7 +7,7 @@ public class Machine {
   // code store
   private static final int CODESIZE = 1024;
   private static final int PRIMITIVES_COUNT = 28;
-  public static final int maxRoutineLevels = 7;
+  public static final int maxRoutineLevel = 7;
   public static Instruction code[] = new Instruction[CODESIZE];
   public static int CB = 0;
   public static int CT = Machine.CB;

@@ -154,10 +154,10 @@ public class Encoder implements Visitor {
   private int displayRegister(final int callingLevel, final int declLevel) {
     if (declLevel == 0) {
       return Machine.Registers.SBr;
-    } else if (callingLevel - declLevel < Machine.maxRoutineLevels) {
+    } else if (callingLevel - declLevel < Machine.maxRoutineLevel) {
       return Machine.Registers.LBr + (callingLevel - declLevel);
     } else {
-      throw new CodegenError("Cannot address beyond " + (Machine.maxRoutineLevels - 1) + " levels up");
+      throw new CodegenError("Cannot address beyond " + (Machine.maxRoutineLevel - 1) + " levels up");
     }
   }
 
@@ -195,7 +195,7 @@ public class Encoder implements Visitor {
     }
   }
 
-  private void encodefetch(final Vname vname, final Frame frame, final int valSize) {
+  private void encodeFetch(final Vname vname, final Frame frame, final int valSize) {
     final RuntimeEntity entity = (RuntimeEntity)vname.accept(this, frame);
 
     if (valSize > 255) {
@@ -271,6 +271,10 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final AssignCommand cmd, final Object arg) {
+    Frame frame = (Frame)arg;
+    int sz = ((Integer)cmd.E.accept(this, frame)).intValue();
+    encodeStore(cmd.V, new Frame(frame, sz), sz);
+
     return null;
   }
 
@@ -285,6 +289,14 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final LetCommand cmd, final Object arg) {
+    Frame frame = (Frame)arg;
+    int sz = ((Integer)cmd.D.accept(this, frame)).intValue();
+    cmd.C.accept(this, new Frame(frame, sz));
+
+    if (sz > 0) {
+      emit(Machine.Opcodes.POPOp, 0, 0, sz);
+    }
+
     return null;
   }
 
@@ -300,6 +312,10 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final SequentialCommand cmd, final Object arg) {
+    Frame frame = (Frame)arg;
+    cmd.C1.accept(this, frame);
+    cmd.C2.accept(this, frame);
+
     return null;
   }
 
@@ -325,7 +341,11 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final VnameExpression expr, final Object arg) {
-    return null;
+    Frame frame = (Frame)arg;
+    int typeSz = ((Integer)expr.type.accept(this, frame)).intValue();
+    encodeFetch(expr.V, frame, typeSz);
+
+    return Integer.valueOf(typeSz);
   }
 
   @Override
@@ -350,7 +370,13 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final BinaryExpression expr, final Object arg) {
-    return null;
+    Frame frame = (Frame)arg;
+    int typeSz = ((Integer)expr.type.accept(this, frame)).intValue();
+    int sz1 = ((Integer)expr.E1.accept(this, frame)).intValue();
+    int sz2 = ((Integer)expr.E2.accept(this, new Frame(frame, sz1))).intValue();
+    expr.O.accept(this, new Frame(frame, sz1 + sz2));
+
+    return Integer.valueOf(typeSz);
   }
 
   @Override
@@ -385,17 +411,37 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final ConstDeclaration decl, final Object arg) {
-    return null;
+    Frame frame = (Frame)arg;
+    return Integer.valueOf(0);
   }
 
   @Override
   public Object visit(final VarDeclaration decl, final Object arg) {
-    return null;
+    Frame frame = (Frame)arg;
+    int sz = ((Integer)decl.T.accept(this, frame)).intValue();
+    emit(Machine.Opcodes.PUSHOp, 0, 0, sz);
+    decl.entity = new KnownAddress(Machine.Sizes.addressSize, frame.level, frame.size);
+
+    return Integer.valueOf(sz);
   }
 
   @Override
   public Object visit(final ProcDeclaration decl, final Object arg) {
-    return null;
+    Frame frame = (Frame)arg;
+
+    if (frame.level == Machine.maxRoutineLevel) {
+      throw new CodegenError("Cannot nest routines beyond " + Machine.maxRoutineLevel + " levels deep");
+    }
+
+    int addr1 = nextInstrAddr;
+    emit(Machine.Opcodes.JUMPOp, 0, Machine.Registers.CBr, 0);
+    decl.entity = new KnownRoutine(Machine.Sizes.closureSize, frame.level, nextInstrAddr);
+    int argsSz = ((Integer)decl.FPS.accept(this, new Frame(frame.level + 1, 0)));
+    decl.C.accept(this, new Frame(frame.level + 1, Machine.Sizes.linkDataSize));
+    emit(Machine.Opcodes.RETURNOp, 0, 0, argsSz);
+    patch (addr1, nextInstrAddr);
+
+    return Integer.valueOf(0);
   }
 
   @Override
@@ -420,7 +466,11 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final SequentialDeclaration decl, final Object arg) {
-    return null;
+    Frame frame = (Frame)arg;
+    int sz1 = ((Integer)decl.D1.accept(this, frame)).intValue();
+    int sz2 = ((Integer)decl.D2.accept(this, new Frame(frame, sz1))).intValue();
+
+    return Integer.valueOf(sz1 + sz2);
   }
 
   @Override
@@ -488,13 +538,19 @@ public class Encoder implements Visitor {
   }
 
   @Override
-  public Object visit(final SingleFormalParameterSequence fps, final Object args) {
-    return null;
+  public Object visit(final SingleFormalParameterSequence fps, final Object arg) {
+    Frame frame = (Frame)arg;
+    return fps.FP.accept(this, frame);
   }
 
   @Override
   public Object visit(final MultipleFormalParameterSequence fps, final Object arg) {
-    return null;
+    Frame frame = (Frame)arg;
+
+    int szRest = ((Integer)fps.FPS.accept(this, frame)).intValue();
+    int sz = ((Integer)fps.FP.accept(this, new Frame(frame, szRest))).intValue();
+
+    return Integer.valueOf(sz + szRest);
   }
 
   @Override
@@ -504,7 +560,11 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final VarFormalParameter param, final Object arg) {
-    return null;
+    Frame frame = (Frame)arg;
+    param.T.accept(this, frame);
+    param.entity = new UnknownAddress(Machine.Sizes.addressSize, frame.level, -frame.size - Machine.Sizes.addressSize);
+
+    return Integer.valueOf(Machine.Sizes.addressSize);
   }
 
   @Override
@@ -544,7 +604,10 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final VarActualParameter param, final Object arg) {
-    return null;
+    Frame frame = (Frame)arg;
+    encodeFetchAddress(param.V, frame);
+
+    return Integer.valueOf(Machine.Sizes.addressSize);
   }
 
   @Override
@@ -624,7 +687,7 @@ public class Encoder implements Visitor {
     } else if (entity instanceof PrimitiveRoutine) {
       final int displacement = ((PrimitiveRoutine)entity).displacement;
       if (displacement != Machine.Primitives.idDisplacement) {
-        emit(Machine.Opcodes.CALLOp, Machine.Registers.SBr, Machine.Registers.CBr, displacement);
+        emit(Machine.Opcodes.CALLOp, Machine.Registers.SBr, Machine.Registers.PBr, displacement);
       }
     } else if (entity instanceof EqualityRoutine) {
       final int displacement = ((EqualityRoutine)entity).displacement;

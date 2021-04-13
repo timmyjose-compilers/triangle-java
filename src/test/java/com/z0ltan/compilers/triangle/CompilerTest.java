@@ -63,8 +63,8 @@ public class CompilerTest {
       });
   }
 
-  public void xtestInc() throws Exception {
-    withTextFromSystemIn("")
+  public void testInc() throws Exception {
+    withTextFromSystemIn("99")
       .execute(() -> {
         final String sourceFile = "samples/source/inc.t";
         final String binaryFile = "inc.tam";

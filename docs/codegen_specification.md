@@ -309,10 +309,10 @@ Expected behaviour of code functions:
 #### ProcDeclaration
 
 ```
-  elaborate [[proc I (FP) ~ C]] =
+  elaborate [[proc I (FPS) ~ C]] =
     JUMP g
  e: execute C
-    RETURN(0) d, where d = size of FP
+    RETURN(0) d, where d = size of FPS
   g:  
 ```
 
@@ -320,6 +320,10 @@ Expected behaviour of code functions:
 
 ```
   elaborate [[func I(FP): T ~ C]] =
+    JUMP g
+  e: execute C
+    RETURN(n) d, where d = size of FPS, n = size of T
+  g:
 ```
 
 #### SequentialDeclaration
