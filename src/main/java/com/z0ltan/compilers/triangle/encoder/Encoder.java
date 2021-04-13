@@ -307,6 +307,17 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final WhileCommand cmd, final Object arg) {
+    Frame frame = (Frame)arg;
+
+    int addr1 = nextInstrAddr;
+    emit(Machine.Opcodes.JUMPOp, 0, Machine.Registers.CBr, 0);
+    int addr2 = nextInstrAddr;
+    cmd.C.accept(this, frame);
+    int addr3 = nextInstrAddr;
+    patch(addr1, addr3);
+    cmd.E.accept(this, frame);
+    emit(Machine.Opcodes.JUMPIFOp, Machine.Repr.trueRep, Machine.Registers.CBr, addr2);
+
     return null;
   }
 
@@ -321,7 +332,7 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final EmptyExpression expr, final Object arg) {
-    return null;
+    return Integer.valueOf(0);
   }
 
   @Override
@@ -355,7 +366,12 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final CallExpression expr, final Object arg) {
-    return null;
+    Frame frame = (Frame)arg;
+    int typeSz = ((Integer)expr.type.accept(this, frame)).intValue();
+    int argsSz = ((Integer)expr.APS.accept(this, frame)).intValue();
+    expr.I.accept(this, new Frame(frame.level, argsSz));
+
+    return Integer.valueOf(typeSz);
   }
 
   @Override
@@ -365,7 +381,12 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final UnaryExpression expr, final Object arg) {
-    return null;
+    Frame frame = (Frame)arg;
+    int typeSz = ((Integer)expr.type.accept(this, frame)).intValue();
+    int sz = ((Integer)expr.E.accept(this, frame)).intValue();
+    expr.O.accept(this, new Frame(frame, sz));
+
+    return Integer.valueOf(typeSz);
   }
 
   @Override
@@ -534,7 +555,7 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final EmptyFormalParameterSequence fps, final Object arg) {
-    return null;
+    return Integer.valueOf(0);
   }
 
   @Override
@@ -579,7 +600,7 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final EmptyActualParameterSequence aps, final Object arg) {
-    return null;
+    return Integer.valueOf(0);
   }
 
   @Override

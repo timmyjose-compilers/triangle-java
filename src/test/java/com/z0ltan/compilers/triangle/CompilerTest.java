@@ -74,8 +74,8 @@ public class CompilerTest {
       });
   }
 
-  public void xtestEcho() throws Exception {
-    withTextFromSystemIn("")
+  public void testEcho() throws Exception {
+    withTextFromSystemIn("Hello, world! Nice to meet you!")
       .execute(() -> {
         final String sourceFile = "samples/source/echo.t";
         final String binaryFile = "echo.tam";
