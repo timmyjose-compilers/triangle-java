@@ -432,7 +432,8 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final ArrayExpression expr, final Object arg) {
-    return null;
+    expr.type.accept(this, null);
+    return expr.AA.accept(this, arg);
   }
 
   @Override
@@ -443,12 +444,17 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final SingleArrayAggregate agg, final Object arg) {
-    return null;
+    return agg.E.accept(this, arg);
   }
 
   @Override
   public Object visit(final MultipleArrayAggregate agg, final Object arg) {
-    return null;
+    Frame frame = (Frame)arg;
+
+    final int elemSz = ((Integer)agg.E.accept(this, frame)).intValue();
+    final int arraySz = ((Integer)agg.AA.accept(this, new Frame(frame, elemSz))).intValue();
+
+    return Integer.valueOf(elemSz + arraySz);
   }
 
   @Override
@@ -460,8 +466,8 @@ public class Encoder implements Visitor {
   public Object visit(final MultipleRecordAggregate agg, final Object arg) {
     Frame frame = (Frame)arg;
     
-    int fieldSz = ((Integer)agg.E.accept(this, frame)).intValue();
-    int recSz = ((Integer)agg.RA.accept(this, new Frame(frame, fieldSz))).intValue();
+    final int fieldSz = ((Integer)agg.E.accept(this, frame)).intValue();
+    final int recSz = ((Integer)agg.RA.accept(this, new Frame(frame, fieldSz))).intValue();
 
     return Integer.valueOf(fieldSz + recSz);
   }
@@ -584,7 +590,13 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final ArrayTypeDenoter td, final Object arg) {
-    return null;
+    if (td.entity == null) {
+      final int typeSz = ((Integer)td.T.accept(this, arg)).intValue();
+      final int elemSz = Integer.valueOf(td.IL.spelling) * typeSz;
+      td.entity = new TypeRepresentation(elemSz);
+      return Integer.valueOf(elemSz);
+    }
+    return td.entity.size;
   }
 
   @Override
@@ -673,12 +685,16 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final ProcFormalParameter param, final Object arg) {
-    return null;
+    Frame frame = (Frame)arg;
+    param.entity = new UnknownRoutine(Machine.Sizes.closureSize, frame.level, -frame.size - Machine.Sizes.closureSize);
+    return Integer.valueOf(Machine.Sizes.closureSize);
   }
 
   @Override
   public Object visit(final FuncFormalParameter param, final Object arg) {
-    return null;
+    Frame frame = (Frame)arg;
+    param.entity = new UnknownRoutine(Machine.Sizes.closureSize, frame.level, -frame.size - Machine.Sizes.closureSize);
+    return Integer.valueOf(Machine.Sizes.closureSize);
   }
 
   @Override
@@ -716,12 +732,48 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final ProcActualParameter param, final Object arg) {
-    return null;
+    Frame frame = (Frame)arg;
+
+    final RuntimeEntity entity = (RuntimeEntity)param.I.decl.entity;
+    if (entity instanceof KnownRoutine) {
+      final EntityAddress address = ((KnownRoutine)entity).address;
+      emit(Machine.Opcodes.LOADAOp, 0, displayRegister(frame.level, address.level), 0);
+      emit(Machine.Opcodes.LOADAOp, 0, Machine.Registers.CBr, address.displacement);
+    } else if (entity instanceof UnknownRoutine) {
+      final EntityAddress address = ((UnknownRoutine)entity).address;
+      emit(Machine.Opcodes.LOADOp, Machine.Sizes.closureSize, displayRegister(frame.level, address.level), address.displacement);
+    } else if (entity instanceof PrimitiveRoutine) {
+      final int displacement = ((PrimitiveRoutine)entity).displacement;
+      emit(Machine.Opcodes.LOADAOp, 0, Machine.Registers.SBr, 0);
+      emit(Machine.Opcodes.LOADAOp, 0, Machine.Registers.PBr, displacement);
+    } else {
+      throw new CodegenError("invalid entity for proc actual parameter: " + entity);
+    }
+
+    return Integer.valueOf(Machine.Sizes.closureSize);
   }
 
   @Override
   public Object visit(final FuncActualParameter param, final Object arg) {
-    return null;
+    Frame frame = (Frame)arg;
+
+    final RuntimeEntity entity = (RuntimeEntity)param.I.decl.entity;
+    if (entity instanceof KnownRoutine) {
+      final EntityAddress address = ((KnownRoutine)entity).address;
+      emit(Machine.Opcodes.LOADAOp, 0, displayRegister(frame.level, address.level), 0);
+      emit(Machine.Opcodes.LOADOp, 0, Machine.Registers.CBr, address.displacement);
+    } else if (entity instanceof UnknownRoutine) {
+      final EntityAddress address = ((UnknownRoutine)entity).address;
+      emit(Machine.Opcodes.LOADOp, Machine.Sizes.closureSize, displayRegister(frame.level, address.level), address.displacement);
+    } else if (entity instanceof PrimitiveRoutine) {
+      final int displacement = ((PrimitiveRoutine)entity).displacement;
+      emit(Machine.Opcodes.LOADAOp, 0, Machine.Registers.SBr, 0);
+      emit(Machine.Opcodes.LOADAOp, 0, Machine.Registers.PBr, displacement);
+    } else {
+      throw new CodegenError("invalid entity for func actual parameter: " + entity);
+    }
+
+    return Integer.valueOf(Machine.Sizes.closureSize);
   }
 
   @Override
@@ -744,7 +796,34 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final SubscriptVname vname, final Object arg) {
-    return null;
+    Frame frame = (Frame)arg;
+
+    final RuntimeEntity entity = (RuntimeEntity)vname.V.accept(this, arg);
+    vname.indexed = vname.V.indexed;
+    vname.offset = vname.V.offset;
+    final int typeSz = ((Integer)vname.type.accept(this, null)).intValue();
+
+    if (vname.E instanceof IntegerExpression) {
+      final IntegerLiteral IL = ((IntegerExpression)vname.E).IL;
+      vname.offset += Integer.parseInt(IL.spelling);
+    } else {
+      if (vname.indexed) {
+        frame.size += Machine.Sizes.intSize;
+      }
+      final int indezSz = ((Integer)vname.E.accept(this, frame)).intValue();
+      if (typeSz != 1) {
+        emit(Machine.Opcodes.LOADLOp, 0, 0, typeSz);
+        emit(Machine.Opcodes.CALLOp, Machine.Registers.SBr, Machine.Registers.PBr, Machine.Primitives.multDisplacement);
+      }
+
+      if (vname.indexed) {
+        emit(Machine.Opcodes.CALLOp, Machine.Registers.SBr, Machine.Registers.PBr, Machine.Primitives.addDisplacement);
+      } else {
+        vname.indexed = true;
+      }
+    }
+
+    return entity;
   }
 
   @Override

@@ -151,7 +151,7 @@ public class CompilerTest {
       });
   }
 
-  public void xtestPrintArray() throws Exception {
+  public void testPrintArray() throws Exception {
     withTextFromSystemIn("")
       .execute(() -> {
         final String sourceFile = "samples/source/print_array.t";
@@ -162,7 +162,7 @@ public class CompilerTest {
       });
   }
 
-  public void xtestDate() throws Exception {
+  public void testDate() throws Exception {
     withTextFromSystemIn("2021\n04\n06\n")
       .execute(() -> {
         final String sourceFile = "samples/source/date.t";
@@ -173,7 +173,7 @@ public class CompilerTest {
       });
   }
 
-  public void xtestString() throws Exception {
+  public void testString() throws Exception {
     withTextFromSystemIn("Hello, world!\n")
       .execute(() -> {
         final String sourceFile = "samples/source/string.t";
@@ -184,7 +184,7 @@ public class CompilerTest {
       });
   }
 
-  public void xtestIteratively() throws Exception {
+  public void testIteratively() throws Exception {
     withTextFromSystemIn("1\n2\n11\n22\n9\n0\n78\n23\n45\n233\n")
       .execute(() -> {
         final String sourceFile = "samples/source/iteratively.t";
@@ -195,7 +195,7 @@ public class CompilerTest {
       });
   }
 
-  public void xtestLine() throws Exception {
+  public void testLine() throws Exception {
     withTextFromSystemIn("hello\n")
       .execute(() -> {
         final String sourceFile = "samples/source/line.t";
@@ -206,7 +206,7 @@ public class CompilerTest {
       });
   }
 
-  public void xtestDates() throws Exception {
+  public void testDates() throws Exception {
     withTextFromSystemIn("04\n04\n11\n22\n01\n28\n12\n31\n")
       .execute(() -> {
         final String sourceFile = "samples/source/dates.t";
