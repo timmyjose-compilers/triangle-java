@@ -9,8 +9,8 @@ public class Frame {
     this.size = size;
   }
 
-  public Frame(final Frame frame, final int newSize) {
+  public Frame(final Frame frame, final int extraSize) {
     this.level = frame.level;
-    this.size = newSize;
+    this.size += extraSize;
   }
 }

@@ -204,13 +204,13 @@ public class Encoder implements Visitor {
       if (vname.indexed) {
         emit(Machine.Opcodes.LOADAOp, 0, displayRegister(frame.level, address.level), address.displacement + vname.offset);
         emit(Machine.Opcodes.CALLOp, Machine.Registers.SBr, Machine.Registers.PBr, Machine.Primitives.addDisplacement);
-        emit(Machine.Opcodes.LOADIOp, valSize, 0, 0);
+        emit(Machine.LOADIOp, valSize, 0, 0);
       } else {
         emit(Machine.Opcodes.LOADOp, valSize, displayRegister(frame.level, address.level), address.displacement + vname.offset);
       }
     } else if (entity instanceof UnknownAddress) {
       final EntityAddress address = ((UnknownAddress)entity).address;
-      emit(Machine.Opcodes.LOADOp, Machine.Sizes.addressSize, displayRegister(frame.level, address.level), address.displacement);
+      emit(Machine.Opcodes.LOADop, Machine.Sizes.addressSize, displayRegister(frame.level, address.level), address.displacement);
       
       if (vname.indexed) {
         emit(Machine.Opcodes.CALLOp, Machine.Registers.SBr, Machine.Registers.PBr, Machine.Primitives.addDisplacement);
@@ -220,36 +220,14 @@ public class Encoder implements Visitor {
         emit(Machine.Opcodes.LOADLOp, 0, 0, vname.offset);
         emit(Machine.Opcodes.CALLOp, Machine.Registers.SBr, Machine.Registers.PBr, Machine.Primitives.addDisplacement);
       }
-      emit(Machine.Opcodes.LOADIOp, valSize, 0, 0);
+
     } else {
       throw new CodegenError("invalid entity for encodeFetch: " + entity);
     }
   }
 
   private void encodeFetchAddress(final Vname vname, final Frame frame) {
-    final RuntimeEntity entity = (RuntimeEntity)vname.accept(this, frame);
 
-    if (entity instanceof KnownAddress) {
-      final EntityAddress address = ((KnownAddress)entity).address;
-      emit(Machine.Opcodes.LOADAOp, 0, displayRegister(frame.level, address.level), address.displacement + vname.offset);
-
-      if (vname.indexed) {
-        emit(Machine.Opcodes.CALLOp, Machine.Registers.SBr, Machine.Registers.PBr, Machine.Primitives.addDisplacement);
-      }
-    } else if (entity instanceof UnknownAddress) {
-      final EntityAddress address = ((UnknownAddress)entity).address;
-      emit(Machine.Opcodes.LOADOp, Machine.Sizes.addressSize, displayRegister(frame.level, address.level), address.displacement);
-      if (vname.indexed) {
-        emit(Machine.Opcodes.CALLOp, Machine.Registers.SBr, Machine.Registers.PBr, Machine.Primitives.addDisplacement);
-      }
-
-      if (vname.offset != 0) {
-        emit(Machine.Opcodes.LOADLOp, 0, 0, vname.offset);
-        emit(Machine.Opcodes.CALLOp, Machine.Registers.SBr, Machine.Registers.PBr, Machine.Primitives.addDisplacement);
-      }
-    } else {
-      throw new CodegenError("invalid entity for encodeFetchAddress: " + entity);
-    }
   }
 
   @Override

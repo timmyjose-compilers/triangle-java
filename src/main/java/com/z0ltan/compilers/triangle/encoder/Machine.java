@@ -313,6 +313,7 @@ public class Machine {
     public static final int intSize = 1;
     public static final int charSize = 1;
     public static final int boolSize = 1;
+    public static final int addressSize = 1;
     public static final int closureSize = 2;
     public static final int linkDataSize = 3;
   }
