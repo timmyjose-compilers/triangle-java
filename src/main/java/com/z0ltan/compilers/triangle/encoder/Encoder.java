@@ -108,6 +108,8 @@ public class Encoder implements Visitor {
     elaborateStdPrimitiveRoutine(StdEnvironment.puteolDecl, Machine.Primitives.puteolDisplacement);
     elaborateStdPrimitiveRoutine(StdEnvironment.eolDecl, Machine.Primitives.eolDisplacement);
     elaborateStdPrimitiveRoutine(StdEnvironment.eofDecl, Machine.Primitives.eofDisplacement);
+    elaborateStdPrimitiveRoutine(StdEnvironment.ordDecl, Machine.Primitives.idDisplacement);
+    elaborateStdPrimitiveRoutine(StdEnvironment.chrDecl, Machine.Primitives.idDisplacement);
     elaborateStdEqualityRoutine(StdEnvironment.eqDecl, Machine.Primitives.eqDisplacement);
     elaborateStdEqualityRoutine(StdEnvironment.neDecl, Machine.Primitives.neDisplacement);
   }

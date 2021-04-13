@@ -239,7 +239,7 @@ public class CompilerTest {
       });
   }
 
-  public void xtestFreq() throws Exception {
+  public void testFreq() throws Exception {
     withTextFromSystemIn("hello world\n")
       .execute(() -> {
         final String sourceFile = "samples/source/freq.t";
@@ -250,7 +250,7 @@ public class CompilerTest {
       });
   }
 
-  public void xtestInsertionSort() throws Exception {
+  public void testInsertionSort() throws Exception {
     withTextFromSystemIn("1\n2\n3\n5\n4\n34\n2\n1\n2\n3\n")
       .execute(() -> {
         final String sourceFile = "samples/source/insertion_sort.t";
