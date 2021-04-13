@@ -302,6 +302,18 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final IfCommand cmd, final Object arg) {
+    Frame frame = (Frame)arg;
+
+    int typeSz = ((Integer)cmd.E.accept(this, frame)).intValue();
+    int addr1 = nextInstrAddr;
+    emit(Machine.Opcodes.JUMPIFOp, Machine.Repr.falseRep, Machine.Registers.CBr, 0);
+    cmd.C1.accept(this, frame);
+    int addr2 = nextInstrAddr;
+    emit(Machine.Opcodes.JUMPOp, 0, Machine.Registers.CBr, 0);
+    patch(addr1, nextInstrAddr);
+    cmd.C2.accept(this, frame);
+    patch(addr2, nextInstrAddr);
+
     return null;
   }
 
@@ -451,12 +463,13 @@ public class Encoder implements Visitor {
     Frame frame = (Frame)arg;
 
     if (frame.level == Machine.maxRoutineLevel) {
-      throw new CodegenError("Cannot nest routines beyond " + Machine.maxRoutineLevel + " levels deep");
+      throw new CodegenError("Cannot nest procedures beyond " + Machine.maxRoutineLevel + " levels deep");
     }
 
     int addr1 = nextInstrAddr;
     emit(Machine.Opcodes.JUMPOp, 0, Machine.Registers.CBr, 0);
-    decl.entity = new KnownRoutine(Machine.Sizes.closureSize, frame.level, nextInstrAddr);
+    int entryOffset = nextInstrAddr;
+    decl.entity = new KnownRoutine(Machine.Sizes.closureSize, frame.level, entryOffset);
     int argsSz = ((Integer)decl.FPS.accept(this, new Frame(frame.level + 1, 0)));
     decl.C.accept(this, new Frame(frame.level + 1, Machine.Sizes.linkDataSize));
     emit(Machine.Opcodes.RETURNOp, 0, 0, argsSz);
@@ -467,7 +480,22 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final FuncDeclaration decl, final Object arg) {
-    return null;
+    Frame frame = (Frame)arg;
+
+    if (frame.level == Machine.maxRoutineLevel) {
+      throw new CodegenError("Cannot nest functions beyond " + Machine.maxRoutineLevel + " levels deep");
+    }
+
+    int addr1 = nextInstrAddr;
+    emit(Machine.Opcodes.JUMPOp, 0, Machine.Registers.CBr, 0);
+    int entryOffset = nextInstrAddr;
+    decl.entity = new KnownRoutine(Machine.Sizes.closureSize, frame.level, entryOffset);
+    int argsSz = ((Integer)decl.FPS.accept(this, new Frame(frame.level + 1, 0))).intValue();
+    int typeSz = ((Integer)decl.E.accept(this, new Frame(frame.level + 1, Machine.Sizes.linkDataSize))).intValue();
+    emit(Machine.Opcodes.RETURNOp, typeSz, 0, argsSz);
+    patch(addr1, nextInstrAddr);
+
+    return Integer.valueOf(0);
   }
 
   @Override
@@ -576,7 +604,11 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final ConstFormalParameter param, final Object arg) {
-    return null;
+    Frame frame = (Frame)arg;
+    int typeSz = ((Integer)param.T.accept(this, frame)).intValue();
+    param.entity = new UnknownValue(typeSz, frame.level, -frame.size - typeSz);
+
+    return Integer.valueOf(typeSz);
   }
 
   @Override
@@ -712,6 +744,7 @@ public class Encoder implements Visitor {
       }
     } else if (entity instanceof EqualityRoutine) {
       final int displacement = ((EqualityRoutine)entity).displacement;
+      emit(Machine.Opcodes.LOADLOp, 0,0, frame.size / 2);
       emit(Machine.Opcodes.CALLOp, Machine.Registers.SBr, Machine.Registers.PBr, displacement);
     } else if (entity instanceof UnknownRoutine) {
       final EntityAddress address = ((UnknownRoutine)entity).address;

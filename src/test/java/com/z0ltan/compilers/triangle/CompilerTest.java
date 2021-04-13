@@ -85,8 +85,8 @@ public class CompilerTest {
       });
   }
 
-  public void xtestOdd() throws Exception {
-    withTextFromSystemIn("")
+  public void testOdd() throws Exception {
+    withTextFromSystemIn("11")
       .execute(() -> {
         final String sourceFile = "samples/source/odd.t";
         final String binaryFile = "odd.tam";
