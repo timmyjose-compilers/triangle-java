@@ -140,7 +140,7 @@ public class CompilerTest {
       });
   }
 
-  public void xtestLeapYear() throws Exception {
+  public void testLeapYear() throws Exception {
     withTextFromSystemIn("2020\n11\n01\n")
       .execute(() -> {
         final String sourceFile = "samples/source/leapyear.t";
