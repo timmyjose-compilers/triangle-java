@@ -437,7 +437,8 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final RecordExpression expr, final Object arg) {
-    return null;
+    expr.type.accept(this, null);
+    return expr.RA.accept(this, arg);
   }
 
   @Override
@@ -452,12 +453,17 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final SingleRecordAggregate agg, final Object arg) {
-    return null;
+    return agg.E.accept(this, arg);
   }
 
   @Override
   public Object visit(final MultipleRecordAggregate agg, final Object arg) {
-    return null;
+    Frame frame = (Frame)arg;
+    
+    int fieldSz = ((Integer)agg.E.accept(this, frame)).intValue();
+    int recSz = ((Integer)agg.RA.accept(this, new Frame(frame, fieldSz))).intValue();
+
+    return Integer.valueOf(fieldSz + recSz);
   }
 
   @Override
@@ -518,7 +524,9 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final TypeDeclaration decl, final Object arg) {
-    return null;
+    Frame frame = (Frame)arg;
+    decl.T.accept(this, frame);
+    return Integer.valueOf(0);
   }
 
   @Override
@@ -586,17 +594,42 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final SingleFieldTypeDenoter td, final Object arg) {
-    return null;
+    if (td.entity == null) {
+      final int fieldOffset = ((Integer)arg).intValue();
+      final int fieldSz = ((Integer)td.T.accept(this, null)).intValue();
+      td.entity = new Field(fieldSz, fieldOffset);
+      return Integer.valueOf(fieldSz);
+    }
+
+    return td.entity.size;
   }
 
   @Override
   public Object visit(final MultipleFieldTypeDenoter td, final Object arg) {
-    return null;
+    int fieldOffset = 0, fieldSz = 0;
+
+    if (td.entity == null) {
+      fieldOffset = ((Integer)arg).intValue();
+      fieldSz = ((Integer)td.T.accept(this, null)).intValue();
+      td.entity = new Field(fieldSz, fieldOffset);
+    } else {
+      fieldSz = td.entity.size;
+    }
+
+    Integer offset1 = Integer.valueOf(fieldSz + fieldOffset);
+    final int recSz = ((Integer)td.FTD.accept(this, offset1)).intValue();
+
+    return Integer.valueOf(fieldSz + recSz);
   }
 
   @Override
   public Object visit(final RecordTypeDenoter td, final Object arg) {
-    return null;
+    if (td.entity == null) {
+      final int typeSz = ((Integer)td.FTD.accept(this, Integer.valueOf(0))).intValue();
+      td.entity = new TypeRepresentation(typeSz);
+      return Integer.valueOf(typeSz);
+    }
+    return td.entity.size;
   }
 
   @Override
@@ -701,7 +734,12 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final DotVname vname, final Object arg) {
-    return null;
+    Frame frame = (Frame)arg;
+    final RuntimeEntity entity = (RuntimeEntity)vname.V.accept(this, arg);
+    vname.offset = vname.V.offset + ((Field)vname.I.decl.entity).fieldOffset;
+    vname.indexed = vname.V.indexed;
+
+    return entity;
   }
 
   @Override

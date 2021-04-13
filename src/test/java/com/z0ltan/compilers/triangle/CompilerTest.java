@@ -129,7 +129,7 @@ public class CompilerTest {
       });
   }
 
-  public void xtestRecord() throws Exception {
+  public void testRecord() throws Exception {
     withTextFromSystemIn("")
       .execute(() -> {
         final String sourceFile = "samples/source/record.t";
@@ -141,7 +141,7 @@ public class CompilerTest {
   }
 
   public void xtestLeapYear() throws Exception {
-    withTextFromSystemIn("")
+    withTextFromSystemIn("2020\n11\n01\n")
       .execute(() -> {
         final String sourceFile = "samples/source/leapyear.t";
         final String binaryFile = "leapyear.tam";
@@ -163,7 +163,7 @@ public class CompilerTest {
   }
 
   public void xtestDate() throws Exception {
-    withTextFromSystemIn("")
+    withTextFromSystemIn("2021\n04\n06\n")
       .execute(() -> {
         final String sourceFile = "samples/source/date.t";
         final String binaryFile = "date.tam";
@@ -174,7 +174,7 @@ public class CompilerTest {
   }
 
   public void xtestString() throws Exception {
-    withTextFromSystemIn("")
+    withTextFromSystemIn("Hello, world!\n")
       .execute(() -> {
         final String sourceFile = "samples/source/string.t";
         final String binaryFile = "string.tam";
@@ -185,7 +185,7 @@ public class CompilerTest {
   }
 
   public void xtestIteratively() throws Exception {
-    withTextFromSystemIn("")
+    withTextFromSystemIn("1\n2\n11\n22\n9\n0\n78\n23\n45\n233\n")
       .execute(() -> {
         final String sourceFile = "samples/source/iteratively.t";
         final String binaryFile = "iteratively.tam";
@@ -196,7 +196,7 @@ public class CompilerTest {
   }
 
   public void xtestLine() throws Exception {
-    withTextFromSystemIn("")
+    withTextFromSystemIn("hello\n")
       .execute(() -> {
         final String sourceFile = "samples/source/line.t";
         final String binaryFile = "line.tam";
@@ -207,7 +207,7 @@ public class CompilerTest {
   }
 
   public void xtestDates() throws Exception {
-    withTextFromSystemIn("")
+    withTextFromSystemIn("04\n04\n11\n22\n01\n28\n12\n31\n")
       .execute(() -> {
         final String sourceFile = "samples/source/dates.t";
         final String binaryFile = "dates.tam";
@@ -218,7 +218,7 @@ public class CompilerTest {
   }
 
   public void xtestMonthsOfYear() throws Exception {
-    withTextFromSystemIn("")
+    withTextFromSystemIn("2021\n04\n06\n")
       .execute(() -> {
         final String sourceFile = "samples/source/monthsofyear.t";
         final String binaryFile = "monthsofyear.tam";
@@ -229,7 +229,7 @@ public class CompilerTest {
   }
 
   public void xtestCapitalise() throws Exception {
-    withTextFromSystemIn("")
+    withTextFromSystemIn("Hello\n")
       .execute(() -> {
         final String sourceFile = "samples/source/capitalise.t";
         final String binaryFile = "capitalise.tam";
@@ -240,7 +240,7 @@ public class CompilerTest {
   }
 
   public void xtestFreq() throws Exception {
-    withTextFromSystemIn("")
+    withTextFromSystemIn("hello world\n")
       .execute(() -> {
         final String sourceFile = "samples/source/freq.t";
         final String binaryFile = "freq.tam";
@@ -251,7 +251,7 @@ public class CompilerTest {
   }
 
   public void xtestInsertionSort() throws Exception {
-    withTextFromSystemIn("")
+    withTextFromSystemIn("1\n2\n3\n5\n4\n34\n2\n1\n2\n3\n")
       .execute(() -> {
         final String sourceFile = "samples/source/insertion_sort.t";
         final String binaryFile = "insertion_sort.tam";
@@ -262,7 +262,7 @@ public class CompilerTest {
   }
 
   public void xtestRationals() throws Exception {
-    withTextFromSystemIn("")
+    withTextFromSystemIn("2\n3\n3\n4\n")
       .execute(() -> {
         final String sourceFile = "samples/source/rationals.t";
         final String binaryFile = "rationals.tam";
@@ -284,7 +284,7 @@ public class CompilerTest {
   }
 
   public void xtestNestedArrays() throws Exception {
-    withTextFromSystemIn("")
+    withTextFromSystemIn("1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n")
       .execute(() -> {
         final String sourceFile = "samples/source/nestedarrays.t";
         final String binaryFile = "nestedarrays.tam";
