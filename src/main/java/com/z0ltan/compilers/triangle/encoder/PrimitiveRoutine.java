@@ -1,10 +1,10 @@
 package com.z0ltan.compilers.triangle.encoder;
 
 public class PrimitiveRoutine extends RuntimeEntity {
-  public int primOffset;
+  public int displacement;
 
-  public PrimitiveRoutine(final int size, final int primOffset) {
+  public PrimitiveRoutine(final int size, final int displacement) {
     super(size);
-    this.primOffset = primOffset;
+    this.displacement = displacement;
   }
 }

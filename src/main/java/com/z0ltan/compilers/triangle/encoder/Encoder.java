@@ -100,6 +100,13 @@ public class Encoder implements Visitor {
     elaborateStdPrimitiveRoutine(StdEnvironment.leDecl, Machine.Primitives.leDisplacement);
     elaborateStdPrimitiveRoutine(StdEnvironment.geDecl, Machine.Primitives.geDisplacement);
     elaborateStdPrimitiveRoutine(StdEnvironment.gtDecl, Machine.Primitives.gtDisplacement);
+    elaborateStdPrimitiveRoutine(StdEnvironment.getDecl, Machine.Primitives.getDisplacement);
+    elaborateStdPrimitiveRoutine(StdEnvironment.getintDecl, Machine.Primitives.getintDisplacement);
+    elaborateStdPrimitiveRoutine(StdEnvironment.putDecl, Machine.Primitives.putDisplacement);
+    elaborateStdPrimitiveRoutine(StdEnvironment.putintDecl, Machine.Primitives.putintDisplacement);
+    elaborateStdPrimitiveRoutine(StdEnvironment.geteolDecl, Machine.Primitives.geteolDisplacement);
+    elaborateStdPrimitiveRoutine(StdEnvironment.eolDecl, Machine.Primitives.eolDisplacement);
+    elaborateStdPrimitiveRoutine(StdEnvironment.eofDecl, Machine.Primitives.eofDisplacement);
     elaborateStdEqualityRoutine(StdEnvironment.eqDecl, Machine.Primitives.eqDisplacement);
     elaborateStdEqualityRoutine(StdEnvironment.neDecl, Machine.Primitives.neDisplacement);
   }
@@ -303,7 +310,12 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final IntegerExpression expr, final Object arg) {
-    return Integer.valueOf(0);
+    Frame frame = (Frame)arg;
+    final int typeSize = ((Integer)expr.type.accept(this, frame)).intValue();
+    final int ival = Integer.parseInt(expr.IL.spelling);
+    emit(Machine.Opcodes.LOADLOp, 0, 0, ival);
+
+    return Integer.valueOf(typeSize);
   }
 
   @Override
@@ -565,6 +577,29 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final Identifier id, final Object arg) {
+    Frame frame = (Frame)arg;
+    final RuntimeEntity entity = id.decl.entity;
+
+    if (entity instanceof KnownRoutine) {
+      final EntityAddress address = ((KnownRoutine)entity).address;
+      emit(Machine.Opcodes.CALLOp, displayRegister(frame.level, address.level), Machine.Registers.CBr, address.displacement);
+    } else if (entity instanceof PrimitiveRoutine) {
+      final int displacement = ((PrimitiveRoutine)entity).displacement;
+      if (displacement != Machine.Primitives.idDisplacement) {
+        emit(Machine.Opcodes.CALLOp, Machine.Registers.SBr, Machine.Registers.PBr, displacement);
+      }
+    } else if (entity instanceof EqualityRoutine) {
+      final int displacement = ((EqualityRoutine)entity).displacement;
+      emit(Machine.Opcodes.LOADLOp, 0, 0, frame.size / 2);
+      emit(Machine.Opcodes.CALLOp, Machine.Registers.SBr, Machine.Registers.PBr, displacement);
+    } else if (entity instanceof UnknownRoutine) {
+      final EntityAddress address = ((UnknownRoutine)entity).address;
+      emit(Machine.Opcodes.LOADOp, Machine.Sizes.closureSize, displayRegister(frame.level, address.level), address.displacement);
+      emit(Machine.Opcodes.CALLIOp, 0, 0, 0);
+    } else {
+      throw new CodegenError("invalid entity for identifier: " + entity);
+    }
+
     return null;
   }
 
@@ -580,6 +615,28 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final Operator op, final Object arg) {
+    Frame frame = (Frame)arg;
+    final RuntimeEntity entity = op.decl.entity;
+
+    if (entity instanceof KnownRoutine) {
+      final EntityAddress address = ((KnownRoutine)entity).address;
+      emit(Machine.Opcodes.CALLOp, displayRegister(frame.level, address.level), Machine.Registers.CBr, address.displacement);
+    } else if (entity instanceof PrimitiveRoutine) {
+      final int displacement = ((PrimitiveRoutine)entity).displacement;
+      if (displacement != Machine.Primitives.idDisplacement) {
+        emit(Machine.Opcodes.CALLOp, Machine.Registers.SBr, Machine.Registers.CBr, displacement);
+      }
+    } else if (entity instanceof EqualityRoutine) {
+      final int displacement = ((EqualityRoutine)entity).displacement;
+      emit(Machine.Opcodes.CALLOp, Machine.Registers.SBr, Machine.Registers.PBr, displacement);
+    } else if (entity instanceof UnknownRoutine) {
+      final EntityAddress address = ((UnknownRoutine)entity).address;
+      emit(Machine.Opcodes.LOADOp, Machine.Sizes.closureSize, displayRegister(frame.level, address.level), address.displacement);
+      emit(Machine.Opcodes.CALLIOp, 0, 0, 0);
+    } else {
+      throw new CodegenError("invalid entity for operator: " + entity);
+    }
+
     return null;
   }
 }
