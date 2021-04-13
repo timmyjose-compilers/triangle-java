@@ -105,6 +105,7 @@ public class Encoder implements Visitor {
     elaborateStdPrimitiveRoutine(StdEnvironment.putDecl, Machine.Primitives.putDisplacement);
     elaborateStdPrimitiveRoutine(StdEnvironment.putintDecl, Machine.Primitives.putintDisplacement);
     elaborateStdPrimitiveRoutine(StdEnvironment.geteolDecl, Machine.Primitives.geteolDisplacement);
+    elaborateStdPrimitiveRoutine(StdEnvironment.puteolDecl, Machine.Primitives.puteolDisplacement);
     elaborateStdPrimitiveRoutine(StdEnvironment.eolDecl, Machine.Primitives.eolDisplacement);
     elaborateStdPrimitiveRoutine(StdEnvironment.eofDecl, Machine.Primitives.eofDisplacement);
     elaborateStdEqualityRoutine(StdEnvironment.eqDecl, Machine.Primitives.eqDisplacement);
@@ -388,7 +389,24 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final IfExpression expr, final Object arg) {
-    return null;
+    Frame frame = (Frame)arg;
+
+    expr.type.accept(this, frame);
+    expr.E1.accept(this, frame);
+    int addr1 = nextInstrAddr;
+    emit(Machine.Opcodes.JUMPIFOp, Machine.Repr.falseRep, Machine.Registers.CBr, 0);
+    int e2Sz = ((Integer)expr.E2.accept(this, frame)).intValue();
+    int addr2 = nextInstrAddr;
+    emit(Machine.Opcodes.JUMPOp, 0, Machine.Registers.CBr, 0);
+    patch(addr1, nextInstrAddr);
+    int e3Sz = ((Integer)expr.E3.accept(this, frame)).intValue();
+    patch(addr2, nextInstrAddr);
+
+    if (e2Sz != e3Sz) {
+      throw new CodegenError("type size mismatch in if arms: left arm has size " + e2Sz + ", and right arm has size " + e3Sz);
+    }
+
+    return Integer.valueOf(e2Sz);
   }
 
   @Override

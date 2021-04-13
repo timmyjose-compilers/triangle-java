@@ -96,8 +96,8 @@ public class CompilerTest {
       });
   }
 
-  public void xtestSumProc() throws Exception {
-    withTextFromSystemIn("")
+  public void testSumProc() throws Exception {
+    withTextFromSystemIn("12\n13\n")
       .execute(() -> {
         final String sourceFile = "samples/source/sum_proc.t";
         final String binaryFile = "sum_proc.tam";
@@ -107,8 +107,8 @@ public class CompilerTest {
       });
   }
 
-  public void xtestPower() throws Exception {
-    withTextFromSystemIn("")
+  public void testPower() throws Exception {
+    withTextFromSystemIn("11\n3\n")
       .execute(() -> {
         final String sourceFile = "samples/source/power.t";
         final String binaryFile = "power.tam";
@@ -118,8 +118,8 @@ public class CompilerTest {
       });
   }
 
-  public void xtestFactorial() throws Exception {
-    withTextFromSystemIn("")
+  public void testFactorial() throws Exception {
+    withTextFromSystemIn("5\n")
       .execute(() -> {
         final String sourceFile = "samples/source/factorial.t";
         final String binaryFile = "factorial.tam";
