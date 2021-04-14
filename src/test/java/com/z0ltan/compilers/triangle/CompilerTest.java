@@ -250,7 +250,7 @@ public class CompilerTest {
       });
   }
 
-  public void xtestInsertionSort() throws Exception {
+  public void testInsertionSort() throws Exception {
     withTextFromSystemIn("1\n2\n3\n5\n4\n34\n2\n1\n2\n3\n")
       .execute(() -> {
         final String sourceFile = "samples/source/insertion_sort.t";
@@ -261,7 +261,7 @@ public class CompilerTest {
       });
   }
 
-  public void xtestRationals() throws Exception {
+  public void testRationals() throws Exception {
     withTextFromSystemIn("2\n3\n3\n4\n")
       .execute(() -> {
         final String sourceFile = "samples/source/rationals.t";

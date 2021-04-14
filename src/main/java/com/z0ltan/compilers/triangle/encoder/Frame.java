@@ -11,6 +11,11 @@ public class Frame {
 
   public Frame(final Frame frame, final int extraSize) {
     this.level = frame.level;
-    this.size += extraSize;
+    this.size = frame.size + extraSize;
+  }
+
+  @Override
+  public String toString() {
+    return "Frame { level = " + this.level + ", size = " + this.size + " }";
   }
 }

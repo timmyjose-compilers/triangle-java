@@ -379,7 +379,16 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final LetExpression expr, final Object arg) {
-    return null;
+    Frame frame = (Frame)arg;
+
+    expr.type.accept(this, null);
+    int extraSz = ((Integer)expr.D.accept(this, frame)).intValue();
+    int valSz = ((Integer)expr.E.accept(this, frame)).intValue();
+    if (extraSz > 0) {
+      emit(Machine.Opcodes.POPOp, valSz, 0, extraSz);
+    }
+
+    return Integer.valueOf(valSz);
   }
 
   @Override
@@ -555,12 +564,12 @@ public class Encoder implements Visitor {
 
   @Override
   public Object visit(final UnaryOperatorDeclaration decl, final Object arg) {
-    return null;
+    return Integer.valueOf(0);
   }
 
   @Override
   public Object visit(final BinaryOperatorDeclaration decl, final Object arg) {
-    return null;
+    return Integer.valueOf(0);
   }
 
   @Override
@@ -568,7 +577,6 @@ public class Encoder implements Visitor {
     Frame frame = (Frame)arg;
     int sz1 = ((Integer)decl.D1.accept(this, frame)).intValue();
     int sz2 = ((Integer)decl.D2.accept(this, new Frame(frame, sz1))).intValue();
-
     return Integer.valueOf(sz1 + sz2);
   }
 
@@ -729,8 +737,7 @@ public class Encoder implements Visitor {
   public Object visit(final MultipleActualParameterSequence aps, final Object arg) {
     Frame frame = (Frame)arg;
     int sz1 = ((Integer)aps.AP.accept(this, frame)).intValue();
-    Frame frame1 = new Frame(frame, sz1);
-    int sz2 = ((Integer)aps.APS.accept(this, frame1)).intValue();
+    int sz2 = ((Integer)aps.APS.accept(this, new Frame(frame, sz1))).intValue();
     
     return Integer.valueOf(sz1 + sz2);
   }
@@ -859,7 +866,7 @@ public class Encoder implements Visitor {
       }
     } else if (entity instanceof EqualityRoutine) {
       final int displacement = ((EqualityRoutine)entity).displacement;
-      emit(Machine.Opcodes.LOADLOp, 0, 0, frame.size / 2);
+      emit(Machine.Opcodes.LOADLOp, 0, 0, frame.size / 4);
       emit(Machine.Opcodes.CALLOp, Machine.Registers.SBr, Machine.Registers.PBr, displacement);
     } else if (entity instanceof UnknownRoutine) {
       final EntityAddress address = ((UnknownRoutine)entity).address;
@@ -897,7 +904,7 @@ public class Encoder implements Visitor {
       }
     } else if (entity instanceof EqualityRoutine) {
       final int displacement = ((EqualityRoutine)entity).displacement;
-      emit(Machine.Opcodes.LOADLOp, 0,0, frame.size / 2);
+      emit(Machine.Opcodes.LOADLOp, 0,0, frame.size / 4);
       emit(Machine.Opcodes.CALLOp, Machine.Registers.SBr, Machine.Registers.PBr, displacement);
     } else if (entity instanceof UnknownRoutine) {
       final EntityAddress address = ((UnknownRoutine)entity).address;
