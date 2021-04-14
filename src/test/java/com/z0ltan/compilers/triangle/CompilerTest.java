@@ -250,7 +250,7 @@ public class CompilerTest {
       });
   }
 
-  public void testInsertionSort() throws Exception {
+  public void xtestInsertionSort() throws Exception {
     withTextFromSystemIn("1\n2\n3\n5\n4\n34\n2\n1\n2\n3\n")
       .execute(() -> {
         final String sourceFile = "samples/source/insertion_sort.t";
@@ -272,7 +272,7 @@ public class CompilerTest {
       });
   }
 
-  public void xtestNestedRecords() throws Exception {
+  public void testNestedRecords() throws Exception {
     withTextFromSystemIn("")
       .execute(() -> {
         final String sourceFile = "samples/source/nestedrecords.t";
@@ -283,7 +283,7 @@ public class CompilerTest {
       });
   }
 
-  public void xtestNestedArrays() throws Exception {
+  public void testNestedArrays() throws Exception {
     withTextFromSystemIn("1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n")
       .execute(() -> {
         final String sourceFile = "samples/source/nestedarrays.t";
